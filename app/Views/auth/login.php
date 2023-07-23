@@ -22,7 +22,7 @@
                     <img src="<? base_url() ?>/images/brides.jpg" class="img-fluid mt-5" alt="Sample image">
                 </div>
                 <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 mt-3">
-                    <form action="<?= url_to('register') ?>" method="post" class="mx-1 mx-md-3 mt-5">
+                    <form action="<?= url_to('login') ?>" method="post" class="mx-1 mx-md-3 mt-5">
                         <?= csrf_field() ?>
 
                         <!-- Email username input -->

@@ -6,7 +6,7 @@ use CodeIgniter\Config\BaseConfig;
 
 class Email extends BaseConfig
 {
-    public string $fromEmail  = 'sertifikasi@sertifikasifit.com';
+    public string $fromEmail  = 'basstrainingcenter@basstrainingacademy.com';
     public string $fromName   = 'Tenda Hj.Yus';
     public string $recipients = '';
 
@@ -28,17 +28,17 @@ class Email extends BaseConfig
     /**
      * SMTP Server Address
      */
-    public string $SMTPHost = 'mail.sertifikasifit.com';
+    public string $SMTPHost = 'mail.basstrainingacademy.com';
 
     /**
      * SMTP Username
      */
-    public string $SMTPUser = 'sertifikasi@sertifikasifit.com';
+    public string $SMTPUser = 'basstrainingcenter@basstrainingacademy.com';
 
     /**
      * SMTP Password
      */
-    public string $SMTPPass = 'sertifikasilspfit27';
+    public string $SMTPPass = 'N5e[O~o;O~B~';
 
     /**
      * SMTP Port
@@ -48,12 +48,12 @@ class Email extends BaseConfig
     /**
      * SMTP Timeout (in seconds)
      */
-    public int $SMTPTimeout = 60;
+    public int $SMTPTimeout = 5;
 
     /**
      * Enable persistent SMTP connections
      */
-    public bool $SMTPKeepAlive = false;
+    public bool $SMTPKeepAlive = true;
 
     /**
      * SMTP Encryption. Either tls or ssl

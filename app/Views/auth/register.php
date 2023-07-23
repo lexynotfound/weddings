@@ -24,7 +24,7 @@
                 </div>
                 <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 mt-3">
                     <form action="<?= url_to('register') ?>" method="post" class="mx-1 mx-md-3 mt-5">
-                        <?= csrf_field() ?>
+                        <?= csrf_field(); ?>
                         <!-- Username input -->
                         <div class="form-outline mb-4">
                             <label class="form-label" for="username"><?= lang('Auth.username') ?></label>
