@@ -14,88 +14,49 @@
 </head>
 
 <body>
-    <section class="vh-100" style="background-color: #eee;">
-        <div class="container h-100">
+
+    <section class="vh-100" style="background-color: #fbdfeb">
+        <div class="container-fluid h-custom ">
             <div class="row d-flex justify-content-center align-items-center h-100">
-                <div class="col-lg-12 col-xl-11">
-                    <div class="card text-black" style="border-radius: 25px;">
-                        <div class="card-body p-md-4">
-                            <?= view('Myth\Auth\Views\_message_block') ?>
-                            <div class="row justify-content-center">
-                                <div class="col-md-10 col-lg-6 col-xl-5 order-2 order-lg-1">
-
-                                    <p class="text-center h1 fw-bold mb-5 mx-1 mx-md-4 mt-4"><?= lang('Auth.register') ?></p>
-
-                                    <form action="<?= url_to('register') ?>" method="post" class="mx-1 mx-md-3">
-                                        <?= csrf_field() ?>
-
-                                        <div class="d-flex flex-row align-items-center mb-4">
-                                            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                                            <div class="form-outline flex-fill mb-0">
-                                                <label class="form-label" for="username"><?= lang('Auth.username') ?></label>
-                                                <input type="text" id="form3Example1c" class="form-control" <?php if (session('errors.username')) : ?>is-invalid<?php endif ?>" name="username" placeholder="<?= lang('Auth.username') ?>" value="<?= old('username') ?>">
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex flex-row align-items-center mb-4">
-                                            <i class="fas fa-user fa-lg me-3 fa-fw"></i>
-                                            <div class="form-outline flex-fill mb-0">
-                                                <label class="form-label" for="nama"><?= lang('Auth.nama') ?></label>
-                                                <input type="text" id="form3Example1c" class="form-control" <?php if (session('errors.nama')) : ?>is-invalid<?php endif ?>" name="username" placeholder="<?= lang('Auth.username') ?>" value="<?= old('username') ?>">
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex flex-row align-items-center mb-4">
-                                            <i class="fas fa-envelope fa-lg me-3 fa-fw"></i>
-                                            <div class="form-outline flex-fill mb-0">
-                                                <label for="email" class="form-label"><?= lang('Auth.email') ?></label>
-                                                <input type="email" id="form3Example3c" class="form-control" <?php if (session('errors.email')) : ?>is-invalid<?php endif ?>" name="email" aria-describedby="emailHelp" placeholder="<?= lang('Auth.email') ?>" value="<?= old('email') ?>">
-                                                <small id="emailHelp" class="form-text text-muted"><?= lang('Auth.weNeverShare') ?></small>
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex flex-row align-items-center mb-4">
-                                            <i class="fas fa-lock fa-lg me-3 fa-fw"></i>
-                                            <div class="form-outline flex-fill mb-0">
-                                                <label class="form-label" for="form3Example4c"><?= lang('Auth.password') ?></label>
-                                                <input type="password" name="password" id="form3Example4c" class="form-control" <?php if (session('errors.password')) : ?>is-invalid<?php endif ?>" placeholder="<?= lang('Auth.password') ?>" autocomplete="off">
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex flex-row align-items-center mb-4">
-                                            <i class="fas fa-key fa-lg me-3 fa-fw"></i>
-                                            <div class="form-outline flex-fill mb-0">
-                                                <label class="form-label" for="form3Example4cd"><?= lang('Auth.repeatPassword') ?></label>
-                                                <input type="password" name="pass_confirm" id="form3Example4cd" class="form-control" <?php if (session('errors.pass_confirm')) : ?>is-invalid<?php endif ?>" placeholder="<?= lang('Auth.repeatPassword') ?>" autocomplete="off">
-                                            </div>
-                                        </div>
-
-                                        <div class="d-flex justify-content-center mx-4 mb-3 mb-lg-4">
-                                            <button type="submit" class="btn btn-primary btn-block"><?= lang('Auth.register') ?></button>
-                                        </div>
-
-                                        <div class="text-center">
-                                            <p> <a class="nav-link me-2 text-primary" href="<?= url_to('login') ?>"> <?= lang('Auth.alreadyRegistered') ?> <?= lang('Auth.signIn') ?></a></p>
-                                        </div>
-
-                                        <div class="form-check d-flex justify-content-center mb-5">
-                                            <input class="form-check-input me-2" type="checkbox" value="" id="form2Example3c" />
-                                            <label class="form-check-label" for="form2Example3">
-                                                I agree all statements in
-                                            </label>
-                                            <a class="nav-link text-primary ms-1" href="#!">Terms of service</a>
-                                        </div>
-                                    </form>
-
-                                </div>
-                                <div class="col-md-10 col-lg-6 col-xl-7 d-flex align-items-center order-1 order-lg-2">
-
-                                    <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-registration/draw1.webp" class="img-fluid" alt="Sample image">
-
-                                </div>
-                            </div>
+                <?= view('Myth\Auth\Views\_message_block') ?>
+                <div class="col-md-9 col-lg-6 col-xl-5">
+                    <img src="<? base_url() ?>/images/lv.jpg" class="img-fluid mt-5" alt="Sample image">
+                </div>
+                <div class="col-md-8 col-lg-6 col-xl-4 offset-xl-1 mt-3">
+                    <form action="<?= url_to('register') ?>" method="post" class="mx-1 mx-md-3 mt-5">
+                        <?= csrf_field() ?>
+                        <!-- Username input -->
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="username"><?= lang('Auth.username') ?></label>
+                            <input type="text" id="form3Example1c" class="form-control" <?php if (session('errors.username')) : ?>is-invalid<?php endif ?>" name="username" placeholder="<?= lang('Auth.username') ?>" value="<?= old('username') ?>">
                         </div>
-                    </div>
+
+                        <!-- Email input -->
+                        <div class="form-outline mb-4">
+                            <label class="form-label" for="email"><?= lang('Auth.email') ?></label>
+                            <input type="email" id="form3Example1c" class="form-control" <?php if (session('errors.email')) : ?>is-invalid<?php endif ?>" name="email" placeholder="<?= lang('Auth.email') ?>" value="<?= old('email') ?>">
+                            <small id="emailHelp" class="form-text text-muted"><?= lang('Auth.weNeverShare') ?></small>
+                        </div>
+
+                        <!-- Password input -->
+                        <div class="form-outline mb-3">
+                            <label class="form-label" for="form3Example4c"><?= lang('Auth.password') ?></label>
+                            <input type="password" name="password" id="form3Example4c" class="form-control" <?php if (session('errors.password')) : ?>is-invalid<?php endif ?>" placeholder="<?= lang('Auth.password') ?>" autocomplete="off">
+                        </div>
+
+                        <!-- Password  Repeat input -->
+                        <div class="form-outline mb-3">
+                            <label class="form-label" for="form3Example4cd"><?= lang('Auth.repeatPassword') ?></label>
+                            <input type="password" name="pass_confirm" id="form3Example4cd" class="form-control" <?php if (session('errors.pass_confirm')) : ?>is-invalid<?php endif ?>" placeholder="<?= lang('Auth.repeatPassword') ?>" autocomplete="off">
+                        </div>
+
+
+                        <div class="text-center text-lg-start mt-4 pt-2">
+                            <button type="submit" class="btn btn-primary btn-block mb-3"><?= lang('Auth.register') ?></button>
+                            <p> <a class="nav-link me-2 text-primary" href="<?= url_to('login') ?>"> <?= lang('Auth.alreadyRegistered') ?> <?= lang('Auth.signIn') ?></a></p>
+                        </div>
+
+                    </form>
                 </div>
             </div>
         </div>

@@ -38,6 +38,13 @@ $routes->group('home', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('detail', 'Home::detail');
 });
 
+$routes->group('produk', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('/', 'Home::index');
+    $routes->post('store', 'Product::store');
+    $routes->get('add_produk', 'Product::add_produk');
+    $routes->get('daftar_produk', 'Product::daftar');
+});
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
