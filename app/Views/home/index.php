@@ -270,7 +270,7 @@
             <div class="container py-5">
                 <div class="row justify-content-center">
                     <div class="col-md-12 col-lg-3 mb-4 mb-lg-0">
-                        <a href="product_detail_page_1.html" class="card-link nav-link">
+                        <a href="<?base_url('home/detail/')?>" class="card-link nav-link">
                             <div class="card">
                                 <div class="d-flex justify-content-between p-3">
                                     <p class="lead mb-0">Today's Combo Offer</p>

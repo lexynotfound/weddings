@@ -31,6 +31,13 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 
+$routes->group('home', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('/', 'Home::index');
+    $routes->get('searchRiwayat', 'Home::searchRiwayat');
+    $routes->get('searchBuku', 'Home::searchBuku');
+    $routes->get('detail', 'Home::detail');
+});
+
 /*
  * --------------------------------------------------------------------
  * Additional Routing
