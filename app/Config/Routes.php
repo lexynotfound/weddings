@@ -30,6 +30,7 @@ $routes->set404Override();
 // We get a performance increase by specifying the default
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
+$routes->get('/admin', 'Admin::index',['filter' => 'role:admin']);
 
 $routes->group('home', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('/', 'Home::index');
@@ -38,8 +39,26 @@ $routes->group('home', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('detail', 'Home::detail');
 });
 
+$routes->group('admin', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('/admin','Admin::index', ['filter' => 'role:admin']);
+    $routes->get('tambahUserView', 'Admin::tambahUserView', ['filter' => 'role:admin']);
+    $routes->get('detail/(:num)', 'Admin::detail/$1', ['filter' => 'role:admin']);
+    $routes->get('detail_card/(:num)', 'Admin::detail/$1', ['filter' => 'role:admin']);
+    $routes->get('download/(:num)', 'Admin::download/$1', ['filter' => 'role:admin']);
+    $routes->post('tambahUser', 'Admin::tambahUser', ['filter' => 'role:admin']);
+    $routes->get('edit/(:num)', 'Admin::edit/$1', ['filter' => 'role:admin']);
+    $routes->get('editProfileViews', 'Admin::editProfileViews', ['filter' => 'role:admin']);
+    $routes->post('editProfile', 'Admin::editProfile', ['filter' => 'role:admin']); // New delete route
+    $routes->post('edit/(:num)', 'Admin::updateUser/$1', ['filter' => 'role:admin']); // New delete route
+    $routes->get('delete/(:num)', 'Admin::delete/$1');
+    $routes->get('data', 'Admin::data', ['filter' => 'role:admin']);
+    $routes->get('register', 'Admin::register');
+    $routes->get('profile', 'Admin::profile/$1');
+    $routes->get('generatePDF/(:num)', 'Admin::generatePDF/$1', ['filter' => 'role:admin']);
+});
+
 $routes->group('produk', ['namespace' => 'App\Controllers'], function ($routes) {
-    $routes->get('/', 'Home::index');
+    $routes->get('/', 'Product::index');
     $routes->post('store', 'Product::store');
     $routes->get('add_produk', 'Product::add_produk');
     $routes->get('daftar_produk', 'Product::daftar');

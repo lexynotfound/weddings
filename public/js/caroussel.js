@@ -1,4 +1,3 @@
-
 // Carousel Slide Effect
 const carousel = document.getElementById('carouselExample');
 let isSliding = false;

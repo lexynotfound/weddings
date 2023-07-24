@@ -6,7 +6,10 @@ class Home extends BaseController
 {
     public function index()
     {
-        return view('home/index');
+        $data = [
+            'title' => 'Wedding Organizer',
+        ];
+        return view('home/index', $data);
     }
 
     public function detail()

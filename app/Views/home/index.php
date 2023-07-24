@@ -5,33 +5,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title></title>
-    <link rel="stylesheet" href="<?= base_url() ?>/src/css/bootstrap.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/css/mystyle.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/src/css/profile.css">
-    <link rel="stylesheet" href="<?= base_url() ?>/css/caraousel.css">
-    <link href="<?= base_url() ?>/vendor/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <title><?= $title; ?></title>
+    <link rel="stylesheet" href="<?= base_url(); ?>/css/bootstrap.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/css/mystyle.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/css/caraousel.css">
+    <link href="<?= base_url(); ?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous" />
-    <link href="<?= base_url() ?>https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
-    <script src="<?= base_url() ?>/src/js/bootstrap.bundle.js"></script>
-    <script src="<?= base_url() ?>/src/js/dropdown-hoover.js"></script>
-    <!-- Custom styles for this template-->
-
-    <!-- Custom styles for this template-->
-    <!-- <link href="/src/css/sb-admin-2.min.css" rel="stylesheet"> -->
-    <!-- <link rel="stylesheet" href="/src/css/bootstrap.css">
-    <link rel="stylesheet" href="/src/css/mystyle.css">
-    <link rel="stylesheet" href="/src/css/profile.css"> -->
-    <script src="<?= base_url() ?>/src/js/bootstrap.bundle.js"></script>
-    <script src="<?= base_url() ?>/src/js/bootstrap.js"></script>
-    <script src="<?= base_url() ?>/src/js/disablescrool.js"></script>
-    <script src="<?= base_url() ?>/src/js/dropdown-hoover.js"></script>
-    <link rel="stylesheet" href="<?= base_url(); ?>/src/css/bootstrap.css">
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
-    <script src="<?= base_url(); ?>/src/js/bootstrap.bundle.js"></script>
-    <script src="<?= base_url(); ?>/src/js/dropdown-hoover.js"></script>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Vj6tzy4Hg7J1K25b4ml2p15zYLq6xWq5rI3/ABttrKA2Ap" crossorigin="anonymous">
     <style>
         /* Rounded carousel */
         .carousel-inner img {
@@ -126,44 +109,100 @@
 
 <body>
 
+
     <header>
         <div class="container mt-4">
-            <nav class="navbar navbar-expand-lg bg-white ms-auto ">
-                <div class="container ">
-                    <a class="navbar-brand" href="<?= base_url('home') ?>">
-                        <img src="<?= base_url() ?>/images/.svg" alt="logo" srcset="" width="100" height="" class="d-inline-block align-text-top">
+            <nav class="navbar navbar-expand-lg bg-white ms-auto">
+                <!-- ... (rest of the header code) ... -->
+                <div class="container">
+                    <a class="navbar-brand" href="<?= base_url('home'); ?>">
+                        <img src="<?= base_url(); ?>/images/logo.svg" alt="logo" srcset="" width="100" height="" class="d-inline-block align-text-top">
                     </a>
 
                     <div class="container">
                         <div class="row justify-content-center">
-                                <div class="col-md-8"> <!-- Adjust the column width as needed -->
-                                    <form action="" class="d-flex align-items-center">
-                                        <input type="text" id="inputPassword5" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;"> <!-- Adjust the width as needed -->
-                                    </form>
-                                </div>
+                            <div class="col-md-8"> <!-- Adjust the column width as needed -->
+                                <form action="" class="d-flex align-items-center">
+                                    <input type="text" id="inputPassword5" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;"> <!-- Adjust the width as needed -->
+                                </form>
+                            </div>
                         </div>
                     </div>
 
-                    <button class="navbar-toggler " type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
                         <span class="navbar-toggler-icon"></span>
                     </button>
-                    <div class="collapse navbar-collapse dropdown" id="navbarNav">
+                    <div class="collapse navbar-collapse custom-dropdown" id="navbarNav">
                         <ul class="navbar-nav ms-auto">
                             <div class="topbar-divider d-none d-sm-block"></div>
+                            <?php if (logged_in()) : ?>
+                                <!-- Bell Notification Dropdown -->
+                                <li class="nav-item dropdown no-arrow me-1">
+                                    <a class="nav-link dropdown-toggle" href="#" id="bellDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-bell"></i>
+                                        <!-- Notification Badge (optional) -->
+                                        <span class="badge bg-danger">3</span>
+                                    </a>
+                                    <!-- Bell Notification Dropdown Menu -->
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bellDropdown">
+                                        <!-- Notification Items -->
+                                        <li><a class="dropdown-item" href="#">Notification 1</a></li>
+                                        <li><a class="dropdown-item" href="#">Notification 2</a></li>
+                                        <li><a class="dropdown-item" href="#">Notification 3</a></li>
+                                        <!-- Add more notification items as needed -->
+                                    </ul>
+                                </li>
+
+                                <!-- Chat Notification Dropdown -->
+                                <li class="nav-item dropdown no-arrow me-1">
+                                    <a class="nav-link dropdown-toggle" href="#" id="chatDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                        <i class="fas fa-comments"></i>
+                                        <!-- Notification Badge (optional) -->
+                                        <span class="badge bg-danger">5</span>
+                                    </a>
+                                    <!-- Chat Notification Dropdown Menu -->
+                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="chatDropdown">
+                                        <!-- Chat Notification Items -->
+                                        <li><a class="dropdown-item" href="#">Chat 1</a></li>
+                                        <li><a class="dropdown-item" href="#">Chat 2</a></li>
+                                        <li><a class="dropdown-item" href="#">Chat 3</a></li>
+                                        <!-- Add more chat notification items as needed -->
+                                    </ul>
+                                </li>
+                            <?php else : ?>
+
+                            <?php endif ?>
 
                             <!-- Nav Item - User Information -->
                             <li class="nav-item dropdown no-arrow">
+                                <!-- ... (rest of the user information dropdown code) ... -->
                                 <?php if (logged_in()) : ?>
-                                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    
+                                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="mr-4 d-none d-lg-inline text-gray-600 small me-1"><?= user()->username; ?></span>
-                                        <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/img/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                        <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
                                     </a>
                                     <!-- Dropdown - User Information -->
                                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                        <a class="dropdown-item" href="<?= base_url('admin'); ?>">
-                                            <i class="fas fa-fw fa-tachometer-alt mr-2 text-gray-400"></i>
-                                            Dashboard
+                                        <?php if(in_groups('admin')) : ?>
+                                            <a class="dropdown-item" href="<?= base_url('admin'); ?>">
+                                                <i class="fas fa-fw fa-tachometer-alt mr-2 text-gray-400"></i>
+                                                Dashboard
+                                            </a>
+                                            <div class="dropdown-divider"></div>
+                                        <?php endif; ?>
+                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                            <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
+                                            Reservation
                                         </a>
+                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                            <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
+                                            Transaction
+                                        </a>
+                                            <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                                <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
+                                                Settings
+                                            </a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="<?= base_url('logout'); ?>" data-toggle="modal" data-target="#logoutModal">
                                             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -171,7 +210,7 @@
                                         </a>
                                     </div>
                                 <?php else : ?>
-                                    <div class="d-flex btn-container gap-3 ml-2">
+                                    <div class="d-flex btn-container gap-3 ml-5">
                                         <a href="<?= base_url('login'); ?>" class="text-decoration-none">
                                             <button class="btn btn-info text-white " type="submit">
                                                 Login
@@ -185,7 +224,6 @@
                                     </div>
                                 <?php endif ?>
                             </li>
-
                         </ul>
                     </div>
                 </div>
@@ -247,13 +285,13 @@
             <ul class="nav justify-content-center">
                 <li class="nav-item">
                     <a class="nav-link nav-link-bottoms-icons text-center" aria-current="page" href="#">
-                        <img src="<? base_url() ?>/images/Star.svg" alt="Best" style="width: 40px; height: 40px;">
+                        <img src="<?= base_url(); ?>/images/Star.svg" alt="Best" style="width: 40px; height: 40px;">
                         Best
                     </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link nav-link-bottoms-icons text-center" aria-current="page" href="#">
-                        <img src="<? base_url() ?>/images/lc.svg" alt="Best" style="width: 40px; height: 40px;">
+                        <img src="<?= base_url(); ?>/images/lc.svg" alt="Best" style="width: 40px; height: 40px;">
                         Location
                     </a>
                 </li>
@@ -270,7 +308,7 @@
             <div class="container py-5">
                 <div class="row justify-content-center">
                     <div class="col-md-12 col-lg-3 mb-4 mb-lg-0">
-                        <a href="<?base_url('home/detail/')?>" class="card-link nav-link">
+                        <a href="<?= base_url('home/detail/'); ?>" class="card-link nav-link">
                             <div class="card">
                                 <div class="d-flex justify-content-between p-3">
                                     <p class="lead mb-0">Today's Combo Offer</p>
@@ -380,7 +418,7 @@
                 <div class="col mb-3">
                     <!-- logo -->
                     <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
-                        <img class="bi me-2" width="200" src="<?= base_url(); ?>/assets/img/mgsl.svg">
+                        <img class="bi me-2" width="200" src="<?= base_url(); ?>/images/logo.svg">
 
                         </img>
                     </a>
@@ -449,28 +487,32 @@
         </div>
         <!-- Script -->
         <!-- Bootstrap core JavaScript-->
-        <script src="<?= base_url(); ?>/vendor/jquery/jquery.min.js"></script>
-        <script src="<?= base_url(); ?>/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+        <script src="<?= base_url(); ?>/jquery/jquery.min.js"></script>
 
         <!-- Core plugin JavaScript-->
-        <script src="<?= base_url(); ?>/vendor/jquery-easing/jquery.easing.min.js"></script>
+        <script src="<?= base_url(); ?>/jquery-easing/jquery.easing.min.js"></script>
 
-        <!-- Custom scripts for all pages--><?= base_url(); ?>/
+        <!-- Custom scripts for all pages-->
         <script src="<?= base_url(); ?>/js/sb-admin-2.min.js"></script>
 
         <!-- Page level plugins -->
-        <script src="<?= base_url(); ?>/vendor/chart.js/Chart.min.js"></script>
+        <script src="<?= base_url(); ?>/js/chart.js/Chart.min.js"></script>
 
         <!-- Page level custom scripts -->
         <script src="<?= base_url(); ?>/js/demo/chart-area-demo.js"></script>
         <script src="<?= base_url(); ?>/js/demo/chart-pie-demo.js"></script>
         <script src="<?= base_url(); ?>/js/message.js"></script>
+        <script src="<?= base_url(); ?>/js/bootstrap.bundle.js"></script>
+        <script src="<?= base_url(); ?>/js/dropdown-hoover.js"></script>
+
+        <script src="<?= base_url(); ?>/js/disablescrool.js"></script>
 
         <!-- Bootstrap and jQuery JS -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
         <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.12.0/dist/umd/popper.min.js" integrity="sha384-N5ZRprfQq9MgP13e+t4FkTqi7X9WVj54V2VXpOD4z8B65C7BK2gjHdouP84fS7Ld" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-B4gt1FWAbeJ3GzFQNzppbXk6v5zxG4T/4By2vckIgXvb7bPLhpvGhmfhA1t1b8RM" crossorigin="anonymous"></script>
         <script>
             // Carousel Slide Effect
             const carousel = document.getElementById('carouselExample');
@@ -501,7 +543,6 @@
                 document.querySelector('.carousel-control-next').style.display = 'none';
             });
         </script>
-
 
 </body>
 
