@@ -120,6 +120,7 @@
     </header>
 
     <!-- Product section-->
+    <!-- Customization section -->
     <section class="py-5">
         <div class="container px-4 px-lg-5 my-5">
             <!-- Check if the product data is available -->
@@ -130,7 +131,7 @@
                         <img class="card-img-top img-fluid rounded-5" src="<?= base_url('uploads/' . $product['photos_filenames']) ?>" alt="Product Image" />
                     </div>
 
-                    <!-- Product Information and Buttons (col-md-4) -->
+                    <!-- Product Information (col-md-4) -->
                     <div class="col-md-4">
                         <div class="small mb-1"><?= $product['nama_kategori']; ?></div>
                         <h1 class="display-5 fw-bolder"><?= $product['nama_produk']; ?></h1>
@@ -138,34 +139,37 @@
                             <span><?= $product['username']; ?></span>
                             <span>Rp.<?= number_format($product['harga_produk'], 0, ',', '.'); ?></span>
                         </div>
-                        <div class="d-flex flex-column flex-md-row">
-                            <!-- <input class="form-control text-center me-md-3 mb-3" id="inputQuantity" type="number" value="1" style="max-width: 3rem;" /> -->
-                            <a href="<?= site_url('home/detail/custom/' . $product['produkid']); ?>" class="btn btn-outline-dark flex-shrink-0 me-md-3 mb-3 mb-md-0">
-                                <i class="fas fa-regular fa-pen-alt"></i>
-                                Custom
-                            </a>
-                            <a href="<?= site_url('buy/' . $product['produkid']); ?>" class="btn btn-outline-dark flex-shrink-0">
-                                <!--  <i class="bi-cart-fill me-1"></i> -->
-                                Buy
-                            </a>
-                        </div>
-
                     </div>
                 </div>
 
+                <!-- Customization Options (col-md-12) -->
                 <div class="row mt-5">
                     <div class="col-md-12">
-                        <h2 class="fw-bolder mb-3">Description:</h2>
-                        <div class="description-wrapper">
-                            <p class="fs-6" id="description"><?= nl2br($product['deskripsi']); ?></p>
-                        </div>
-                        <a href="#" class="show-more-link nav-link text-info" onclick="toggleDescription();">Show More</a>
+                        <h2 class="fw-bolder mb-3">Customize Your Product:</h2>
+                        <!-- Add your customization options here (form or other elements) -->
+                        <form action="<?= base_url('save_customization'); ?>" method="post">
+                            <div class="mb-3">
+                                <label for="customOption1" class="form-label">Custom Option 1:</label>
+                                <select class="form-select" id="customOption1" name="customOption1">
+                                    <option value="option1_value1">Option 1 Value 1</option>
+                                    <option value="option1_value2">Option 1 Value 2</option>
+                                    <!-- Add more options as needed -->
+                                </select>
+                            </div>
+
+                            <div class="mb-3">
+                                <label for="customOption2" class="form-label">Custom Option 2:</label>
+                                <input type="text" class="form-control" id="customOption2" name="customOption2">
+                            </div>
+
+                            <!-- Add more customization options as needed -->
+
+                            <button type="submit" class="btn btn-primary">Save Customization</button>
+                        </form>
                     </div>
                 </div>
 
-                <!-- Product Description (col-md-12) -->
-
-            <?php else : ?>
+             <?php else : ?>
                 <div class="d-flex justify-content-center align-items-center" role="alert" style="height: 300px;">
                     <div class="text-center">
                         <img src="<?= base_url() ?>/images/notproduct.svg" alt="Package not found." class="img-fluid mb-3" style="max-width: 350px;" />

@@ -31,12 +31,17 @@ $routes->set404Override();
 // route since we don't have to scan directories.
 $routes->get('/', 'Home::index');
 $routes->get('/admin', 'Admin::index',['filter' => 'role:admin']);
+$routes->get('/custom/(:num)', 'Costume::showCustomPage/$1');
+$routes->get('/custom/(:num)', 'Costume::showCustomPage/$1');
+
 
 $routes->group('home', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('/', 'Home::index');
     $routes->get('searchRiwayat', 'Home::searchRiwayat');
     $routes->get('searchBuku', 'Home::searchBuku');
     $routes->get('detail/(:num)', 'Home::detail/$1');
+    $routes->get('detail/custom/(:num)', 'Home::custom/$1');
+    $routes->get('error-page', 'Home::errorpage');
 });
 
 $routes->group('admin', ['namespace' => 'App\Controllers'], function ($routes) {

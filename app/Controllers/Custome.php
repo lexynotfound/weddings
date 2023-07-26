@@ -28,14 +28,15 @@ class Custome extends BaseController
         $this->userModel = new UserModel();
     }
     // Method untuk menampilkan halaman customisasi
-    public function showCustomPage($product_id)
+    public function showCustomPage($id = 0)
     {
         $productModel = new ProductModel();
-        $product = $productModel->find($product_id);
+        $product = $productModel->find($id);
 
         // Load halaman customisasi dengan mengirimkan data produk ke view
-        return view('custom_page', ['product' => $product]);
+        return view('custom', ['product' => $product]);
     }
+    
 
     // Method untuk menyimpan data customisasi
     public function saveCustomization()
