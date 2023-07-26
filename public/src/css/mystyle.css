@@ -1,0 +1,44 @@
+ .photo-upload-section {
+     width: 200px;
+     height: 200px;
+     background-color: #f0f0f0;
+     border: 2px dashed #ccc;
+     border-radius: 10px;
+     display: flex;
+     justify-content: center;
+     align-items: center;
+     font-size: 18px;
+     font-weight: bold;
+     margin-bottom: 20px;
+     cursor: pointer;
+     position: relative;
+     overflow: hidden;
+ }
+
+ /* Styling for the file input element */
+ .file-input {
+     position: absolute;
+     top: 0;
+     left: 0;
+     width: 100%;
+     height: 100%;
+     opacity: 0;
+     cursor: pointer;
+ }
+
+ /* Custom styles for the uploaded image preview */
+ .uploaded-image {
+     width: 100%;
+     height: 100%;
+     object-fit: cover;
+     border-radius: 8px;
+ }
+
+ /* Styling to hide the "Click to Upload Photo" text when preview is shown */
+ .photo-upload-section.hide-text .uploaded-image {
+     display: block;
+ }
+
+ .photo-upload-section.hide-text p {
+     display: none;
+ }

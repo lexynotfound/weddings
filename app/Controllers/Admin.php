@@ -6,8 +6,10 @@ class Admin extends BaseController
 {
     public function index()
     {
-
-        return view('admin/index');
+        $data = [
+            'title' => 'Tenda Hj.Yus',
+        ];
+        return view('admin/index', $data);
     }
 
 }

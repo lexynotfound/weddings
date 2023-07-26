@@ -9,15 +9,20 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>SB Admin 2 - Dashboard</title>
+    <title><?= $title; ?></title>
 
 
     <script src="<?= base_url() ?>/js/bootstrap.bundle.js"></script>
     <!-- Custom styles for this template-->
-    <link href="<?= base_url() ?>/css/sb-admin-2.min.css" rel="stylesheet">
-    <link href="<?= base_url() ?>/css/sb-admin-2.css" rel="stylesheet">
-    <link rel="stylesheet" href="<? base_url(); ?>/css/bootstrap.css">
-    <link href="<?= base_url() ?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= base_url() ?>/src/css/sb-admin-2.min.css" rel="stylesheet">
+    <link href="<?= base_url() ?>/src/css/sb-admin-2.css" rel="stylesheet">
+    <link rel="stylesheet" href="<?= base_url(); ?>/src/css/mystyle.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/src/css/bootstrap.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/src/css/bootstrap.min.css">
+    <link href="<?= base_url() ?>/src/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= base_url() ?>/src/fontawesome-free/css/all.css" rel="stylesheet" type="text/css">
+    <link href="<?= base_url() ?>/src/fontawesome-free-6.4.0/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= base_url() ?>/src/fontawesome-free-6.4.0/css/all.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
@@ -32,72 +37,69 @@
 
         <!-- Sidebar -->
         <ul class="navbar-nav bg-white sidebar sidebar-white accordion" id="accordionSidebar">
-
-
             <!-- Nav Item - Dashboard -->
+
             <li class="nav-item active">
                 <a class="nav-link" href="index.html">
                     <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
                     <span><?= user()->username; ?></span>
                 </a>
             </li>
-
             <!-- Divider -->
             <hr class="sidebar-divider">
-
             <!-- Heading -->
             <div class="sidebar-heading">
                 Interface
             </div>
-
             <!-- Nav Item - Pages Collapse Menu -->
+            <li class="nav-item active">
+                <a class="nav-link" href="<?= base_url('home'); ?>">
+                    <i class="fas fa-fw fa-home-alt"></i>
+                    <span>Home</span>
+                </a>
+            </li>
             <li class="nav-item active">
                 <a class="nav-link" href="<?= base_url('admin'); ?>">
                     <i class="fas fa-fw fa-tachometer-alt"></i>
-                    <span>Dashboard</span></a>
+                    <span>Dashboard</span>
+                </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="true" aria-controls="collapseTwo">
-                    <i class="fas fa-fw fa-cog"></i>
-                    <span>Components</span>
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseProduk" aria-expanded="true" aria-controls="collapseProduk">
+                    <i class="fas fa-regular fa-boxes-stacked"></i>
+                    <span>Package</span>
                 </a>
-                <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordionSidebar">
+                <div id="collapseProduk" class="collapse" aria-labelledby="headingProduk" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Components:</h6>
-                        <a class="collapse-item" href="buttons.html">Buttons</a>
-                        <a class="collapse-item" href="cards.html">Cards</a>
+                        <a class="collapse-item" href="<?= base_url('produk/create'); ?>">Tambah Package</a>
+                        <a class="collapse-item" href="<?= base_url('produk/daftar_produk') ?>">Daftar</a>
                     </div>
                 </div>
             </li>
-
             <!-- Nav Item - Utilities Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseUtilities" aria-expanded="true" aria-controls="collapseUtilities">
                     <i class="fas fa-fw fa-wrench"></i>
-                    <span>Utilities</span>
+                    <span>Pilihan Package</span>
                 </a>
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <h6 class="collapse-header">Custom Utilities:</h6>
-                        <a class="collapse-item" href="utilities-color.html">Colors</a>
+                        <a class="collapse-item" href="utilities-color.html">Tambah Pilihan</a>
                         <a class="collapse-item" href="utilities-border.html">Borders</a>
                         <a class="collapse-item" href="utilities-animation.html">Animations</a>
                         <a class="collapse-item" href="utilities-other.html">Other</a>
                     </div>
                 </div>
             </li>
-
             <!-- Divider -->
             <hr class="sidebar-divider">
-
             <!-- Heading -->
             <div class="sidebar-heading">
                 Addons
             </div>
-
             <!-- Nav Item - Pages Collapse Menu -->
             <li class="nav-item">
-                <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapsePages" aria-expanded="true" aria-controls="collapsePages">
                     <i class="fas fa-fw fa-folder"></i>
                     <span>Pages</span>
                 </a>
@@ -114,36 +116,33 @@
                     </div>
                 </div>
             </li>
-
             <!-- Nav Item - Charts -->
             <li class="nav-item">
                 <a class="nav-link" href="charts.html">
                     <i class="fas fa-fw fa-chart-area"></i>
-                    <span>Charts</span></a>
+                    <span>Charts</span>
+                </a>
             </li>
-
             <!-- Nav Item - Tables -->
             <li class="nav-item">
                 <a class="nav-link" href="tables.html">
                     <i class="fas fa-fw fa-table"></i>
-                    <span>Tables</span></a>
+                    <span>Tables</span>
+                </a>
             </li>
-
             <!-- Divider -->
             <hr class="sidebar-divider d-none d-md-block">
-
             <!-- Sidebar Toggler (Sidebar) -->
+
             <div class="text-center d-none d-md-inline">
                 <button class="rounded-circle border-0" id="sidebarToggle"></button>
             </div>
-
             <!-- Sidebar Message -->
-            <div class="sidebar-card d-none d-lg-flex">
+            <!--  <div class="sidebar-card d-none d-lg-flex">
                 <img class="sidebar-card-illustration mb-2" src="img/undraw_rocket.svg" alt="...">
                 <p class="text-center mb-2"><strong>SB Admin Pro</strong> is packed with premium features, components, and more!</p>
                 <a class="btn btn-success btn-sm" href="https://startbootstrap.com/theme/sb-admin-pro">Upgrade to Pro!</a>
-            </div>
-
+            </div> -->
         </ul>
         <!-- End of Sidebar -->
 
@@ -691,21 +690,21 @@
     </div>
 
     <!-- Bootstrap core JavaScript-->
-    <script src="<?= base_url() ?>jquery/jquery.min.js"></script>
-    <script src="<?= base_url() ?>js/bootstrap.bundle.min.js"></script>
+    <script src="<?= base_url() ?>/src/jquery/jquery.min.js"></script>
+    <script src="<?= base_url() ?>/src/js/bootstrap.bundle.min.js"></script>
 
     <!-- Core plugin JavaScript-->
-    <script src="<?= base_url() ?>jquery-easing/jquery.easing.min.js"></script>
+    <script src="<?= base_url() ?>/src/jquery-easing/jquery.easing.min.js"></script>
 
     <!-- Custom scripts for all pages-->
-    <script src="<?= base_url() ?>/js/sb-admin-2.min.js"></script>
+    <script src="<?= base_url() ?>/src/js/sb-admin-2.min.js"></script>
 
     <!-- Page level plugins -->
-    <script src="<?= base_url() ?>/Chart.min.js"></script>
+    <script src="<?= base_url() ?>/src/Chart.min.js"></script>
 
     <!-- Page level custom scripts -->
-    <script src="<?= base_url() ?>/js/demo/chart-area-demo.js"></script>
-    <script src="<?= base_url() ?>/js/demo/chart-pie-demo.js"></script>
+    <script src="<?= base_url() ?>/src/js/demo/chart-area-demo.js"></script>
+    <script src="<?= base_url() ?>/src/js/demo/chart-pie-demo.js"></script>
 
 </body>
 

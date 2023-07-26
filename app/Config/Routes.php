@@ -36,7 +36,7 @@ $routes->group('home', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('/', 'Home::index');
     $routes->get('searchRiwayat', 'Home::searchRiwayat');
     $routes->get('searchBuku', 'Home::searchBuku');
-    $routes->get('detail', 'Home::detail');
+    $routes->get('detail/(:num)', 'Home::detail/$1');
 });
 
 $routes->group('admin', ['namespace' => 'App\Controllers'], function ($routes) {
@@ -58,10 +58,14 @@ $routes->group('admin', ['namespace' => 'App\Controllers'], function ($routes) {
 });
 
 $routes->group('produk', ['namespace' => 'App\Controllers'], function ($routes) {
-    $routes->get('/', 'Product::index');
-    $routes->post('store', 'Product::store');
-    $routes->get('add_produk', 'Product::add_produk');
-    $routes->get('daftar_produk', 'Product::daftar');
+    $routes->get('/', 'Product::index', ['filter' => 'role:admin']);
+    $routes->get('create', 'Product::create', ['filter' => 'role:admin']);
+    $routes->get('daftar_produk', 'Product::daftar', ['filter' => 'role:admin']);
+    $routes->post('store', 'Product::store', ['filter' => 'role:admin']);
+    $routes->get('detail/(:num)', 'Product::detail/$1');
+    $routes->get('edit/(:num)', 'Product::edit/$1', ['filter' => 'role:admin']);
+    $routes->post('update/(:num)', 'Product::update/$1');
+    $routes->get('delete/(:num)', 'Product::delete/$1', ['filter' => 'role:admin']);
 });
 
 /*

@@ -6,10 +6,10 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title><?= $title; ?></title>
-    <link rel="stylesheet" href="<?= base_url(); ?>/css/bootstrap.css">
-    <link rel="stylesheet" href="<?= base_url(); ?>/css/mystyle.css">
-    <link rel="stylesheet" href="<?= base_url(); ?>/css/caraousel.css">
-    <link href="<?= base_url(); ?>/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/src/css/bootstrap.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/src/css/mystyle.css">
+    <link rel="stylesheet" href="<?= base_url(); ?>/src/css/caraousel.css">
+    <link href="<?= base_url(); ?>/src/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
@@ -135,56 +135,31 @@
                     <div class="collapse navbar-collapse custom-dropdown" id="navbarNav">
                         <ul class="navbar-nav ms-auto">
                             <div class="topbar-divider d-none d-sm-block"></div>
-                            <?php if (logged_in()) : ?>
-                                <!-- Bell Notification Dropdown -->
-                                <li class="nav-item dropdown no-arrow me-1">
-                                    <a class="nav-link dropdown-toggle" href="#" id="bellDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-bell"></i>
-                                        <!-- Notification Badge (optional) -->
-                                        <span class="badge bg-danger">3</span>
-                                    </a>
-                                    <!-- Bell Notification Dropdown Menu -->
-                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bellDropdown">
-                                        <!-- Notification Items -->
-                                        <li><a class="dropdown-item" href="#">Notification 1</a></li>
-                                        <li><a class="dropdown-item" href="#">Notification 2</a></li>
-                                        <li><a class="dropdown-item" href="#">Notification 3</a></li>
-                                        <!-- Add more notification items as needed -->
-                                    </ul>
-                                </li>
 
-                                <!-- Chat Notification Dropdown -->
-                                <li class="nav-item dropdown no-arrow me-1">
-                                    <a class="nav-link dropdown-toggle" href="#" id="chatDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-comments"></i>
-                                        <!-- Notification Badge (optional) -->
-                                        <span class="badge bg-danger">5</span>
-                                    </a>
-                                    <!-- Chat Notification Dropdown Menu -->
-                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="chatDropdown">
-                                        <!-- Chat Notification Items -->
-                                        <li><a class="dropdown-item" href="#">Chat 1</a></li>
-                                        <li><a class="dropdown-item" href="#">Chat 2</a></li>
-                                        <li><a class="dropdown-item" href="#">Chat 3</a></li>
-                                        <!-- Add more chat notification items as needed -->
-                                    </ul>
-                                </li>
-                            <?php else : ?>
+                            <!-- Bell Notification Dropdown -->
 
-                            <?php endif ?>
+                            <!-- Chat Notification Dropdown -->
+                            <li class="nav-item dropdown no-arrow me-1">
+                                <a class="nav-link dropdown-toggle" href="https://wa.me/+621295304698" id="chatDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="<?= base_url(); ?>/images/WhatsApp.png" style="width: 40px; height: 40px;" alt="">
+                                    <!-- <i class=" fas fa-brands fa-square-whatsapp"></i> -->
+                                    <!-- Notification Badge (optional) -->
+                                    <!-- <span class="badge bg-danger">5</span> -->
+                                </a>
+                            </li>
 
                             <!-- Nav Item - User Information -->
                             <li class="nav-item dropdown no-arrow">
                                 <!-- ... (rest of the user information dropdown code) ... -->
                                 <?php if (logged_in()) : ?>
-                                    
+
                                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="mr-4 d-none d-lg-inline text-gray-600 small me-1"><?= user()->username; ?></span>
                                         <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
                                     </a>
                                     <!-- Dropdown - User Information -->
                                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                        <?php if(in_groups('admin')) : ?>
+                                        <?php if (in_groups('admin')) : ?>
                                             <a class="dropdown-item" href="<?= base_url('admin'); ?>">
                                                 <i class="fas fa-fw fa-tachometer-alt mr-2 text-gray-400"></i>
                                                 Dashboard
@@ -199,10 +174,10 @@
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Transaction
                                         </a>
-                                            <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
-                                                <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
-                                                Settings
-                                            </a>
+                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                            <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
+                                            Settings
+                                        </a>
                                         <div class="dropdown-divider"></div>
                                         <a class="dropdown-item" href="<?= base_url('logout'); ?>" data-toggle="modal" data-target="#logoutModal">
                                             <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
@@ -245,7 +220,7 @@
                 <div class="carousel-inner">
                     <!-- Carousel Item 1 -->
                     <div class="carousel-item active">
-                        <img src="https://via.placeholder.com/800x400?text=Carousel+Item+1" class="d-block w-100" alt="Carousel Item 1">
+                        <img src="<?= base_url() ?>/images/caraousel.jpg" class="d-block w-100" alt="Carousel Item 1">
                         <div class="carousel-caption d-none d-md-block">
                             <h3>Carousel Item 1</h3>
                             <p>Description for Item 1</p>
@@ -253,7 +228,7 @@
                     </div>
                     <!-- Carousel Item 2 -->
                     <div class="carousel-item">
-                        <img src="https://via.placeholder.com/800x400?text=Carousel+Item+2" class="d-block w-100" alt="Carousel Item 2">
+                        <img src="<?= base_url() ?>/images/caraousel2.jpg" class="d-block w-100" alt="Carousel Item 2">
                         <div class="carousel-caption d-none d-md-block">
                             <h3>Carousel Item 2</h3>
                             <p>Description for Item 2</p>
@@ -261,7 +236,7 @@
                     </div>
                     <!-- Carousel Item 3 -->
                     <div class="carousel-item">
-                        <img src="https://via.placeholder.com/800x400?text=Carousel+Item+3" class="d-block w-100" alt="Carousel Item 3">
+                        <img src="<?= base_url() ?>/images/caraousel3.jpg" class="d-block w-100" alt="Carousel Item 3">
                         <div class="carousel-caption d-none d-md-block">
                             <h3>Carousel Item 3</h3>
                             <p>Description for Item 3</p>
@@ -307,107 +282,43 @@
         <section>
             <div class="container py-5">
                 <div class="row justify-content-center">
-                    <div class="col-md-12 col-lg-3 mb-4 mb-lg-0">
-                        <a href="<?= base_url('home/detail/'); ?>" class="card-link nav-link">
-                            <div class="card">
-                                <div class="d-flex justify-content-between p-3">
-                                    <p class="lead mb-0">Today's Combo Offer</p>
-                                    <div class="bg-info rounded-circle d-flex align-items-center justify-content-center shadow-1-strong" style="width: 35px; height: 35px;">
-                                        <p class="text-white mb-0 small"></p>
+                    <?php foreach ($produk as $pd) : ?>
+                        <div class="col-md-12 col-lg-3 mb-4 mb-lg-0">
+                            <a href="<?= base_url('home/detail/' . $pd['produkid']); ?>" class="card-link nav-link">
+                                <div class="card">
+                                    <div class="d-flex justify-content-between p-3">
+                                        <p class="lead mb-0"><?= $pd['nama_produk']; ?></p>
+                                        <div class="bg-info rounded-circle d-flex align-items-center justify-content-center shadow-1-strong" style="width: 35px; height: 35px;">
+                                            <p class="text-white mb-0 small"></p>
+                                        </div>
                                     </div>
-                                </div>
-                                <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/4.webp" class="card-img-top" alt="Laptop" />
-                                <div class="card-body">
-                                    <div class="d-flex justify-content-between">
-                                        <p class="small"><a href="#!" class="text-muted">Laptops</a></p>
-                                        <p class="small text-danger"><s>$1099</s></p>
-                                    </div>
+                                    <img src="<?= base_url('uploads/' . $pd['photos_filenames']) ?>" class="card-img-top" alt="Laptop" />
+                                    <div class="card-body">
+                                        <div class="d-flex justify-content-between">
+                                            <p class="small"><?= $pd['nama_kategori']; ?></p>
+                                        </div>
 
-                                    <div class="d-flex justify-content-between mb-3">
-                                        <h5 class="mb-0">HP Notebook</h5>
-                                        <h5 class="text-dark mb-0">$999</h5>
-                                    </div>
+                                        <div class="d-flex justify-content-between mb-3">
+                                            <h5 class="mb-0"><?= $pd['username']; ?></h5>
 
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <p class="text-muted mb-0">Available: <span class="fw-bold">6</span></p>
-                                        <div class="ms-auto text-warning">
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
-                                            <i class="fa fa-star"></i>
+                                            <h5 class="text-dark mb-0">Rp.<?= number_format($pd['harga_produk'], 0, ',', '.'); ?></h5>
+                                        </div>
+
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <p class="text-muted mb-0">Location: <span class="fw-bold">6</span></p>
+                                            <div class="ms-auto text-warning">
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                                <i class="fa fa-star"></i>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        </a>
-                    </div>
-                    <div class="col-md-6 col-lg-3 mb-4 mb-md-0">
-                        <div class="card">
-                            <div class="d-flex justify-content-between p-3">
-                                <p class="lead mb-0">Today's Combo Offer</p>
-                                <div class="bg-info rounded-circle d-flex align-items-center justify-content-center shadow-1-strong" style="width: 35px; height: 35px;">
-                                    <p class="text-white mb-0 small"></p>
-                                </div>
-                            </div>
-                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/7.webp" class="card-img-top" alt="Laptop" />
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <p class="small"><a href="#!" class="text-muted">Laptops</a></p>
-                                    <p class="small text-danger"><s>$1199</s></p>
-                                </div>
-
-                                <div class="d-flex justify-content-between mb-3">
-                                    <h5 class="mb-0">HP Envy</h5>
-                                    <h5 class="text-dark mb-0">$1099</h5>
-                                </div>
-
-                                <div class="d-flex justify-content-between mb-2">
-                                    <p class="text-muted mb-0">Available: <span class="fw-bold">7</span></p>
-                                    <div class="ms-auto text-warning">
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="far fa-star"></i>
-                                    </div>
-                                </div>
-                            </div>
+                            </a>
                         </div>
-                    </div>
-                    <div class="col-md-6 col-lg-3 mb-4 mb-md-0">
-                        <div class="card">
-                            <div class="d-flex justify-content-between p-3">
-                                <p class="lead mb-0">Today's Combo Offer</p>
-                                <div class="bg-info rounded-circle d-flex align-items-center justify-content-center shadow-1-strong" style="width: 35px; height: 35px;">
-                                    <p class="text-white mb-0 small"></p>
-                                </div>
-                            </div>
-                            <img src="https://mdbcdn.b-cdn.net/img/Photos/Horizontal/E-commerce/Products/5.webp" class="card-img-top" alt="Gaming Laptop" />
-                            <div class="card-body">
-                                <div class="d-flex justify-content-between">
-                                    <p class="small"><a href="#!" class="text-muted">Laptops</a></p>
-                                    <p class="small text-danger"><s>$1399</s></p>
-                                </div>
-
-                                <div class="d-flex justify-content-between mb-3">
-                                    <h5 class="mb-0">Toshiba B77</h5>
-                                    <h5 class="text-dark mb-0">$1299</h5>
-                                </div>
-
-                                <div class="d-flex justify-content-between mb-2">
-                                    <p class="text-muted mb-0">Available: <span class="fw-bold">5</span></p>
-                                    <div class="ms-auto text-warning">
-                                        <i class="fa fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star"></i>
-                                        <i class="fas fa-star-half-alt"></i>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    <?php endforeach; ?>
                 </div>
             </div>
         </section>
@@ -487,25 +398,25 @@
         </div>
         <!-- Script -->
         <!-- Bootstrap core JavaScript-->
-        <script src="<?= base_url(); ?>/jquery/jquery.min.js"></script>
+        <script src="<?= base_url(); ?>/src/jquery/jquery.min.js"></script>
 
         <!-- Core plugin JavaScript-->
-        <script src="<?= base_url(); ?>/jquery-easing/jquery.easing.min.js"></script>
+        <script src="<?= base_url(); ?>/src/jquery-easing/jquery.easing.min.js"></script>
 
         <!-- Custom scripts for all pages-->
-        <script src="<?= base_url(); ?>/js/sb-admin-2.min.js"></script>
+        <script src="<?= base_url(); ?>/src/js/sb-admin-2.min.js"></script>
 
         <!-- Page level plugins -->
-        <script src="<?= base_url(); ?>/js/chart.js/Chart.min.js"></script>
+        <script src="<?= base_url(); ?>/src/js/chart.js/Chart.min.js"></script>
 
         <!-- Page level custom scripts -->
-        <script src="<?= base_url(); ?>/js/demo/chart-area-demo.js"></script>
-        <script src="<?= base_url(); ?>/js/demo/chart-pie-demo.js"></script>
-        <script src="<?= base_url(); ?>/js/message.js"></script>
-        <script src="<?= base_url(); ?>/js/bootstrap.bundle.js"></script>
-        <script src="<?= base_url(); ?>/js/dropdown-hoover.js"></script>
+        <script src="<?= base_url(); ?>/src/js/demo/chart-area-demo.js"></script>
+        <script src="<?= base_url(); ?>/src/js/demo/chart-pie-demo.js"></script>
+        <script src="<?= base_url(); ?>/src/js/message.js"></script>
+        <script src="<?= base_url(); ?>/src/js/bootstrap.bundle.js"></script>
+        <script src="<?= base_url(); ?>/src/js/dropdown-hoover.js"></script>
 
-        <script src="<?= base_url(); ?>/js/disablescrool.js"></script>
+        <script src="<?= base_url(); ?>/src/js/disablescrool.js"></script>
 
         <!-- Bootstrap and jQuery JS -->
         <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
