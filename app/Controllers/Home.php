@@ -62,7 +62,7 @@ class Home extends BaseController
     public function errorpage()
     {
         $data = [
-            'title' => 'Hmmm Sepertinya ada salah...',
+            'title' => 'Hmmm Sepertinya ada yang salah...',
         ];
 
         return view('home/error-page', $data);

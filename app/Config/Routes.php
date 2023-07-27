@@ -34,6 +34,9 @@ $routes->get('/admin', 'Admin::index',['filter' => 'role:admin']);
 $routes->get('/custom/(:num)', 'Costume::showCustomPage/$1');
 $routes->get('/custom/(:num)', 'Costume::showCustomPage/$1');
 
+$routes->group('errors', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('/error-page', 'Error::index');
+});
 
 $routes->group('home', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('/', 'Home::index');

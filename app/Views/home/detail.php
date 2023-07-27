@@ -207,8 +207,14 @@
                         </div>
                     <?php endforeach; ?>
                 <?php else : ?>
-                    <div class="col-12 text-center">
-                        <p>No related packages found.</p>
+                    <div class="d-flex justify-content-center align-items-center mt-5" role="alert" style="height: 300px;">
+                        <div class="text-center">
+                            <img src="<?= base_url() ?>/images/notproduct.svg" alt="Package not found." class="img-fluid mb-3" style="max-width: 350px;" />
+                            <p class="mb-2" style="font-size: 30px; font-weight: bold;">Yaah Sayang Sekali Paket Yang anda cari tidak ada. Mungkin ada di tempat lain</p>
+                            <a href="<?= base_url('home') ?>">
+                                <button class="btn btn-info">Mungkin Disi</button>
+                            </a>
+                        </div>
                     </div>
                 <?php endif; ?>
             </div>
