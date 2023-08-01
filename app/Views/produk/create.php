@@ -183,7 +183,7 @@
             </div>
         </div>
     </div>
-    </div>
+
 
     <!-- Script -->
     <!-- Bootstrap core JavaScript-->
