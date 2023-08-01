@@ -49,7 +49,9 @@ $routes->group('home', ['namespace' => 'App\Controllers'], function ($routes) {
 
 $routes->group('reservation', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('/', 'Reservation::index');
+    $routes->get('reservation/(:num)', 'Reservation::reservation/$1');
     $routes->post('store', 'Reservation::store');
+    $routes->get('error-page', 'Reservation::errorpage');
 });
 
 $routes->group('admin', ['namespace' => 'App\Controllers'], function ($routes) {

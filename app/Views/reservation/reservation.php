@@ -6,7 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
     <meta name="author" content="" />
-    <title><?= $product['nama_produk']; ?></title>
+    <title>Reservation</title>
     <!-- Favicon-->
     <!-- Bootstrap icons-->
     <link rel="stylesheet" href="<?= base_url(); ?>/src/css/bootstrap.css">
@@ -119,126 +119,57 @@
         </div>
     </header>
 
-    <!-- Product section-->
-    <section class="py-5">
-        <div class="container px-4 px-lg-5 my-5">
-            <!-- Check if the product data is available -->
-            <?php if ($product) : ?>
-                <div class="row gx-4 gx-lg-5 align-items-center">
-                    <!-- Product Image (col-md-8) -->
-                    <div class="col-md-6 mb-5 mb-md-0">
-                        <img class="card-img-top img-fluid rounded-5" src="<?= base_url('uploads/' . $product['photos_filenames']) ?>" alt="Product Image" />
-                    </div>
 
-                    <!-- Product Information and Buttons (col-md-4) -->
-                    <div class="col-md-4">
-                        <div class="small mb-1"></div>
-                        <h1 class="display-5 fw-bolder"><?= $product['nama_produk']; ?></h1>
-                        <div class="fs-5 mb-3">
-                            <span><?= $product['username']; ?></span>
-                            <span>Rp.<?= number_format($product['harga_produk'], 0, ',', '.'); ?></span>
-                        </div>
-                        <div class="mb-4">
-                            <label id="selectedOptionLabel" class="form-label">Pilihan : </label>
-                            <div class="option-container custom-container">
-                                <?php foreach ($menuOptions as $option) : ?>
-                                    <?php if (!empty($option['nama_menu'])) : ?>
-                                        <label class="option-item">
-                                            <input type="radio" name="customOption1" value="<?= $option['produk_id']; ?>">
-                                            <div class="option-content">
-                                                <img src="<?= base_url('uploads/' . $product['photos_filenames']) ?>" alt="Image 1">
-                                                <span><?= $option['nama_menu']; ?></span>
-                                            </div>
-                                        </label>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                                <!-- Add more details for the main product as needed -->
+    <div class="container">
+        <div class="row justify-content-center mt-5">
+            <div class="col-md-10">
+                <!-- Product Form Card -->
+                <p>Reservation</p>
+                <div class="card mt-4">
+                    <form action="<?= site_url('reservation/store'); ?>" method="post" enctype="multipart/form-data">
+                        <?= csrf_field() ?>
+                        <div class="card-body">
+                            <!-- Product Details Section -->
+                            <div class="mb-3">
+                                <label for="name" class="form-label">Tanggal Reservation:</label>
+                                <input type="date" name="tgl_acara" id="name" class="form-control" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="description" class="form-label">Lokasi Pernikahan:</label>
+                                <input type="text" name="lokasi" id="lokasi" rows="4" class="form-control" placeholder="Jakarta">
                             </div>
 
                         </div>
 
+                        <!-- Placeholder to add new entries dynamically -->
+                        <div id="menu-entries"></div>
 
-                        <!-- Add more customization options as needed -->
-
-                        <div class="d-flex flex-column flex-md-row">
-                            <!-- <input class="form-control text-center me-md-3 mb-3" id="inputQuantity" type="number" value="1" style="max-width: 3rem;" /> -->
-                            <!-- <a href="<?= site_url('home/detail/custom/' . $product['produkid']); ?>" class="btn btn-outline-dark flex-shrink-0 me-md-3 mb-3 mb-md-0">
-                                <i class="fas fa-regular fa-pen-alt"></i>
-                                Custom
-                            </a> -->
-                            <a href="<?= site_url('reservation/reservation/'. $product['produkid']); ?>" class="btn btn-outline-dark w-100">
-                                <!--  <i class="bi-cart-fill me-1"></i> -->
-                                Buy
-                            </a>
+                        <!-- Photo Upload Sections -->
+                        <div class="row">
+                            <!--  <div class="col-md-4">
+                                    <div class="photo-upload-section">
+                                        <img src="#" class="uploaded-image" alt="Uploaded Photo">
+                                        <input type="file" class="file-input" accept="image/*" name="photos_filenames" onchange="previewImage(event)">
+                                    </div>
+                                </div> -->
                         </div>
-
-                    </div>
+                        <!-- Save Button -->
                 </div>
-
-                <div class="row mt-5">
-                    <div class="col-md-12">
-                        <h2 class="fw-bolder mb-3">Description:</h2>
-                        <div class="description-wrapper">
-                            <p class="fs-6" id="description"><?= nl2br($product['description']); ?></p>
-                        </div>
-                        <a href="#" class="show-more-link nav-link text-info" onclick="toggleDescription();">Show More</a>
-                    </div>
-                </div>
-                <!-- Product Description (col-md-12) -->
-
-            <?php else : ?>
-                <div class="d-flex justify-content-center align-items-center" role="alert" style="height: 300px;">
-                    <div class="text-center">
-                        <img src="<?= base_url() ?>/images/notproduct.svg" alt="Package not found." class="img-fluid mb-3" style="max-width: 350px;" />
-                        <p class="mb-2" style="font-size: 30px; font-weight: bold;">Yaah Sayang Sekali Paket Yang anda cari tidak ada. Mungkin ada di tempat lain</p>
-                        <a href="<?= base_url('home') ?>">
-                            <button class="btn btn-info">Mungkin Disi</button>
+                <div class="row justify-content-center mt-5">
+                    <div class="col-md-6 text-center">
+                        <a href="<?= base_url('admin') ?>">
+                            <button type="submit" name="payment_type" value="dp" class="btn btn-outline-dark">DP 30% - Rp.<?= number_format($product['harga_produk'], 0, ',', '.'); ?></button>
                         </a>
                     </div>
-                </div>
-            <?php endif; ?>
-        </div>
-    </section>
-
-    <!-- Related items section-->
-    <section class="py-5 bg-light">
-        <div class="container px-4 px-lg-5 mt-3">
-            <h2 class="fw-bolder mb-4">Related package</h2>
-            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                <?php if (!empty($relatedProducts)) : ?>
-                    <?php foreach ($relatedProducts as $relatedProduct) : ?>
-                        <div class="col mb-5">
-                            <a href="<?= base_url('home/detail/' . $relatedProduct['produkid']) ?>" class="card h-100 custom-link">
-                                <!-- Related Product image -->
-                                <img class="card-img-top" src="<?= base_url('uploads/' . $relatedProduct['photos_filenames']) ?>" alt="Related Product Image" />
-                                <!-- Related Product details -->
-                                <div class="card-body p-4">
-                                    <div class="text-start">
-                                        <!-- Related Product name -->
-                                        <h5 class="fw-bolder"><?= $relatedProduct['nama_produk']; ?></h5>
-                                        <!-- Related Product price -->
-                                        Rp.<?= number_format($relatedProduct['harga_produk'], 0, ',', '.'); ?>
-                                    </div>
-                                    <div class="d-flex align-items-center mt-2">
-                                        <!-- User photo -->
-                                        <img src="<?= base_url('/images/' . $relatedProduct['foto']) ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
-                                        <!-- Location text -->
-                                        <span class="small"><?= $relatedProduct['lokasi']; ?></span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else : ?>
-                    <div class="d-flex justify-content-center align-items-center mt-2" role="alert" style="height: 200px;">
-                        <div class="col-12 text-center">
-                            <p>No related packages found.</p>
-                        </div>
+                    <div class="col-md-6 text-center">
+                        <button type="submit" name="payment_type" value="full" class="btn btn-outline-dark">Pay Full</button>
                     </div>
-                <?php endif; ?>
+                </div>
+                </form>
             </div>
         </div>
-    </section>
+    </div>
+    <!-- Reservation section-->
 
     <!-- Footer -->
     <div class="container">

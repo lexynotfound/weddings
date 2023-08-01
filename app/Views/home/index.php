@@ -261,19 +261,22 @@
         <div class="container">
             <ul class="nav justify-content-center">
                 <li class="nav-item">
-                    <a class="nav-link nav-link-bottoms-icons text-center" aria-current="page" href="#">
+                    <a class="nav-link nav-link-bottoms-icons text-center text-black" aria-current="page" href="#">
                         <img src="<?= base_url(); ?>/images/Star.svg" alt="Best" style="width: 40px; height: 40px;">
                         Best
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-bottoms-icons text-center" aria-current="page" href="#">
+                    <a class="nav-link nav-link-bottoms-icons text-center text-black" aria-current="page" href="#">
                         <img src="<?= base_url(); ?>/images/lc.svg" alt="Best" style="width: 40px; height: 40px;">
                         Location
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Link</a>
+                    <a class="nav-link nav-link-bottoms-icons text-center text-black" aria-current="page" href="#">
+                        <img src="<?= base_url(); ?>/images/i.svg" alt="Best" style="width: 40px; height: 40px;">
+                        Category
+                    </a>
                 </li>
                 <li class="nav-item">
                     <a class="nav-link disabled">Disabled</a>
@@ -289,13 +292,7 @@
                             <a href="<?= base_url('home/detail/' . $pd['produkid']); ?>" class="card-link nav-link">
                                 <div class="card">
                                     <!-- Display product information -->
-                                    <div class="d-flex justify-content-between p-3">
-                                        <p class="lead mb-0"><?= $pd['nama_produk']; ?></p>
-                                        <div class="bg-info rounded-circle d-flex align-items-center justify-content-center shadow-1-strong" style="width: 35px; height: 35px;">
-                                            <p class="text-white mb-0 small"></p>
-                                        </div>
-                                    </div>
-                                    <img src="<?= base_url('uploads/' . $pd['photos_filenames']) ?>" class="card-img-top" alt="Laptop" />
+                                    <img src="<?= base_url('uploads/' . $pd['photos_filenames']) ?>" class="card-img-top" alt="<?= $pd['produkid']; ?>" />
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between">
                                             <p class="small"><?= $pd['nama_produk']; ?></p>
