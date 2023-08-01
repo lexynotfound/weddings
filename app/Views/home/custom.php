@@ -133,7 +133,7 @@
 
                     <!-- Product Information and Buttons (col-md-4) -->
                     <div class="col-md-4">
-                        <div class="small mb-1"><?= $product['nama_kategori']; ?></div>
+                        <div class="small mb-1"><?= $product['nama_menu']; ?></div>
                         <h1 class="display-5 fw-bolder"><?= $product['nama_produk']; ?></h1>
                         <div class="fs-5 mb-5">
                             <span><?= $product['username']; ?></span>
@@ -144,11 +144,12 @@
                             <!-- Add your customization options here (form or other elements) -->
                             <form action="<?= base_url('save_customization'); ?>" method="post">
                                 <div class="mb-3">
-                                    <label for="customOption1" class="form-label">Custom Option 1:</label>
-                                    <select class="form-select" id="customOption1" name="customOption1">
-                                        <option value="option1_value1">Option 1 Value 1</option>
-                                        <option value="option1_value2">Option 1 Value 2</option>
-                                        <!-- Add more options as needed -->
+                                    <label for="kategori_id" class="form-label">Custome Package:</label>
+                                    <select name="kategori_id" id="kategori_id" class="form-control" required>
+                                        <option value="">Select a custome Package</option>
+                                        <?php foreach ($categories as $category) : ?>
+                                            <option value="<?= $category['id']; ?>"><?= $category['nama_menu']; ?></option>
+                                        <?php endforeach; ?>
                                     </select>
                                 </div>
 
@@ -175,7 +176,7 @@
                     <div class="col-md-12">
                         <h2 class="fw-bolder mb-3">Description:</h2>
                         <div class="description-wrapper">
-                            <p class="fs-6" id="description"><?= nl2br($product['deskripsi']); ?></p>
+                            <p class="fs-6" id="description"><?= nl2br($product['description']); ?></p>
                         </div>
                         <a href="#" class="show-more-link nav-link text-info" onclick="toggleDescription();">Show More</a>
                     </div>

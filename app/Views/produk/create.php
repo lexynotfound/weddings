@@ -50,7 +50,6 @@
                             <li class="nav-item dropdown no-arrow">
                                 <!-- ... (rest of the user information dropdown code) ... -->
                                 <?php if (logged_in()) : ?>
-
                                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="mr-4 d-none d-lg-inline text-gray-600 small me-1"><?= user()->username; ?></span>
                                         <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
@@ -130,55 +129,60 @@
                                 <div class="invalid-feedback">Please enter a valid price (numbers only).</div>
                             </div>
 
-                            <!-- Kategori Data Section -->
                             <div class="mb-3">
-                                <label for="kategori_id" class="form-label">Kategori:</label>
-                                <select name="kategori_id" id="kategori_id" class="form-control" required>
-                                    <option value="">Select a category</option>
-                                    <?php foreach ($categories as $category) : ?>
-                                        <option value="<?= $category['id']; ?>"><?= $category['nama_kategori']; ?></option>
-                                    <?php endforeach; ?>
-                                </select>
+                                <label for="kategori_id" class="form-label">Menu:</label>
+                                <div class="input-container">
+                                    <button type="button" class="add-icon btn btn-circle btn-outline-dark mb-3">Tambah +</button>
+                                </div>
+                                <div class="additional-info">
+                                    <!-- Default input fields -->
+                                    <input type="text" name="nama_menu[]" class="form-control mb-3" placeholder="Masukkan Nama dari Menu">
+                                    <textarea name="deskripsi[]" class="form-control mb-3" placeholder="Masukkan keterangan dengan Nama dari Menu"></textarea>
+                                </div>
                             </div>
+                        </div>
 
-                            <!-- Photo Upload Sections -->
-                            <div class="row">
-                               <!--  <div class="col-md-4">
+                        <!-- Placeholder to add new entries dynamically -->
+                        <div id="menu-entries"></div>
+
+                        <!-- Photo Upload Sections -->
+                        <div class="row">
+                            <!--  <div class="col-md-4">
                                     <div class="photo-upload-section">
                                         <img src="#" class="uploaded-image" alt="Uploaded Photo">
                                         <input type="file" class="file-input" accept="image/*" name="photos_filenames" onchange="previewImage(event)">
                                     </div>
                                 </div> -->
-                                <div class="col-md-4">
-                                    <div class="photo-upload-section">
-                                        <img src="#" class="uploaded-image" alt="Uploaded Photo">
-                                        <input type="file" class="file-input" accept="image/*" name="photos_filenames" onchange="previewImage(event)">
-                                    </div>
+                            <div class="col-md-4">
+                                <div class="photo-upload-section">
+                                    <img src="#" class="uploaded-image" alt="Uploaded Photo">
+                                    <input type="file" class="file-input" accept="image/*" name="photos_filenames" onchange="previewImage(event)">
                                 </div>
-                                <!-- <div class="col-md-4">
+                            </div>
+                            <!-- <div class="col-md-4">
                                     <div class="photo-upload-section">
                                         <img src="#" class="uploaded-image" alt="Uploaded Photo">
                                         <input type="file" class="file-input" accept="image/*" name="photo_filename" onchange="previewImage(event)">
                                     </div>
                                 </div> -->
-                            </div>
+                        </div>
 
-                            <!-- Save Button -->
-                        </div>
-                        <div class="row justify-content-center mt-5">
-                            <div class="col-md-6 text-center">
-                                <a href="<?= base_url('admin') ?>">
-                                    <button type="button" class="btn btn-secondary">Cancel</button>
-                                </a>
-                            </div>
-                            <div class="col-md-6 text-center">
-                                <button type="submit" class="btn btn-primary">Save</button>
-                            </div>
-                        </div>
-                    </form>
+                        <!-- Save Button -->
                 </div>
+                <div class="row justify-content-center mt-5">
+                    <div class="col-md-6 text-center">
+                        <a href="<?= base_url('admin') ?>">
+                            <button type="button" class="btn btn-secondary">Cancel</button>
+                        </a>
+                    </div>
+                    <div class="col-md-6 text-center">
+                        <button type="submit" class="btn btn-primary">Save</button>
+                    </div>
+                </div>
+                </form>
             </div>
         </div>
+    </div>
     </div>
 
     <!-- Script -->
@@ -211,6 +215,27 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.12.0/dist/umd/popper.min.js" integrity="sha384-N5ZRprfQq9MgP13e+t4FkTqi7X9WVj54V2VXpOD4z8B65C7BK2gjHdouP84fS7Ld" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-B4gt1FWAbeJ3GzFQNzppbXk6v5zxG4T/4By2vckIgXvb7bPLhpvGhmfhA1t1b8RM" crossorigin="anonymous"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            // Get the add icon button and additional info container
+            const addIconBtn = document.querySelector(".add-icon");
+            const additionalInfoContainer = document.querySelector(".additional-info");
+
+            // Add event listener to the add icon button
+            addIconBtn.addEventListener("click", function () {
+                // Clone the default input fields
+                const newInputFields = additionalInfoContainer.cloneNode(true);
+
+                // Clear the values of the new input fields
+                const inputs = newInputFields.querySelectorAll("input, textarea");
+                inputs.forEach(input => input.value = "");
+
+                // Append the new input fields below the existing ones
+                additionalInfoContainer.parentNode.insertBefore(newInputFields, additionalInfoContainer.nextSibling);
+            });
+        });
+    </script>
+
     <script>
         function previewImage(event) {
             const fileInput = event.target;

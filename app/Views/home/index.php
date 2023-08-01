@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="<?= base_url(); ?>/src/css/mystyle.css">
     <link rel="stylesheet" href="<?= base_url(); ?>/src/css/caraousel.css">
     <link href="<?= base_url(); ?>/src/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= base_url(); ?>/src/fontawesome-free-6.4.0/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= base_url(); ?>/src/fontawesome-free-6.4.0/css/all.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous" />
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
@@ -222,24 +224,24 @@
                     <div class="carousel-item active">
                         <img src="<?= base_url() ?>/images/caraousel.jpg" class="d-block w-100" alt="Carousel Item 1">
                         <div class="carousel-caption d-none d-md-block">
-                            <h3>Carousel Item 1</h3>
-                            <p>Description for Item 1</p>
+                            <h3></h3>
+                            <p></p>
                         </div>
                     </div>
                     <!-- Carousel Item 2 -->
                     <div class="carousel-item">
                         <img src="<?= base_url() ?>/images/caraousel2.jpg" class="d-block w-100" alt="Carousel Item 2">
                         <div class="carousel-caption d-none d-md-block">
-                            <h3>Carousel Item 2</h3>
-                            <p>Description for Item 2</p>
+                            <h3></h3>
+                            <p></p>
                         </div>
                     </div>
                     <!-- Carousel Item 3 -->
                     <div class="carousel-item">
                         <img src="<?= base_url() ?>/images/caraousel3.jpg" class="d-block w-100" alt="Carousel Item 3">
                         <div class="carousel-caption d-none d-md-block">
-                            <h3>Carousel Item 3</h3>
-                            <p>Description for Item 3</p>
+                            <h3></h3>
+                            <p></p>
                         </div>
                     </div>
                 </div>
@@ -286,6 +288,7 @@
                         <div class="col-md-12 col-lg-3 mb-4 mb-lg-0">
                             <a href="<?= base_url('home/detail/' . $pd['produkid']); ?>" class="card-link nav-link">
                                 <div class="card">
+                                    <!-- Display product information -->
                                     <div class="d-flex justify-content-between p-3">
                                         <p class="lead mb-0"><?= $pd['nama_produk']; ?></p>
                                         <div class="bg-info rounded-circle d-flex align-items-center justify-content-center shadow-1-strong" style="width: 35px; height: 35px;">
@@ -295,7 +298,7 @@
                                     <img src="<?= base_url('uploads/' . $pd['photos_filenames']) ?>" class="card-img-top" alt="Laptop" />
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between">
-                                            <p class="small"><?= $pd['nama_kategori']; ?></p>
+                                            <p class="small"><?= $pd['nama_produk']; ?></p>
                                         </div>
 
                                         <div class="d-flex justify-content-between mb-3">
@@ -305,7 +308,7 @@
                                         </div>
 
                                         <div class="d-flex justify-content-between mb-2">
-                                            <p class="text-muted mb-0">Location: <span class="fw-bold">6</span></p>
+                                            <p class="text-muted mb-0">Location: <?= $pd['lokasi']; ?> <span class="fw-bold"></span></p>
                                             <div class="ms-auto text-warning">
                                                 <i class="fa fa-star"></i>
                                                 <i class="fa fa-star"></i>

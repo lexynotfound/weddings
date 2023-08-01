@@ -148,7 +148,7 @@
                 <!-- Product Form Card -->
                 <p>Edit Package</p>
                 <div class="card mt-4">
-                    <form action="<?= site_url('produk/update/' . $product['id']); ?>" method="post" enctype="multipart/form-data">
+                    <form action="<?= site_url('produk/update/' . $product['produkid']); ?>" method="post" enctype="multipart/form-data">
                         <?= csrf_field() ?>
                         <div class="card-body">
                             <!-- Product Details Section -->
@@ -169,15 +169,14 @@
 
                             <!-- Kategori Data Section -->
                             <div class="mb-3">
-                                <label for="kategori_id" class="form-label">Kategori:</label>
-                                <select name="kategori_id" id="kategori_id" class="form-control" required>
-                                    <option value="">Select a category</option>
-                                    <?php foreach ($categories as $category) : ?>
-                                        <option value="<?= $category['id']; ?>" <?= ($category['id'] == old('kategori_id', $product['kategori_id'])) ? 'selected' : ''; ?>>
-                                            <?= $category['nama_kategori']; ?>
-                                        </option>
-                                    <?php endforeach; ?>
-                                </select>
+                                <label for="kategori_id" class="form-label">Menu:</label>
+                                <div class="input-container">
+                                    <button type="button" class="add-icon btn btn-circle btn-outline-dark mb-3">Tambah +</button>
+                                </div>
+                                <div class="additional-info">
+                                        <input type="text" name="nama_menu[]" class="form-control mb-3" required value="<?= old('nama_menu', $product['nama_menu']); ?>">
+                                        <textarea name="deskripsi[]" class="form-control mb-3" required><?= old('deskripsi', $product['deskripsi']); ?></textarea>
+                                </div>
                             </div>
 
                             <!-- Photo Upload Sections -->
@@ -239,6 +238,28 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.12.0/dist/umd/popper.min.js" integrity="sha384-N5ZRprfQq9MgP13e+t4FkTqi7X9WVj54V2VXpOD4z8B65C7BK2gjHdouP84fS7Ld" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-B4gt1FWAbeJ3GzFQNzppbXk6v5zxG4T/4By2vckIgXvb7bPLhpvGhmfhA1t1b8RM" crossorigin="anonymous"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Get the add icon button and additional info container
+            const addIconBtn = document.querySelector(".add-icon");
+            const additionalInfoContainer = document.querySelector(".additional-info");
+
+            // Add event listener to the add icon button
+            addIconBtn.addEventListener("click", function() {
+                // Clone the default input fields
+                const newInputFields = additionalInfoContainer.cloneNode(true);
+
+                // Clear the values of the new input fields
+                const inputs = newInputFields.querySelectorAll("input, textarea");
+                inputs.forEach(input => input.value = "");
+
+                // Append the new input fields below the existing ones
+                additionalInfoContainer.parentNode.insertBefore(newInputFields, additionalInfoContainer.nextSibling);
+            });
+        });
+    </script>
+
     <script>
         function previewImage(event) {
             const fileInput = event.target;

@@ -133,7 +133,7 @@
 
                     <!-- Product Information (col-md-4) -->
                     <div class="col-md-4">
-                        <div class="small mb-1"><?= $product['nama_kategori']; ?></div>
+                        <div class="small mb-1"><?= $product['nama_menu']; ?></div>
                         <h1 class="display-5 fw-bolder"><?= $product['nama_produk']; ?></h1>
                         <div class="fs-5 mb-5">
                             <span><?= $product['username']; ?></span>

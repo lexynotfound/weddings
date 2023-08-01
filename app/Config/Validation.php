@@ -7,6 +7,7 @@ use CodeIgniter\Validation\StrictRules\CreditCardRules;
 use CodeIgniter\Validation\StrictRules\FileRules;
 use CodeIgniter\Validation\StrictRules\FormatRules;
 use CodeIgniter\Validation\StrictRules\Rules;
+use App\Validations\CustomRules;
 
 class Validation extends BaseConfig
 {
@@ -42,4 +43,8 @@ class Validation extends BaseConfig
     // --------------------------------------------------------------------
     // Rules
     // --------------------------------------------------------------------
+
+    public $customRules = [
+        'check_reservation_date' => 'App\Validations\CustomRules::checkReservationDate'
+    ];
 }

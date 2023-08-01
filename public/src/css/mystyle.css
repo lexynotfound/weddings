@@ -35,10 +35,108 @@
  }
 
  /* Styling to hide the "Click to Upload Photo" text when preview is shown */
- .photo-upload-section.hide-text .uploaded-image {
-     display: block;
+.photo-upload-section.hide-text .uploaded-image {
+    display: block;
+}
+
+.photo-upload-section.hide-text p {
+    display: none;
+}
+
+.description-container {
+    display: absolute;
+    flex-direction: column;
+}
+
+.show-more-btn,
+.show-less-btn {
+    margin-top: 5px;
+    background-color: transparent;
+    border: none;
+    color: #007bff;
+    font-size: 14px;
+    cursor: pointer;
+    outline: none;
+    text-decoration: none;
+     /* Remove underline */
+}
+
+.show-more-btn:hover,
+.show-less-btn:hover {
+    text-decoration: none;
+     /* Remove underline */
+}
+
+ /* Fix sidebar position */
+ .sidebar {
+     position: fixed;
+     height: 100%;
+     overflow-y: auto;
  }
 
- .photo-upload-section.hide-text p {
-     display: none;
+ /* Adjust the main content margin to accommodate the fixed sidebar */
+ #content {
+     margin-left: 240px;
+     /* Adjust this value to match your sidebar width */
  }
+
+/* CSS */
+
+.option-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    flex-direction: row;
+}
+
+.option-item {
+    display: flex;
+    align-items: center;
+    margin-right: 20px;
+    cursor: pointer;
+}
+
+.option-item input[type="radio"] {
+    display: none;
+}
+
+.option-content {
+    display: flex;
+    align-items: center;
+    padding: 5px;
+    border: 2px solid #ccc;
+    border-radius: 5px;
+}
+
+.option-content img {
+    width: 30px;
+    height: 30px;
+    margin-right: 5px;
+}
+
+.option-item input[type="radio"]:checked+.option-content {
+    border-color: #007bff;
+    background-color: #f0f0f0;
+}
+
+#selectedOptionLabel {
+    font-size: 14px;
+    /* Atur ukuran teks sesuai kebutuhan */
+    margin-top: 10px;
+}
+
+.custom-link {
+    text-decoration: none;
+    /* Remove underline */
+    color: #000;
+    /* Set link color */
+}
+
+.custom-link:hover {
+    color: #000;
+    /* Change link color on hover */
+}
+
+
+
+

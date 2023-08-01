@@ -47,6 +47,11 @@ $routes->group('home', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('error-page', 'Home::errorpage');
 });
 
+$routes->group('reservation', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('/', 'Reservation::index');
+    $routes->post('store', 'Reservation::store');
+});
+
 $routes->group('admin', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('/admin','Admin::index', ['filter' => 'role:admin']);
     $routes->get('tambahUserView', 'Admin::tambahUserView', ['filter' => 'role:admin']);
