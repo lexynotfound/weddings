@@ -51,12 +51,14 @@ $routes->group('reservation', ['namespace' => 'App\Controllers'], function ($rou
     $routes->get('index/(:num)', 'Reservation::index/$1');
     $routes->get('reservation/(:num)', 'Reservation::reservation/$1');
     $routes->post('buy/(:num)', 'Reservation::buy/$1');
+    $routes->post('store', 'Reservation::store');
     $routes->get('error-page', 'Reservation::errorpage');
 });
 
 $routes->group('payment', ['namespace' => 'App\Controllers'], function ($routes) {
-    $routes->get('/', 'Payment::index');
-    $routes->get('dp/', 'Payment::dp');
+    $routes->get('full/(:num)', 'Payment::index/$1');
+    $routes->get('dp/(:num)', 'Payment::dp/$1');
+    $routes->post('processPayment', 'Payment::processPayment');
     $routes->post('buy/(:num)', 'Reservation::buy/$1');
     $routes->get('error-page', 'Reservation::errorpage');
 });

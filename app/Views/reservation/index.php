@@ -126,17 +126,22 @@
                 <!-- Product Form Card -->
                 <p>Reservation</p>
                 <div class="card mt-4">
-                    <form action="<?= site_url('reservation/store'. $reservation['reservation_detailid']); ?>" method="post" enctype="multipart/form-data">
+                    <form action="<?= site_url('reservation/store/'); ?>" method="post" enctype="multipart/form-data">
                         <?= csrf_field() ?>
                         <div class="card-body">
                             <!-- Product Details Section -->
+
+                            <!-- Hidden input fields for reservation_detail_id and payment_option -->
+                            <input type="hidden" name="reservation_detail_id" value="<?= $reservation['reservation_detailid']; ?>">
+                            <input type="hidden" name="payment_option" value="">
+
                             <div class="mb-3">
                                 <label for="name" class="form-label">Tanggal Reservation:</label>
                                 <input type="date" name="tgl_acara" id="name" class="form-control" required>
                             </div>
                             <div class="mb-3">
                                 <label for="description" class="form-label">Lokasi Pernikahan:</label>
-                                <input type="text" name="lokasi" id="lokasi" rows="4" class="form-control" placeholder="Jakarta">
+                                <input type="text" name="lokasi" id="lokasi" rows="4" class="form-control" placeholder="Jakarta" required>
                             </div>
 
                         </div>
@@ -155,13 +160,13 @@
                         </div>
                         <!-- Save Button -->
                 </div>
-                
+
                 <div class="row justify-content-center mt-5">
                     <div class="col-md-6 text-center">
-                            <button type="submit" name="payment_type" value="dp" class="btn btn-outline-dark">DP 30% - Rp.<?= number_format($reservation['harga_produk'], 0, ',', '.'); ?></button>
+                        <button type="submit" name="payment_option" value="dp" class="btn btn-outline-dark">DP 30% - Rp.<?= number_format($reservation['harga_produk'], 0, ',', '.'); ?></button>
                     </div>
                     <div class="col-md-6 text-center">
-                        <button type="submit" name="payment_type" value="full" class="btn btn-outline-dark">Pay Full</button>
+                        <button type="submit" name="payment_option" value="full" class="btn btn-outline-dark">Pay Full</button>
                     </div>
                 </div>
                 </form>
@@ -270,7 +275,7 @@
                 currency: 'IDR'
             });
 
-            const buttonElement = document.querySelector('button[name="payment_type"]');
+            const buttonElement = document.querySelector('button[name="payment_option"]');
             buttonElement.innerHTML = `DP 30% - ${formattedDpAmount}`;
         });
     </script>

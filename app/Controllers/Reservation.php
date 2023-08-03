@@ -60,6 +60,26 @@ class Reservation extends BaseController
 
     public function store()
     {
+        $rules = [
+            // ... aturan validasi lainnya ...
+            'tgl_acara' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Tanggal Reservation harus di isi',
+                ]
+            ],
+            'lokasi' => [
+                'rules' => 'required',
+                'errors' => [
+                    'required' => 'Lokasi Pernikahan Harus di isi',
+                ]
+            ],
+        ];
+        // Perform validation
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('error', $this->validator->listErrors());
+        }
+
         // Validate if the user has completed their profile details
         $userData = user()->toArray();
         if (!$this->isProfileComplete($userData)) {
@@ -75,58 +95,36 @@ class Reservation extends BaseController
             return redirect()->to('reservation/error-page')->with('error', 'Reservation not found.');
         }
 
-        // Calculate the down payment (30% of the product price)
-        $product = $this->productModel->find($reservationDetail['produk_id']);
-        $dpAmount = 0.3 * $product['harga_produk'];
+        // Check if the 'produk_id' key exists in the $reservationDetail array
+        if (!array_key_exists('produk_id', $reservationDetail)) {
+            return redirect()->to('reservation/error-page')->with('error', 'Invalid reservation detail.');
+        }
 
         // Get the payment option from the form (assuming it's posted as 'payment_option')
         $paymentOption = $this->request->getPost('payment_option');
 
-        // Determine the full payment amount based on the selected payment option
-        if ($paymentOption === 'dp') {
-            // Update the reservation detail with down payment amount and status
-            $this->reservationDetailModel->update($reservationDetailId, [
-                'dp' => $dpAmount,
-                'status_pembayaran' => 'pembayaran belum lunas',
-                'payment_option' => 'dp', // Store the chosen payment option as 'dp'
-            ]);
-        } elseif ($paymentOption === 'full') {
-            // Update the reservation detail with full payment amount and status
-            $this->reservationDetailModel->update($reservationDetailId, [
-                'full' => $product['harga_produk'],
-                'status_pembayaran' => 'lunas',
-                'payment_option' => 'full', // Store the chosen payment option as 'full'
-            ]);
-        } else {
-            // Handle invalid payment option
-            return redirect()->to('reservation/error-page')->with('error', 'Invalid payment option.');
-        }
-
-        // Get the logged-in user's ID
-        $userId = user()->id;
-
         // Save the reservation data in the 'reservation' table
         $reservationData = [
-            'tgl_acara' => $reservationDetail['tgl_acara'],
-            'lokasi' => $reservationDetail['lokasi'],
-            'user_id' => $userId,
+            'tgl_acara' => $this->request->getPost('tgl_acara'), // User input for tgl_acara
+            'lokasi' => $this->request->getPost('lokasi'), // User input for lokasi
+            'user_id' => user()->id,
             'reservation_detail_id' => $reservationDetailId,
+            'payment_option' => $paymentOption,
         ];
         $this->reservationModel->insert($reservationData);
 
-        // Redirect to the payment page based on the selected payment option
+        // Redirect to the payment page based on the selected payment option and reservation detail ID
         if ($paymentOption === 'dp') {
-            // Redirect to the down payment page
-            return redirect()->to('payment/dp/')->with('success', 'Reservation details saved successfully. Please make a 30% down payment to secure your reservation.');
+            // Redirect to the down payment page with the reservation detail ID
+            return redirect()->to('payment/dp/' . $reservationDetailId)->with('success', 'Reservation details saved successfully. Please make a 30% down payment to secure your reservation.');
         } elseif ($paymentOption === 'full') {
-            // Redirect to the full payment page
-            return redirect()->to('payment/index/')->with('success', 'Reservation details saved successfully. Please proceed with the full payment to secure your reservation.');
+            // Redirect to the full payment page with the reservation detail ID
+            return redirect()->to('payment/full/' . $reservationDetailId)->with('success', 'Reservation details saved successfully. Please proceed with the full payment to secure your reservation.');
         } else {
             // Handle invalid payment option
             return redirect()->to('reservation/error-page')->with('error', 'Invalid payment option.');
         }
     }
-
 
     public function errorpage()
     {

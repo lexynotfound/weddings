@@ -8,5 +8,5 @@ class ReservationModel extends Model
 {
     protected $table = 'reservation';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['tgl_acara', 'user_id','reservation_detail_id','payment_option','status' ];
+    protected $allowedFields = ['tgl_acara','lokasi', 'user_id','reservation_detail_id','payment_option','status' ];
 }
