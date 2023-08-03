@@ -4,11 +4,11 @@ namespace App\Models;
 
 use CodeIgniter\Model;
 
-class KategoriModel extends Model
+class CategoriesModel extends Model
 {
-    protected $table = 'kategori';
+    protected $table = 'categories';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['nama_menu','id_kategori','produk_id','deskripsi','isi','created_at',	'updated_at'];
+    protected $allowedFields = ['nama_categories', 'created_at', 'updated_at'];
 
 
     protected $useTimestamps  = true;

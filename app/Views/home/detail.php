@@ -124,56 +124,46 @@
         <div class="container px-4 px-lg-5 my-5">
             <!-- Check if the product data is available -->
             <?php if ($product) : ?>
-                <div class="row gx-4 gx-lg-5 align-items-center">
-                    <!-- Product Image (col-md-8) -->
-                    <div class="col-md-6 mb-5 mb-md-0">
-                        <img class="card-img-top img-fluid rounded-5" src="<?= base_url('uploads/' . $product['photos_filenames']) ?>" alt="Product Image" />
-                    </div>
-
-                    <!-- Product Information and Buttons (col-md-4) -->
-                    <div class="col-md-4">
-                        <div class="small mb-1"></div>
-                        <h1 class="display-5 fw-bolder"><?= $product['nama_produk']; ?></h1>
-                        <div class="fs-5 mb-3">
-                            <span><?= $product['username']; ?></span>
-                            <span>Rp.<?= number_format($product['harga_produk'], 0, ',', '.'); ?></span>
+                <form id="reservationForm" action="<?= base_url('reservation/buy/'. $product['produkid']); ?>" method="post">
+                    <?= csrf_field(); ?>
+                    <div class="row gx-4 gx-lg-5 align-items-center">
+                        <!-- Product Image (col-md-8) -->
+                        <div class="col-md-6 mb-5 mb-md-0">
+                            <img class="card-img-top img-fluid rounded-5" src="<?= base_url('uploads/' . $product['photos_filenames']) ?>" alt="Product Image" />
                         </div>
-                        <div class="mb-4">
-                            <label id="selectedOptionLabel" class="form-label">Pilihan : </label>
-                            <div class="option-container custom-container">
-                                <?php foreach ($menuOptions as $option) : ?>
-                                    <?php if (!empty($option['nama_menu'])) : ?>
-                                        <label class="option-item">
-                                            <input type="radio" name="customOption1" value="<?= $option['produk_id']; ?>">
-                                            <div class="option-content">
-                                                <img src="<?= base_url('uploads/' . $product['photos_filenames']) ?>" alt="Image 1">
-                                                <span><?= $option['nama_menu']; ?></span>
-                                            </div>
-                                        </label>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                                <!-- Add more details for the main product as needed -->
+
+                        <!-- Product Information and Buttons (col-md-4) -->
+                        <div class="col-md-4">
+                            <div class="small mb-1"></div>
+                            <h1 class="display-5 fw-bolder"><?= $product['nama_produk']; ?></h1>
+                            <div class="fs-5 mb-3">
+                                <span><?= $product['username']; ?></span>
+                                <span>Rp.<?= number_format($product['harga_produk'], 0, ',', '.'); ?></span>
+                            </div>
+                            <div class="mb-4">
+                                <label id="selectedOptionLabel" class="form-label">Pilihan : </label>
+                                <div class="option-container custom-container">
+                                    <?php foreach ($menuOptions as $option) : ?>
+                                        <?php if (!empty($option['nama_menu'])) : ?>
+                                            <label class="option-item">
+                                                <input type="radio" name="menu_id" value="<?= $option['produk_id']; ?>" required>
+                                                <div class="option-content">
+                                                    <img src="<?= base_url('uploads/' . $product['photos_filenames']) ?>" alt="Image 1">
+                                                    <span><?= $option['nama_menu']; ?></span>
+                                                </div>
+                                            </label>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                    <!-- Add more details for the main product as needed -->
+                                </div>
                             </div>
 
+                            <div class="d-flex flex-column flex-md-row">
+                                <button type="submit" class="btn btn-outline-dark w-100">Buy</button>
+                            </div>
                         </div>
-
-
-                        <!-- Add more customization options as needed -->
-
-                        <div class="d-flex flex-column flex-md-row">
-                            <!-- <input class="form-control text-center me-md-3 mb-3" id="inputQuantity" type="number" value="1" style="max-width: 3rem;" /> -->
-                            <!-- <a href="<?= site_url('home/detail/custom/' . $product['produkid']); ?>" class="btn btn-outline-dark flex-shrink-0 me-md-3 mb-3 mb-md-0">
-                                <i class="fas fa-regular fa-pen-alt"></i>
-                                Custom
-                            </a> -->
-                            <a href="<?= site_url('reservation/reservation/'. $product['produkid']); ?>" class="btn btn-outline-dark w-100">
-                                <!--  <i class="bi-cart-fill me-1"></i> -->
-                                Buy
-                            </a>
-                        </div>
-
                     </div>
-                </div>
+                </form>
 
                 <div class="row mt-5">
                     <div class="col-md-12">

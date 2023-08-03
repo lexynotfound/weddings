@@ -174,8 +174,12 @@
                                     <button type="button" class="add-icon btn btn-circle btn-outline-dark mb-3">Tambah +</button>
                                 </div>
                                 <div class="additional-info">
-                                        <input type="text" name="nama_menu[]" class="form-control mb-3" required value="<?= old('nama_menu', $product['nama_menu']); ?>">
-                                        <textarea name="deskripsi[]" class="form-control mb-3" required><?= old('deskripsi', $product['deskripsi']); ?></textarea>
+                                    <input type="text" name="nama_menu[]" class="form-control mb-3" required">
+                                    <textarea name="deskripsi[]" class="form-control mb-3" required></textarea>
+                                    <?php foreach ($menuOptions as $item) : ?>
+                                        <input type="text" name="nama_menu[]" class="form-control mb-3" required value="<?= old('nama_menu', $item['nama_menu']); ?>">
+                                        <textarea name="deskripsi[]" class="form-control mb-3" required><?= old('deskripsi', $item['deskripsi']); ?></textarea>
+                                    <?php endforeach; ?>
                                 </div>
                             </div>
 

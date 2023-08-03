@@ -2,24 +2,27 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><?= $title; ?></title>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
+    <meta name="description" content="" />
+    <meta name="author" content="" />
+    <title>Reservation</title>
+    <!-- Favicon-->
+    <!-- Bootstrap icons-->
     <link rel="stylesheet" href="<?= base_url(); ?>/src/css/bootstrap.css">
     <link rel="stylesheet" href="<?= base_url(); ?>/src/css/mystyle.css">
     <link rel="stylesheet" href="<?= base_url(); ?>/src/css/caraousel.css">
     <link href="<?= base_url(); ?>/src/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
+    <!-- Core theme CSS (includes Bootstrap)-->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous" />
-    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
+    <link href="<? base_url() ?>/src/css/style.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Vj6tzy4Hg7J1K25b4ml2p15zYLq6xWq5rI3/ABttrKA2Ap" crossorigin="anonymous">
-
 </head>
 
-
 <body>
-
+    <!-- Navigation-->
     <header>
         <div class="container mt-4">
             <nav class="navbar navbar-expand-lg bg-white ms-auto">
@@ -46,10 +49,23 @@
                         <ul class="navbar-nav ms-auto">
                             <div class="topbar-divider d-none d-sm-block"></div>
 
+                            <!-- Bell Notification Dropdown -->
+
+                            <!-- Chat Notification Dropdown -->
+                            <li class="nav-item dropdown no-arrow me-1">
+                                <a class="nav-link dropdown-toggle" href="https://wa.me/+621295304698" id="chatDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="<?= base_url(); ?>/images/WhatsApp.png" style="width: 40px; height: 40px;" alt="">
+                                    <!-- <i class=" fas fa-brands fa-square-whatsapp"></i> -->
+                                    <!-- Notification Badge (optional) -->
+                                    <!-- <span class="badge bg-danger">5</span> -->
+                                </a>
+                            </li>
+
                             <!-- Nav Item - User Information -->
                             <li class="nav-item dropdown no-arrow">
                                 <!-- ... (rest of the user information dropdown code) ... -->
                                 <?php if (logged_in()) : ?>
+
                                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="mr-4 d-none d-lg-inline text-gray-600 small me-1"><?= user()->username; ?></span>
                                         <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
@@ -108,55 +124,21 @@
         <div class="row justify-content-center mt-5">
             <div class="col-md-10">
                 <!-- Product Form Card -->
-                <p>Tambah Packages</p>
+                <p>Reservation</p>
                 <div class="card mt-4">
-                    <form action="<?= site_url('produk/store'); ?>" method="post" enctype="multipart/form-data">
+                    <form action="<?= site_url('reservation/store'. $reservation['reservation_detailid']); ?>" method="post" enctype="multipart/form-data">
                         <?= csrf_field() ?>
                         <div class="card-body">
                             <!-- Product Details Section -->
                             <div class="mb-3">
-                                <label for="name" class="form-label">Nama Package:</label>
-                                <input type="text" name="nama_produk" id="name" class="form-control" required>
+                                <label for="name" class="form-label">Tanggal Reservation:</label>
+                                <input type="date" name="tgl_acara" id="name" class="form-control" required>
                             </div>
                             <div class="mb-3">
-                                <label for="description" class="form-label">Description Package:</label>
-                                <textarea name="description" id="description" rows="4" class="form-control"></textarea>
-                            </div>
-                            <!-- Price Input Section -->
-                            <div class="mb-5">
-                                <label for="price" class="form-label">Price: Rp.</label>
-                                <input type="text" inputmode="numeric" name="harga_produk" id="price" class="form-control" required oninput="this.value = this.value.replace(/[^0-9]/g, '');">
-                                <div class="invalid-feedback">Please enter a valid price (numbers only).</div>
+                                <label for="description" class="form-label">Lokasi Pernikahan:</label>
+                                <input type="text" name="lokasi" id="lokasi" rows="4" class="form-control" placeholder="Jakarta">
                             </div>
 
-                            <div class="mb-5">
-                                <label for="kategori_id" class="form-label">Kategori: </label>
-                                <div class="container">
-                                    <div class="row">
-                                        <div class="col-12 col-md-6"> <!-- Adjust col-md-6 to your desired width -->
-                                            <select class="form-select" name="kategori_id">
-                                                <option value="">Pilih Kategori:</option>
-                                                <?php foreach ($kategori as $row) : ?>
-                                                    <option value="<?= $row['id']; ?>"><?= $row['nama_categories']; ?></option>
-                                                <?php endforeach; ?>
-                                            </select>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-
-                            <div class="mb-3">
-                                <label for="kategori_id" class="form-label">Menu:</label>
-                                <div class="input-container">
-                                    <button type="button" class="add-icon btn btn-circle btn-outline-dark mb-3">Tambah +</button>
-                                </div>
-                                <div class="additional-info">
-                                    <!-- Default input fields -->
-                                    <input type="text" name="nama_menu[]" class="form-control mb-3" placeholder="Masukkan Nama dari Menu">
-                                    <textarea name="deskripsi[]" class="form-control mb-3" placeholder="Masukkan keterangan dengan Nama dari Menu"></textarea>
-                                </div>
-                            </div>
                         </div>
 
                         <!-- Placeholder to add new entries dynamically -->
@@ -170,109 +152,129 @@
                                         <input type="file" class="file-input" accept="image/*" name="photos_filenames" onchange="previewImage(event)">
                                     </div>
                                 </div> -->
-                            <div class="col-md-4">
-                                <div class="photo-upload-section">
-                                    <img src="#" class="uploaded-image" alt="Uploaded Photo">
-                                    <input type="file" class="file-input" accept="image/*" name="photos_filenames" onchange="previewImage(event)">
-                                </div>
-                            </div>
-                            <!-- <div class="col-md-4">
-                                    <div class="photo-upload-section">
-                                        <img src="#" class="uploaded-image" alt="Uploaded Photo">
-                                        <input type="file" class="file-input" accept="image/*" name="photo_filename" onchange="previewImage(event)">
-                                    </div>
-                                </div> -->
                         </div>
-
                         <!-- Save Button -->
                 </div>
+                
                 <div class="row justify-content-center mt-5">
                     <div class="col-md-6 text-center">
-                        <a href="<?= base_url('admin') ?>">
-                            <button type="button" class="btn btn-secondary">Cancel</button>
-                        </a>
+                            <button type="submit" name="payment_type" value="dp" class="btn btn-outline-dark">DP 30% - Rp.<?= number_format($reservation['harga_produk'], 0, ',', '.'); ?></button>
                     </div>
                     <div class="col-md-6 text-center">
-                        <button type="submit" class="btn btn-primary">Save</button>
+                        <button type="submit" name="payment_type" value="full" class="btn btn-outline-dark">Pay Full</button>
                     </div>
                 </div>
                 </form>
             </div>
         </div>
     </div>
+    <!-- Reservation section-->
 
+    <!-- Footer -->
+    <div class="container">
+        <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
+            <div class="col mb-3">
+                <!-- logo -->
+                <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
+                    <img class="bi me-2" width="200" src="<?= base_url(); ?>/images/.svg">
 
-    <!-- Script -->
-    <!-- Bootstrap core JavaScript-->
-    <script src="<?= base_url(); ?>/src/jquery/jquery.min.js"></script>
+                    </img>
+                </a>
+                <p class="text-muted">Copyrigth &copy; Tenda Hj.Yus <?= date('Y'); ?></p>
 
-    <!-- Core plugin JavaScript-->
-    <script src="<?= base_url(); ?>/src/jquery-easing/jquery.easing.min.js"></script>
+            </div>
 
-    <!-- Custom scripts for all pages-->
-    <script src="<?= base_url(); ?>/src/js/sb-admin-2.min.js"></script>
+            <div class="col mb-3">
 
-    <!-- Page level plugins -->
-    <script src="<?= base_url(); ?>/src/js/chart.js/Chart.min.js"></script>
+            </div>
 
-    <!-- Page level custom scripts -->
-    <script src="<?= base_url(); ?>/src/js/demo/chart-area-demo.js"></script>
-    <script src="<?= base_url(); ?>/src/js/demo/chart-pie-demo.js"></script>
-    <script src="<?= base_url(); ?>/src/js/message.js"></script>
-    <script src="<?= base_url(); ?>/src/js/bootstrap.bundle.js"></script>
-    <script src="<?= base_url(); ?>/src/js/dropdown-hoover.js"></script>
+            <div class="col mb-3">
+                <h5>Tenda Hj. Yus</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Orders History</a></li>
+                </ul>
+            </div>
 
-    <script src="<?= base_url(); ?>/src/js/disablescrool.js"></script>
+            <div class="col mb-3">
+                <h5>TENTANG KAMI</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Contact</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+                </ul>
+            </div>
 
+            <div class="col mb-3">
+                <!-- <h5>Section</h5>
+                <ul class="nav flex-column">
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Features</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
+                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
+                </ul>
+            </div> -->
+        </footer>
+    </div>
+    <!-- End of Footer -->
 
+    <!-- Bootstrap core JS-->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Core theme JS-->
+    <script src="js/scripts.js"></script>
 
-    <!-- Bootstrap and jQuery JS -->
-    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.12.0/dist/umd/popper.min.js" integrity="sha384-N5ZRprfQq9MgP13e+t4FkTqi7X9WVj54V2VXpOD4z8B65C7BK2gjHdouP84fS7Ld" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-B4gt1FWAbeJ3GzFQNzppbXk6v5zxG4T/4By2vckIgXvb7bPLhpvGhmfhA1t1b8RM" crossorigin="anonymous"></script>
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            // Get the add icon button and additional info container
-            const addIconBtn = document.querySelector(".add-icon");
-            const additionalInfoContainer = document.querySelector(".additional-info");
+        const optionItems = document.querySelectorAll('.option-item');
+        const selectedOptionLabel = document.getElementById('selectedOptionLabel');
 
-            // Add event listener to the add icon button
-            addIconBtn.addEventListener("click", function() {
-                // Clone the default input fields
-                const newInputFields = additionalInfoContainer.cloneNode(true);
+        optionItems.forEach(item => {
+            const radioInput = item.querySelector('input[type="radio"]');
+            const optionName = item.querySelector('.option-content span').innerText;
 
-                // Clear the values of the new input fields
-                const inputs = newInputFields.querySelectorAll("input, textarea");
-                inputs.forEach(input => input.value = "");
-
-                // Append the new input fields below the existing ones
-                additionalInfoContainer.parentNode.insertBefore(newInputFields, additionalInfoContainer.nextSibling);
+            radioInput.addEventListener('click', () => {
+                selectedOptionLabel.innerText = 'Pilihan: ' + optionName;
             });
         });
     </script>
 
     <script>
-        function previewImage(event) {
-            const fileInput = event.target;
-            const photoUploadSection = fileInput.parentElement;
+        function toggleDescription() {
+            var descriptionElement = document.getElementById('description');
+            var showMoreLink = document.querySelector('.show-more-link');
 
-            if (fileInput.files && fileInput.files[0]) {
-                const reader = new FileReader();
-
-                reader.onload = function(e) {
-                    const uploadedImage = photoUploadSection.querySelector('.uploaded-image');
-                    uploadedImage.src = e.target.result;
-                    photoUploadSection.classList.add('hide-text');
-                };
-
-                reader.readAsDataURL(fileInput.files[0]);
+            if (descriptionElement.style.webkitLineClamp === '3') {
+                descriptionElement.style.webkitLineClamp = 'unset';
+                showMoreLink.textContent = 'Show Less';
+                // Scroll to the bottom of the description
+                descriptionElement.scrollIntoView({
+                    behavior: 'smooth'
+                });
+            } else {
+                descriptionElement.style.webkitLineClamp = '3';
+                showMoreLink.textContent = 'Show More';
             }
         }
     </script>
 
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.0/js/bootstrap.bundle.min.js"></script>
+    <script>
+        // Menggunakan JavaScript untuk menghitung 30% dari harga produk
+        document.addEventListener('DOMContentLoaded', function() {
+            const hargaProduk = <?= $reservation['harga_produk']; ?>; // Ubah variabel $product menjadi sintaks CodeIgniter 4 jika perlu
+            const dpPercentage = 0.3;
+            const dpAmount = hargaProduk * dpPercentage;
+            const formattedDpAmount = dpAmount.toLocaleString('id-ID', {
+                style: 'currency',
+                currency: 'IDR'
+            });
+
+            const buttonElement = document.querySelector('button[name="payment_type"]');
+            buttonElement.innerHTML = `DP 30% - ${formattedDpAmount}`;
+        });
+    </script>
+
 </body>
 
 </html>

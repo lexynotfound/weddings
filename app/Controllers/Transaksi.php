@@ -3,8 +3,9 @@
 namespace App\Controllers;
 
 use App\Models\ProductModel;
-use App\Models\CustomeModel;
-use App\Models\KategoriModel;
+use App\Models\ReservationDetailModel;
+use App\Models\ReservationModel;
+use App\Models\MenuModel;
 use App\Models\TransaksiModel;
 use Myth\Auth\Models\UserModel;
 
@@ -15,9 +16,10 @@ class Transaksi extends BaseController
     protected $db;
     protected $builder;
     protected $productModel;
-    protected $costumeModel;
-    protected $kategoriModel;
+    protected $menuModel;
     protected $userModel;
+    protected $reservationModel;
+    protected $reservationDetailModel;
     protected $transaksiModel;
 
     public function __construct()
@@ -25,49 +27,41 @@ class Transaksi extends BaseController
         $this->db = \Config\Database::connect();
         $this->builder = $this->db->table('custome');
         $this->productModel = new ProductModel();
-        $this->kategoriModel = new KategoriModel();
-        $this->costumeModel = new CustomeModel();
+        $this->reservationModel = new ReservationModel();
+        $this->reservationDetailModel = new ReservationDetailModel();
+        $this->menuModel = new MenuModel();
         $this->userModel = new UserModel();
         $this->transaksiModel = new TransaksiModel();
     }
+
     // Method untuk menampilkan halaman transaksi
-    public function showTransaksiPage()
+    public function index($id = 0)
     {
-        $transaksiModel = new TransaksiModel();
-        $transaksiData = $transaksiModel->where('user_id', user_id())->first();
+        $data = [
+                'title' => 'Payment',
+            ];
 
-        // Load halaman transaksi dengan mengirimkan data transaksi ke view
-        return view('transaksi_page', ['transaksiData' => $transaksiData]);
-    }
+        // Perform the LEFT JOIN with reservation_detail and users tables
+        $this->builder = $this->db->table('reservation');
+        $this->builder->select('reservation.id as reservationid, reservation.user_id, reservation.reservation_detail_id, reservation.user_id, reservation.tgl_acara,reservation.lokasi,reservation.payment_option,reservation.status,reservation_detail.produk_id,reservation_detail.menu_id,reservation_detail.user_id as reservation_detail_user_id, product.nama_produk, product.description, product.user_id as produk_user_id,product.harga_produk, kategori.nama_menu, kategori.deskripsi, users.username, users.email, users.nama, users.foto, users.jenis_kelamin, users.telepon, users.lokasi');
+        $this->builder->join('reservation_detail', 'reservation_detail.id = reservation.reservation_detail_id', 'left'); // Use 'left' for LEFT JOIN
+        $this->builder->join('kategori', 'kategori.id = reservation_detail.menu_id', 'left'); // Use 'left' for LEFT JOIN
+        $this->builder->join('product', 'product.id = reservation_detail.produk_id', 'left'); // Use 'left' for LEFT JOIN
+        $this->builder->join('users', 'users.id = reservation.user_id', 'left'); // Use 'left' for LEFT JOIN
 
-    // Method untuk membuat transaksi
-    public function createTransaksi()
-    {
-        $product_id = $this->request->getVar('product_id');
-        $custom_option_1 = $this->request->getVar('custom_option_1');
-        $custom_option_2 = $this->request->getVar('custom_option_2');
-        $custom_option_3 = $this->request->getVar('custom_option_3');
-        $dp_option = $this->request->getVar('dp_option'); // Berisi '30' atau 'full'
+        // Fetch the reservation data with user names for the given $id
+        $this->builder->where('reservation.id', $id);
+        $reservation = $this->builder->get()->getRowArray();
 
-        // Lakukan validasi dan pemrosesan lain yang dibutuhkan sebelum menyimpan transaksi
-
-        $transaksiModel = new TransaksiModel();
-        $transaksi_id = 'THYX3XX23'; // Generate ID transaksi sesuai dengan kebutuhan Anda
-        $user_id = user_id(); // Ambil ID user yang sedang login
-        $status = 'pending'; // Tentukan status sesuai dengan kebutuhan
-
-        $transaksiModel->insert([
-            'id_transaksi' => $transaksi_id,
-            'user_id' => $user_id,
-            'produk_id' => $product_id,
-            'status' => $status,
-        ]);
-
-        // Lakukan redirect ke halaman pembayaran sesuai dengan pilihan DP atau full payment
-        if ($dp_option === '30') {
-            return redirect()->to(base_url('pembayaran/dp/' . $transaksi_id));
-        } else {
-            return redirect()->to(base_url('pembayaran/full/' . $transaksi_id));
+        // Check if the reservation exists
+        if (!$reservation) {
+            // Redirect to some error page or show an error message
+            return redirect()->to('reservation/error-page');
         }
+
+        // Pass the reservation data to the view
+        $data['reservation'] = $reservation;
+
+        return view('payment/index', $data);
     }
 }

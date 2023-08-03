@@ -1,0 +1,33 @@
+#sidebar {
+position: fixed;
+top: 0;
+left: 0;
+height: 100%;
+z-index: 100;
+padding-top: 4rem;
+background-color: #f8f9fc;
+border-right: 1px solid #d1d3e2;
+}
+
+.nav-link {
+padding: 0.75rem 1.5rem;
+font-size: 1rem;
+color: #6e707e;
+transition: all 0.3s;
+}
+
+.nav-link:hover {
+background-color: #d1d3e2;
+}
+
+.nav-link.active {
+font-weight: 500;
+color: #1cc88a;
+background-color: #f8f9fc;
+}
+
+/* Main content styles */
+main {
+margin-top: 4rem;
+padding: 2rem;
+}

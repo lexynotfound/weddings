@@ -48,10 +48,22 @@ $routes->group('home', ['namespace' => 'App\Controllers'], function ($routes) {
 });
 
 $routes->group('reservation', ['namespace' => 'App\Controllers'], function ($routes) {
-    $routes->get('/', 'Reservation::index');
+    $routes->get('index/(:num)', 'Reservation::index/$1');
     $routes->get('reservation/(:num)', 'Reservation::reservation/$1');
-    $routes->post('store', 'Reservation::store');
+    $routes->post('buy/(:num)', 'Reservation::buy/$1');
     $routes->get('error-page', 'Reservation::errorpage');
+});
+
+$routes->group('payment', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('/', 'Payment::index');
+    $routes->get('dp/', 'Payment::dp');
+    $routes->post('buy/(:num)', 'Reservation::buy/$1');
+    $routes->get('error-page', 'Reservation::errorpage');
+});
+
+$routes->group('user', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('/', 'User::index');
+    $routes->get('setting', 'User::setting');
 });
 
 $routes->group('admin', ['namespace' => 'App\Controllers'], function ($routes) {
@@ -79,7 +91,7 @@ $routes->group('produk', ['namespace' => 'App\Controllers'], function ($routes) 
     $routes->post('store', 'Product::store', ['filter' => 'role:admin']);
     $routes->get('detail/(:num)', 'Product::detail/$1');
     $routes->get('edit/(:num)', 'Product::edit/$1', ['filter' => 'role:admin']);
-    $routes->post('update/(:num)', 'Product::update/$1');
+    $routes->post('update/(:num)','Product::update/$1', ['filter' => 'role:admin']);
     $routes->get('delete/(:num)', 'Product::delete/$1', ['filter' => 'role:admin']);
 });
 

@@ -3,7 +3,8 @@
 namespace App\Controllers;
 
 use App\Models\ProductModel;
-use App\Models\KategoriModel;
+use App\Models\MenuModel;
+use App\Models\CategoriesModel;
 use Myth\Auth\Models\UserModel;
 
 class Home extends BaseController
@@ -11,7 +12,8 @@ class Home extends BaseController
     protected $db;
     protected $builder;
     protected $productModel;
-    protected $kategoriModel;
+    protected $menuModel;
+    protected $categoriesModel;
     protected $userModel;
 
     public function __construct()
@@ -19,7 +21,8 @@ class Home extends BaseController
         $this->db = \Config\Database::connect();
         $this->builder = $this->db->table('product');
         $this->productModel = new ProductModel();
-        $this->kategoriModel = new KategoriModel();
+        $this->menuModel = new MenuModel();
+        $this->categoriesModel = new CategoriesModel();
         $this->userModel = new UserModel();
     }
 
@@ -170,10 +173,10 @@ class Home extends BaseController
         ];
 
         // Load the KategoriModel
-        $kategoriModel = new KategoriModel();
+        $menuModel = new MenuModel();
 
         // Fetch all categories from the database
-        $categories = $kategoriModel->findAll();
+        $categories = $menuModel->findAll();
 
         // Pass the category data to the view
         $data['categories'] = $categories;
