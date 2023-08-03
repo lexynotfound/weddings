@@ -66,63 +66,6 @@ class Payment extends BaseController
         return view('payment/full', $data);
     }
 
-    public function processPayment()
-    {
-        // Cek apakah pengguna sudah login
-        if (!user()) {
-            return redirect()->to('login')->with('error', 'Please log in to continue.');
-        }
-
-        // Ambil data dari form pada halaman dp
-        $reservationDetailId = $this->request->getPost('reservation_detail_id');
-        $paymentOption = $this->request->getPost('total_harga');
-
-        // Ambil data reservation detail berdasarkan ID
-        $reservationDetail = $this->reservationDetailModel->find($reservationDetailId);
-        if (!$reservationDetail) {
-            return redirect()->to('reservation/error-page')->with('error', 'Reservation not found.');
-        }
-
-        // Cek apakah pengguna yang login sesuai dengan data reservation
-        if (user()->id !== $reservationDetail['user_id']) {
-            return redirect()->back()->with('error', 'Unauthorized access.');
-        }
-
-        // Hitung total harga dengan diskon 30%
-        $dp = $reservationDetail['harga_produk'] * 0.3;
-        $totalHarga = $reservationDetail['harga_produk'];
-
-        // Cek jika pembayaran DP
-        if ($paymentOption === 'dp') {
-            $totalHarga = $dp;
-        }
-
-        // Tanggal pembayaran sisa adalah satu bulan setelah tgl_acara
-        $tglAcara = strtotime($reservationDetail['tgl_acara']);
-        $tglBatasPembayaran = date('Y-m-d', strtotime('+1 month', $tglAcara));
-
-        // Masukkan data ke dalam tabel transaksi
-        $transaksiData = [
-            'id_transaksi' => 'TRXDP-' . strtoupper(uniqid()),
-            'user_id' => user()->id,
-            'reservation_id' => $reservationDetail['id'],
-            'total_harga' => $totalHarga,
-            'status' => 'belum melakukan pelunasan',
-            'tgl_transaksi' => date('Y-m-d'),
-            'tgl_batas_pembayaran' => $tglBatasPembayaran,
-        ];
-        $this->transaksiModel->insert($transaksiData);
-
-        // Ubah status reservation menjadi "lakukan pembayaran" jika pembayaran DP
-        if ($paymentOption === 'dp') {
-            $this->reservationModel->update($reservationDetail['reservation_id'], ['status' => 'lakukan pembayaran']);
-        }
-
-        // Redirect ke halaman checkout
-        return redirect()->to('checkout')->with('success', 'Payment data saved successfully. Please proceed to checkout to complete your payment.');
-    }
-
-
     public function dp($id = 0)
     {
         $data = [

@@ -58,7 +58,7 @@ $routes->group('reservation', ['namespace' => 'App\Controllers'], function ($rou
 $routes->group('payment', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('full/(:num)', 'Payment::index/$1');
     $routes->get('dp/(:num)', 'Payment::dp/$1');
-    $routes->post('processPayment', 'Payment::processPayment');
+    $routes->post('buy/(:num)t', 'Payment::buy/$1');
     $routes->post('buy/(:num)', 'Reservation::buy/$1');
     $routes->get('error-page', 'Reservation::errorpage');
 });
