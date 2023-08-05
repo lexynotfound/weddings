@@ -41,7 +41,7 @@
             <!-- Nav Item - Dashboard -->
 
             <li class="nav-item active">
-                <a class="nav-link" href="<?= base_url('settings')?>">
+                <a class="nav-link" href="<?= base_url('user/setting')?>">
                     <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
                     <span><?= user()->username; ?></span>
                 </a>

@@ -79,15 +79,15 @@
                                             </a>
                                             <div class="dropdown-divider"></div>
                                         <?php endif; ?>
-                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Reservation
                                         </a>
-                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Transaction
                                         </a>
-                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Settings
                                         </a>
@@ -132,8 +132,7 @@
                             <!-- Product Details Section -->
 
                             <!-- Hidden input fields for reservation_detail_id and payment_option -->
-                            <input type="hidden" name="reservation_detail_id" value="<?= $reservation['reservation_detailid']; ?>">
-                            <input type="hidden" name="payment_option" value="">
+                            <input type="hidden" name="transaksi_id" value="<?= $reservation['transaksiid']; ?>">
 
                             <div class="mb-3">
                                 <label for="name" class="form-label">Tanggal Reservation:</label>
@@ -144,32 +143,22 @@
                                 <input type="text" name="lokasi" id="lokasi" rows="4" class="form-control" placeholder="Jakarta" required>
                             </div>
 
+                            <div class="row justify-content-center mt-5">
+                                <div class="col-md-6 text-center">
+                                    <!-- Change the button name to 'dp' -->
+                                    <button type="submit" name="payment_option" value="dp" class="btn btn-outline-dark">DP 30% - Rp.<?= number_format($reservation['total_harga'] * 0.3, 0, ',', '.'); ?></button>
+                                </div>
+                                <div class="col-md-6 text-center">
+                                    <!-- Change the button name to 'full' -->
+                                    <button type="submit" name="payment_option" value="full" class="btn btn-outline-dark">Pay Full - Rp.<?= number_format($reservation['total_harga'], 0, ',', '.'); ?></button>
+                                </div>
+                            </div>
                         </div>
+                        <!-- ... (code setelahnya) ... -->
 
-                        <!-- Placeholder to add new entries dynamically -->
-                        <div id="menu-entries"></div>
-
-                        <!-- Photo Upload Sections -->
-                        <div class="row">
-                            <!--  <div class="col-md-4">
-                                    <div class="photo-upload-section">
-                                        <img src="#" class="uploaded-image" alt="Uploaded Photo">
-                                        <input type="file" class="file-input" accept="image/*" name="photos_filenames" onchange="previewImage(event)">
-                                    </div>
-                                </div> -->
-                        </div>
-                        <!-- Save Button -->
+                        <!-- ... (code setelahnya) ... -->
+                    </form>
                 </div>
-
-                <div class="row justify-content-center mt-5">
-                    <div class="col-md-6 text-center">
-                        <button type="submit" name="payment_option" value="dp" class="btn btn-outline-dark">DP 30% - Rp.<?= number_format($reservation['harga_produk'], 0, ',', '.'); ?></button>
-                    </div>
-                    <div class="col-md-6 text-center">
-                        <button type="submit" name="payment_option" value="full" class="btn btn-outline-dark">Pay Full</button>
-                    </div>
-                </div>
-                </form>
             </div>
         </div>
     </div>

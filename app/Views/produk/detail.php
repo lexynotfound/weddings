@@ -79,15 +79,15 @@
                                             </a>
                                             <div class="dropdown-divider"></div>
                                         <?php endif; ?>
-                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Reservation
                                         </a>
-                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Transaction
                                         </a>
-                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Settings
                                         </a>

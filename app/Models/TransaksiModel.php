@@ -8,10 +8,8 @@ class TransaksiModel extends Model
 {
     protected $table = 'transaksi';
     protected $primaryKey = 'id';
-    protected $allowedFields = ['user_id', 'id_transaksi', 'reservation_id', 'status','total_harga', 'tgl_transaksi'];
+    protected $allowedFields = ['user_id', 'id_transaksi', 'menu_id', 'produk_id', 'reservation_id', 'status', 'total_harga', 'payment_option', 'tgl_transaksi'];
 
     // Add your custom methods if needed
-    protected $useTimestamps  = true;
-    protected $createdField   = 'tgl_transaksi';
 
 }

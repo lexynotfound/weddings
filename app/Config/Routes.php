@@ -40,16 +40,20 @@ $routes->group('errors', ['namespace' => 'App\Controllers'], function ($routes) 
 
 $routes->group('home', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('/', 'Home::index');
-    $routes->get('searchRiwayat', 'Home::searchRiwayat');
-    $routes->get('searchBuku', 'Home::searchBuku');
+    $routes->get('searc', 'Home::search');
     $routes->get('detail/(:num)', 'Home::detail/$1');
     $routes->get('detail/custom/(:num)', 'Home::custom/$1');
     $routes->get('error-page', 'Home::errorpage');
 });
 
+$routes->group('category', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('/', 'Category::index');
+    $routes->get('error-page', 'Home::errorpage');
+});
+
 $routes->group('reservation', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('index/(:num)', 'Reservation::index/$1');
-    $routes->get('reservation/(:num)', 'Reservation::reservation/$1');
+    $routes->get('reservation/(:segment)', 'Reservation::reservation/$1');
     $routes->post('buy/(:num)', 'Reservation::buy/$1');
     $routes->post('store', 'Reservation::store');
     $routes->get('error-page', 'Reservation::errorpage');
@@ -58,9 +62,18 @@ $routes->group('reservation', ['namespace' => 'App\Controllers'], function ($rou
 $routes->group('payment', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('full/(:num)', 'Payment::index/$1');
     $routes->get('dp/(:num)', 'Payment::dp/$1');
-    $routes->post('buy/(:num)t', 'Payment::buy/$1');
-    $routes->post('buy/(:num)', 'Reservation::buy/$1');
+    $routes->post('buy/(:num)', 'Payment::buy/$1');
+    $routes->post('paid/(:num)', 'Payment::paid/$1');
     $routes->get('error-page', 'Reservation::errorpage');
+    $routes->get('invoice/(:segment)', 'Payment::invoice/$1');
+});
+
+$routes->group('invoice', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('full/(:num)', 'Invoice::index/$1');
+    $routes->get('dp/(:num)', 'Invoice::dp/$1');
+    $routes->post('buy/(:num)', 'Payment::buy/$1');
+    $routes->get('error-page', 'Reservation::errorpage');
+    $routes->get('invoice/(:any)', 'Payment::invoice/$1');
 });
 
 $routes->group('user', ['namespace' => 'App\Controllers'], function ($routes) {

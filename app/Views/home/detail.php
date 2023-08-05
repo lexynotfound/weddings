@@ -79,15 +79,15 @@
                                             </a>
                                             <div class="dropdown-divider"></div>
                                         <?php endif; ?>
-                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Reservation
                                         </a>
-                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Transaction
                                         </a>
-                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Settings
                                         </a>
@@ -124,7 +124,7 @@
         <div class="container px-4 px-lg-5 my-5">
             <!-- Check if the product data is available -->
             <?php if ($product) : ?>
-                <form id="reservationForm" action="<?= base_url('reservation/buy/'. $product['produkid']); ?>" method="post">
+                <form id="reservationForm" action="<?= base_url('reservation/buy/' . $product['produkid']); ?>" method="post">
                     <?= csrf_field(); ?>
                     <div class="row gx-4 gx-lg-5 align-items-center">
                         <!-- Product Image (col-md-8) -->
@@ -146,7 +146,7 @@
                                     <?php foreach ($menuOptions as $option) : ?>
                                         <?php if (!empty($option['nama_menu'])) : ?>
                                             <label class="option-item">
-                                                <input type="radio" name="menu_id" value="<?= $option['produk_id']; ?>" required>
+                                                <input type="radio" name="menu_id" value="<?= $option['produk_id']; ?>">
                                                 <div class="option-content">
                                                     <img src="<?= base_url('uploads/' . $product['photos_filenames']) ?>" alt="Image 1">
                                                     <span><?= $option['nama_menu']; ?></span>
@@ -158,6 +158,7 @@
                                 </div>
                             </div>
 
+                            <input type="hidden" name="harga_produk" value="<?= $product['harga_produk']; ?>">
                             <div class="d-flex flex-column flex-md-row">
                                 <button type="submit" class="btn btn-outline-dark w-100">Buy</button>
                             </div>

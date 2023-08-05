@@ -9,6 +9,7 @@
         "codeigniter4/framework": "^4.0",
         "midtrans/midtrans-php": "^2.5",
         "myth/auth": "^1.2",
+        "nesbot/carbon": "^2.68",
         "paragonie/certainty": "^2.8",
         "symfony/filesystem": "^6.3"
     },

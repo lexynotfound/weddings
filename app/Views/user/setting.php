@@ -81,15 +81,15 @@
                                             </a>
                                             <div class="dropdown-divider"></div>
                                         <?php endif; ?>
-                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Reservation
                                         </a>
-                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Transaction
                                         </a>
-                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Settings
                                         </a>
@@ -128,7 +128,7 @@
                     <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="<?= base_url('home') ?>">Home</a></li>
-                            <li class="breadcrumb-item"><a href="#">User</a></li>
+                            <li class="breadcrumb-item"><a href="<?=base_url('user')?>">User</a></li>
                             <li class="breadcrumb-item active" aria-current="page">User Profile</li>
                         </ol>
                     </nav>
@@ -196,7 +196,7 @@
                                 <div class="col-sm-9">
                                     <p class="text-muted mb-0">
                                         <?= user()->username; ?>
-                                        <a href="<?= base_url('user/edit_profile'); ?>" class="ms-2 text-decoration-none">Ubah</a>
+                                        <a href="<?= base_url('user/edit_profile'); ?>" class="ms-2 text-decoration-none"></a>
                                     </p>
                                 </div>
                             </div>

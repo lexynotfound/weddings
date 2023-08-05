@@ -9,7 +9,7 @@
     <meta name="description" content="">
     <meta name="author" content="Mark Otto, Jacob Thornton, and Bootstrap contributors">
     <meta name="generator" content="Hugo 0.115.4">
-    <title>Checkout example · Bootstrap v5.3</title>
+    <title><?= $title; ?></title>
 
     <link rel="canonical" href="https://getbootstrap.com/docs/5.3/examples/checkout/">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-4bw+/aepP/YC94hEpVNVgiZdgIC5+VKNBQNGCHeKRQN+PtmoHDEXuppvnDJzQIu9" crossorigin="anonymous">
@@ -164,15 +164,15 @@
                                             </a>
                                             <div class="dropdown-divider"></div>
                                         <?php endif; ?>
-                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Reservation
                                         </a>
-                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Transaction
                                         </a>
-                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Settings
                                         </a>
@@ -267,6 +267,19 @@
 
     <div class="container">
         <main>
+            <div class="row">
+                <div class="col mt-3">
+                    <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-4">
+                        <ol class="breadcrumb mb-0">
+                            <li class="breadcrumb-item"><a href="<?= base_url('home') ?>">Home</a></li>
+                            <li class="breadcrumb-item"><a href="<? base_url('home/produk') ?>">Detail</a></li>
+                            <li class="breadcrumb-item"><a href="<? base_url('home/produk') ?>"><?= $reservation['nama_produk']; ?></a></li>
+                            <li class="breadcrumb-item"><a href="<?= base_url('payment/dp') ?>">Payment</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><?= $reservation['id_transaksi']; ?></li>
+                        </ol>
+                    </nav>
+                </div>
+            </div>
             <div class="py-5 text-center border mt-4 rounded">
                 <div class="row">
                     <div class="col-md-4 d-flex align-items-start justify-content-center">
@@ -321,9 +334,9 @@
 
                 <div class="col-md-7 col-lg-8">
                     <h4 class="mb-3">Detail Package</h4>
-                    <form class="needs-validation was-validated" action="<?= base_url('payment/buy/'. $reservation['reservationid']); ?>" method="post" novalidate="">
+                    <form class="needs-validation was-validated" action="<?= base_url('payment/buy/' . $reservation['reservationid']); ?>" method="post" novalidate="">
                         <?= csrf_field(); ?>
-                        <input type="hidden" name="reservation_detail_id" value="<?= $reservation['reservation_detail_id']; ?>">
+
                         <div class="row g-3">
                             <div class="avatar me-3">
                                 <!-- Assuming you have a user profile image URL stored in $reservation['foto'] -->
@@ -410,13 +423,69 @@
                                     </div>
                                 </div>
                             </div>
+
+                            <h4 class="mb-3 mt-5">Payment</h4>
+
+                            <div class="my-3">
+                                <div class="form-check">
+                                    <input id="credit" name="total_harga" type="radio" class="form-check-input" checked="" required>
+                                    <label class=" form-check-label" for="credit">Down Payment</label>
+                                </div>
+                                <div class="border rounded-3 p-4 mt-3">
+                                    <p class="mb-1">Cara Pembayaran</p>
+                                    <div class="avatar me-3">
+                                        <!-- Assuming you have a user profile image URL stored in $reservation['foto'] -->
+                                        <label class="lg-label fw-bold">
+                                            Masukkan no rekening berikut di bawah ini
+                                            5785785847
+                                            lalu abis itu jika anda menggunakan mobile banking isikan
+                                            di note ketikan melakukan transfer dengan memasukkan nama package
+                                            yang anda pilih <?= $reservation['nama_produk']; ?>
+
+                                            Lalu setelah itu Upload bukti pembayaran di bawah ini
+                                        </label>
+                                    </div>
+                                    <p class="mb-1 mt-3">Upload Bukti Pembayaran</p>
+                                    <div class="avatar me-3 mt-3">
+                                        <div class="row">
+                                            <!--  <div class="col-md-4">
+                                    <div class="photo-upload-section">
+                                        <img src="#" class="uploaded-image" alt="Uploaded Photo">
+                                        <input type="file" class="file-input" accept="image/*" name="photos_filenames" onchange="previewImage(event)">
+                                    </div>
+                                </div> -->
+                                            <div class="col-md-4">
+                                                <div class="photo-upload-section">
+                                                    <img src="#" class="uploaded-image" alt="Uploaded Photo">
+                                                    <input type="file" class="file-input" accept="image/*" name="upload_transfer" onchange="previewImage(event)">
+                                                </div>
+                                            </div>
+                                            <!-- <div class="col-md-4">
+                                    <div class="photo-upload-section">
+                                        <img src="#" class="uploaded-image" alt="Uploaded Photo">
+                                        <input type="file" class="file-input" accept="image/*" name="photo_filename" onchange="previewImage(event)">
+                                    </div>
+                                </div> -->
+                                        </div>
+                                    </div>
+                                </div>
+                                <!-- <div class="form-check">
+                                    <input id="debit" name="paymentMethod" type="radio" class="form-check-input" required="">
+                                    <label class="form-check-label" for="debit">Debit card</label>
+                                </div>
+                                <div class="form-check">
+                                    <input id="paypal" name="paymentMethod" type="radio" class="form-check-input" required="">
+                                    <label class="form-check-label" for="paypal">PayPal</label>
+                                </div> -->
+                            </div>
                             <!-- Add the dp amount and status input fields -->
-                            <input type="hidden" name="total_harga" value="<?= $reservation['harga_produk']; ?>">
-                            <input type="hidden" name="status">
+                            <!-- Change the name to 'product_price' instead of 'total_harga' -->
+                            <input type="hidden" name="reservation_id" value="<?= $reservation['reservationid']; ?>">
+                            <input type="hidden" name="transaksi_id" value="<?= $reservation['transaksi_id']; ?>">
+                            <!-- <input type="hidden" name="payment_option" value="full"> For full payment -->
                             <button class="w-100 btn btn-primary btn-lg" type="submit">Continue to payment</button>
                     </form>
                 </div>
-
             </div>
         </main>
 

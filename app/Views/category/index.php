@@ -168,15 +168,15 @@
                                             </a>
                                             <div class="dropdown-divider"></div>
                                         <?php endif; ?>
-                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Reservation
                                         </a>
-                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Transaction
                                         </a>
-                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Settings
                                         </a>
@@ -261,19 +261,19 @@
         <div class="container">
             <ul class="nav justify-content-center">
                 <li class="nav-item">
-                    <a class="nav-link nav-link-bottoms-icons text-center text-black" aria-current="page" href="<?=base_url('best')?>">
+                    <a class="nav-link nav-link-bottoms-icons text-center text-black" aria-current="page" href="<?= base_url('best') ?>">
                         <img src="<?= base_url(); ?>/images/Star.svg" alt="Best" style="width: 40px; height: 40px;">
                         Best
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-bottoms-icons text-center text-black" aria-current="page" href="<?=base_url('lokasi')?>">
+                    <a class="nav-link nav-link-bottoms-icons text-center text-black" aria-current="page" href="<?= base_url('lokasi') ?>">
                         <img src="<?= base_url(); ?>/images/lc.svg" alt="Best" style="width: 40px; height: 40px;">
                         Location
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-bottoms-icons text-center text-black" aria-current="page" href="<?=base_url('category')?>">
+                    <a class="nav-link nav-link-bottoms-icons text-center text-black" aria-current="page" href="<?= base_url('category') ?>">
                         <img src="<?= base_url(); ?>/images/i.svg" alt="Best" style="width: 40px; height: 40px;">
                         Category
                     </a>
@@ -281,41 +281,119 @@
             </ul>
         </div>
 
-        <section>
-            <div class="container py-5">
-                <div class="row justify-content-center">
-                    <?php foreach ($produk as $pd) : ?>
-                        <div class="col-md-12 col-lg-3 mb-4 mb-lg-0">
-                            <a href="<?= base_url('home/detail/' . $pd['produkid']); ?>" class="card-link nav-link">
-                                <div class="card">
-                                    <!-- Display product information -->
-                                    <img src="<?= base_url('uploads/' . $pd['photos_filenames']) ?>" class="card-img-top" alt="<?= $pd['produkid']; ?>" />
-                                    <div class="card-body">
-                                        <div class="d-flex justify-content-between">
-                                            <p class="small"><?= $pd['nama_produk']; ?></p>
+        <section class="mt-5 py-5 bg-light rounded-3">
+            <div class="container px-4 px-lg-5 mt-3">
+                <h2 class="fw-bolder mb-4">Bundle</h2>
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    <?php if (!empty($relatedProducts)) : ?>
+                        <?php foreach ($relatedProducts as $relatedProduct) : ?>
+                            <div class="col mb-5">
+                                <a href="<?= base_url('home/detail/' . $relatedProduct['produkid']) ?>" class="card h-100 custom-link">
+                                    <!-- Related Product image -->
+                                    <img class="card-img-top" src="<?= base_url('uploads/' . $relatedProduct['photos_filenames']) ?>" alt="Related Product Image" />
+                                    <!-- Related Product details -->
+                                    <div class="card-body p-4">
+                                        <div class="text-start">
+                                            <!-- Related Product name -->
+                                            <h5 class="fw-bolder"><?= $relatedProduct['nama_produk']; ?></h5>
+                                            <!-- Related Product price -->
+                                            Rp.<?= number_format($relatedProduct['harga_produk'], 0, ',', '.'); ?>
                                         </div>
-
-                                        <div class="d-flex justify-content-between mb-3">
-                                            <h5 class="mb-0"><?= $pd['username']; ?></h5>
-
-                                            <h5 class="text-dark mb-0">Rp.<?= number_format($pd['harga_produk'], 0, ',', '.'); ?></h5>
-                                        </div>
-
-                                        <div class="d-flex justify-content-between mb-2">
-                                            <p class="text-muted mb-0">Location: <?= $pd['lokasi']; ?> <span class="fw-bold"></span></p>
-                                            <div class="ms-auto text-warning">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                            </div>
+                                        <div class="d-flex align-items-center mt-2">
+                                            <!-- User photo -->
+                                            <img src="<?= base_url('/images/' . $relatedProduct['foto']) ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
+                                            <!-- Location text -->
+                                            <span class="small"><?= $relatedProduct['lokasi']; ?></span>
                                         </div>
                                     </div>
-                                </div>
-                            </a>
+                                </a>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <div class="d-flex justify-content-center align-items-center mt-2" role="alert" style="height: 200px;">
+                            <div class="col-12 text-center">
+                                <p>No related packages found.</p>
+                            </div>
                         </div>
-                    <?php endforeach; ?>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-5 py-5 bg-light rounded-3">
+            <div class="container px-4 px-lg-5 mt-3">
+                <h2 class="fw-bolder mb-4">Non Bundles</h2>
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    <?php if (!empty($relatedProducts)) : ?>
+                        <?php foreach ($relatedProducts as $relatedProduct) : ?>
+                            <div class="col mb-5">
+                                <a href="<?= base_url('home/detail/' . $relatedProduct['produkid']) ?>" class="card h-100 custom-link">
+                                    <!-- Related Product image -->
+                                    <img class="card-img-top" src="<?= base_url('uploads/' . $relatedProduct['photos_filenames']) ?>" alt="Related Product Image" />
+                                    <!-- Related Product details -->
+                                    <div class="card-body p-4">
+                                        <div class="text-start">
+                                            <!-- Related Product name -->
+                                            <h5 class="fw-bolder"><?= $relatedProduct['nama_produk']; ?></h5>
+                                            <!-- Related Product price -->
+                                            Rp.<?= number_format($relatedProduct['harga_produk'], 0, ',', '.'); ?>
+                                        </div>
+                                        <div class="d-flex align-items-center mt-2">
+                                            <!-- User photo -->
+                                            <img src="<?= base_url('/images/' . $relatedProduct['foto']) ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
+                                            <!-- Location text -->
+                                            <span class="small"><?= $relatedProduct['lokasi']; ?></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <div class="d-flex justify-content-center align-items-center mt-2" role="alert" style="height: 200px;">
+                            <div class="col-12 text-center">
+                                <p>No related packages found.</p>
+                            </div>
+                        </div>
+                    <?php endif; ?>
+                </div>
+            </div>
+        </section>
+
+        <section class="mt-5 py-5 bg-light rounded-3">
+            <div class="container px-4 px-lg-5 mt-3">
+                <h2 class="fw-bolder mb-4">Documentation</h2>
+                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
+                    <?php if (!empty($relatedProducts)) : ?>
+                        <?php foreach ($relatedProducts as $relatedProduct) : ?>
+                            <div class="col mb-5">
+                                <a href="<?= base_url('home/detail/' . $relatedProduct['produkid']) ?>" class="card h-100 custom-link">
+                                    <!-- Related Product image -->
+                                    <img class="card-img-top" src="<?= base_url('uploads/' . $relatedProduct['photos_filenames']) ?>" alt="Related Product Image" />
+                                    <!-- Related Product details -->
+                                    <div class="card-body p-4">
+                                        <div class="text-start">
+                                            <!-- Related Product name -->
+                                            <h5 class="fw-bolder"><?= $relatedProduct['nama_produk']; ?></h5>
+                                            <!-- Related Product price -->
+                                            Rp.<?= number_format($relatedProduct['harga_produk'], 0, ',', '.'); ?>
+                                        </div>
+                                        <div class="d-flex align-items-center mt-2">
+                                            <!-- User photo -->
+                                            <img src="<?= base_url('/images/' . $relatedProduct['foto']) ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
+                                            <!-- Location text -->
+                                            <span class="small"><?= $relatedProduct['lokasi']; ?></span>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        <?php endforeach; ?>
+                    <?php else : ?>
+                        <div class="d-flex justify-content-center align-items-center mt-2" role="alert" style="height: 200px;">
+                            <div class="col-12 text-center">
+                                <p>No related packages found.</p>
+                            </div>
+                        </div>
+                    <?php endif; ?>
                 </div>
             </div>
         </section>
