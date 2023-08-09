@@ -361,7 +361,7 @@
                 <?php else : ?>
                     <div class="d-flex justify-content-center align-items-center mt-2" role="alert" style="height: 200px;">
                         <div class="col-12 text-center">
-                            <p>No packages bundles found.</p>
+                            <p>No packages non-bundles found.</p>
                         </div>
                     </div>
                 <?php endif; ?>
@@ -394,7 +394,7 @@
                 <?php else : ?>
                     <div class="d-flex justify-content-center align-items-center mt-2" role="alert" style="height: 200px;">
                         <div class="col-12 text-center">
-                            <p>No packages bundles found.</p>
+                            <p>No Documentation found.</p>
                         </div>
                     </div>
                 <?php endif; ?>

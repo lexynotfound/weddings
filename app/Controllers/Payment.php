@@ -98,6 +98,28 @@ class Payment extends BaseController
         // Calculate the DP amount (30% of the total price)
         $dpAmount = $totalHarga * 0.3;
 
+        // Validate and upload the payment receipt photo
+        $validation = \Config\Services::validation();
+
+        $validation->setRules([
+            'payment_receipt' => [
+                'uploaded[payment_receipt]',
+                'mime_in[payment_receipt,image/jpg,image/jpeg,image/png]',
+                'max_size[payment_receipt,50000]', // 50 MB in kilobytes
+                // 'min_size[payment_receipt,10000]'  // 10 MB in kilobytes (optional)
+            ]
+        ]);
+
+        if (!$validation->run(request()->getPost())) {
+            return redirect()->back()->with('error', $validation->getErrors());
+        }
+
+        $file = request()->getFile('payment_receipt');
+        $filename = $file->getRandomName();
+        $file->move('./uploads',
+            $filename
+        );
+
         // Save the payment detail into the database
         $user_id = user()->id;
         $paymentData = [
@@ -105,6 +127,7 @@ class Payment extends BaseController
             'total_payment' => $dpAmount, // Save the DP amount as total_payment
             'user_id' => $user_id,
             'status' => 'Pembayaran DP', // Set the status to 'Pembayaran DP'
+            'payment_receipt' => $filename,
             'transaksi_id' => $transaksi['id'], // Use the correct primary key for transaksi
             'reservation_id' => $reservation['id'], // Use the correct primary key for reservation
             'payment_date' => date('Y-m-d H:i:s'),
@@ -118,6 +141,58 @@ class Payment extends BaseController
         // Redirect to the reservation page or any other success page
         return redirect()->to('payment/invoice/' . $paymentData['id_payment'])->with('success', 'Your reservation has been created successfully.');
     }
+
+    /* public function paid($id = 0)
+    {
+        // Validate if the user has completed their profile details
+        $userData = user()->toArray();
+        if (!$this->isProfileComplete($userData)) {
+            return redirect()->to('user/setting')->with('error', 'Please complete your profile details before making a reservation.');
+        }
+
+        // Check if the reservation exists and get the reservation data
+        $reservation = $this->reservationModel->find($id);
+        if (!$reservation) {
+            return redirect()->to('payment/error-page')->with('error', 'Reservation not found.');
+        }
+
+        // Fetch the corresponding transaksi data using the transaksi_id from the reservation
+        $transaksi = $this->transaksiModel->find($reservation['transaksi_id']);
+        if (!$transaksi) {
+            return redirect()->to('payment/error-page')->with('error', 'Transaksi not found.');
+        }
+
+        // Get the 'total_harga' from the 'transaksi' table
+        $totalHarga = $transaksi['total_harga'];
+
+        // Upload gambar dengan nama acak
+        $photo1 = $this->request->getFile('payment_receipt');
+        $newFileName1 = $photo1->getRandomName();
+        $photo1->move('./uploads', $newFileName1);
+        
+
+        // Save the payment detail into the database
+        $user_id = user()->id;
+        $paymentData = [
+            'id_payment' => 'PAY-' . uniqid(), // Generate the payment ID for DP
+            'total_payment' =>  $totalHarga, // Save the DP amount as total_payment
+            'user_id' => $user_id,
+            'status' => 'PAID', // Set the status to 'Pembayaran DP'
+            'payment_receipt' => $photo1,
+            'transaksi_id' => $transaksi['id'], // Use the correct primary key for transaksi
+            'reservation_id' => $reservation['id'], // Use the correct primary key for reservation
+            'payment_date' => date('Y-m-d H:i:s'),
+        ];
+        $this->paymentModel->insert($paymentData);
+
+        // Save the id_payment in session
+        session()->set(
+            'id_payment',
+            $paymentData['id_payment']
+        );
+        // Redirect to the reservation page or any other success page
+        return redirect()->to('payment/invoice/' . $paymentData['id_payment'])->with('success', 'Your reservation has been created successfully.');
+    } */
 
     public function paid($id = 0)
     {
@@ -141,22 +216,56 @@ class Payment extends BaseController
 
         // Get the 'total_harga' from the 'transaksi' table
         $totalHarga = $transaksi['total_harga'];
-        
+
+        // Validate and upload the payment receipt photo
+        $validation = \Config\Services::validation();
+
+        $validation->setRules([
+            'payment_receipt' => [
+                'uploaded[payment_receipt]',
+                'mime_in[payment_receipt,image/jpg,image/jpeg,image/png]',
+                'max_size[payment_receipt,50000]', // 50 MB in kilobytes
+                // 'min_size[payment_receipt,10000]'  // 10 MB in kilobytes (optional)
+            ]
+        ]);
+
+        if (!$validation->run(request()->getPost())) {
+            return redirect()->back()->with('error', $validation->getErrors());
+        }
+
+        $file = request()->getFile('payment_receipt');
+        $filename = $file->getRandomName();
+        $file->move('./uploads', $filename);
 
         // Save the payment detail into the database
         $user_id = user()->id;
         $paymentData = [
-            'id_payment' => 'PAY-' . uniqid(), // Generate the payment ID for DP
-            'total_payment' =>  $totalHarga, // Save the DP amount as total_payment
+            'id_payment' => 'PAY-' . uniqid(),
+            'total_payment' =>  $totalHarga,
             'user_id' => $user_id,
-            'status' => 'PAID', // Set the status to 'Pembayaran DP'
-            'transaksi_id' => $transaksi['id'], // Use the correct primary key for transaksi
-            'reservation_id' => $reservation['id'], // Use the correct primary key for reservation
+            'status' => 'PAID',
+            'payment_receipt' => $filename,
+            'transaksi_id' => $transaksi['id'],
+            'reservation_id' => $reservation['id'],
             'payment_date' => date('Y-m-d H:i:s'),
         ];
-        $this->paymentModel->insert($paymentData);
 
-        // Set your Midtrans server key
+        // Insert the payment data into the database
+        try {
+            $this->paymentModel->insert($paymentData);
+        } catch (\Exception $e) {
+            return redirect()->back()->with('error', 'An error occurred while saving payment data: ' . $e->getMessage());
+        }
+
+        // Save the id_payment in session
+        session()->set('id_payment', $paymentData['id_payment']);
+
+        // Redirect to the reservation page or any other success page
+        return redirect()->to('payment/invoice/' . $paymentData['id_payment'])->with('success', 'Your reservation has been created successfully.');
+    }
+
+    
+      /* // Set your Midtrans server key
         Config::$serverKey = 'SB-Mid-server-KGJ8_8kepWGli0XcAaGJ0xa7';
         // Set to Development/Sandbox environment (change to false for production)
         Config::$isProduction = false;
@@ -184,16 +293,7 @@ class Payment extends BaseController
         ]);
 
         // Redirect to Midtrans payment page using the payment token
-        return redirect()->to('https://app.sandbox.midtrans.com/snap/v1/transactions/' . $paymentToken);
-
-        // Save the id_payment in session
-        session()->set(
-            'id_payment',
-            $paymentData['id_payment']
-        );
-        // Redirect to the reservation page or any other success page
-        return redirect()->to('payment/invoice/' . $paymentData['id_payment'])->with('success', 'Your reservation has been created successfully.');
-    }
+        return redirect()->to('https://app.sandbox.midtrans.com/snap/v1/transactions/' . $paymentToken); */
 
     /* public function paid($id = 0)
     {

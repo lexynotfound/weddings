@@ -303,7 +303,7 @@
                 <div class="col-md-5 col-lg-4 order-md-last sticky-top">
                     <h4 class="d-flex justify-content-between align-items-center mb-3">
                         <span class="text-primary">Detail Order</span>
-                        <span class="badge bg-primary rounded-pill">2</span>
+                        <span class="badge bg-primary rounded-pill">1</span>
                     </h4>
                     <ul class="list-group mb-3">
                         <li class="list-group-item d-flex justify-content-between lh-sm">
@@ -327,7 +327,7 @@
 
                 <div class="col-md-7 col-lg-8">
                     <h4 class="mb-3">Detail Package</h4>
-                    <form class="needs-validation was-validated" action="<?= base_url('payment/paid/' . $reservation['reservationid']); ?>" method="post" novalidate="">
+                    <form class="needs-validation was-validated" action="<?= base_url('payment/paid/' . $reservation['reservationid']); ?>" method="post" enctype="multipart/form-data" novalidate="">
                         <?= csrf_field(); ?>
 
                         <div class="row g-3">
@@ -449,7 +449,7 @@
                                             <div class="col-md-4">
                                                 <div class="photo-upload-section">
                                                     <img src="#" class="uploaded-image" alt="Uploaded Photo">
-                                                    <input type="file" class="file-input" accept="image/*" name="upload_transfer" onchange="previewImage(event)">
+                                                    <input type="file" class="file-input" accept="image/*" name="payment_receipt" onchange="previewImage(event)">
                                                 </div>
                                             </div>
                                             <!-- <div class="col-md-4">

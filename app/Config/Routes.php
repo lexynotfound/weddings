@@ -51,6 +51,11 @@ $routes->group('category', ['namespace' => 'App\Controllers'], function ($routes
     $routes->get('error-page', 'Home::errorpage');
 });
 
+$routes->group('best', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('/', 'Best::index');
+    $routes->get('error-page', 'Home::errorpage');
+});
+
 $routes->group('reservation', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('index/(:num)', 'Reservation::index/$1');
     $routes->get('reservation/(:segment)', 'Reservation::reservation/$1');

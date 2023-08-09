@@ -334,7 +334,7 @@
 
                 <div class="col-md-7 col-lg-8">
                     <h4 class="mb-3">Detail Package</h4>
-                    <form class="needs-validation was-validated" action="<?= base_url('payment/buy/' . $reservation['reservationid']); ?>" method="post" novalidate="">
+                    <form class="needs-validation was-validated" action="<?= base_url('payment/buy/' . $reservation['reservationid']); ?>" enctype="multipart/form-data" method="post" novalidate="">
                         <?= csrf_field(); ?>
 
                         <div class="row g-3">
@@ -457,7 +457,7 @@
                                             <div class="col-md-4">
                                                 <div class="photo-upload-section">
                                                     <img src="#" class="uploaded-image" alt="Uploaded Photo">
-                                                    <input type="file" class="file-input" accept="image/*" name="upload_transfer" onchange="previewImage(event)">
+                                                    <input type="file" class="file-input" accept="image/*" name="payment_receipt" onchange="previewImage(event)">
                                                 </div>
                                             </div>
                                             <!-- <div class="col-md-4">
@@ -564,6 +564,25 @@
             buttonElementss.innerHTML = ` ${formattedDpAmount}`;
             buttonElements.innerHTML = ` ${formattedDpAmount}`;
         });
+    </script>
+
+    <script>
+        function previewImage(event) {
+            const fileInput = event.target;
+            const photoUploadSection = fileInput.parentElement;
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const uploadedImage = photoUploadSection.querySelector('.uploaded-image');
+                    uploadedImage.src = e.target.result;
+                    photoUploadSection.classList.add('hide-text');
+                };
+
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
     </script>
 
 </body>

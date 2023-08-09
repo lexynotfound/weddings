@@ -59,7 +59,7 @@ class Category extends BaseController
     public function index()
     {
         $data = [
-            'title' => 'Wedding Organizer',
+            'title' => 'Category',
         ];
 
         // Get related products with kategori_id = 1
