@@ -62,19 +62,78 @@ class Category extends BaseController
             'title' => 'Wedding Organizer',
         ];
 
-        // Perform the LEFT JOIN with product and kategori tables
-        $this->builder = $this->db->table('product');
-        $this->builder->select('product.id as produkid, product.nama_produk, product.description, product.user_id, product.kategori_id, product.harga_produk, product.photos_filenames, product.created_at, product.updated_at, product.deleted_at, kategori.nama_menu, kategori.deskripsi as kategori_deskripsi, kategori.isi,kategori.produk_id,categories.nama_categories, users.username, users.email, users.nama, users.foto, users.jenis_kelamin, users.telepon, users.lokasi');
-        $this->builder->join('kategori', 'kategori.produk_id = product.id', 'left'); // Use 'left' for LEFT JOIN
-        $this->builder->join('categories', 'categories.id = product.kategori_id', 'left'); // Use 'left' for LEFT JOIN
-        $this->builder->join('users', 'users.id = product.user_id', 'left'); // Use 'left' for LEFT JOIN
-        // Get the product data with category information and user information
-        $products = $this->builder->get()->getResultArray();
+        // Get related products with kategori_id = 1
+        $categoriesProducts = $this->getCategoriesProducts();
+
+        // Pass the related product data to the view
+        $data['categoriesProducts'] = $categoriesProducts;
+        
+        // Get related products with kategori_id = 2
+        $categoriesProductsDC = $this->getCategoriesProductsDC();
+
+        // Pass the related product data to the view
+        $data['categoriesProductsDC'] = $categoriesProductsDC;
+
+        // Get related products with kategori_id = 3
+        $categoriesProductsNon = $this->getCategoriesProductsNon();
+
+        // Pass the related product data to the view
+        $data['categoriesProductsNon'] = $categoriesProductsNon;
 
         // Pass the product data to the view
-        $data['produk'] = $products;
 
         return view('category/index', $data);
+    }
+
+    private function getCategoriesProducts()
+    {
+        // Get distinct products with kategori_id = 1
+        $this->builder = $this->db->table('product');
+        $this->builder->select('product.id as produkid, product.nama_produk,product.kategori_id, product.harga_produk, product.photos_filenames, users.foto, users.lokasi');
+        $this->builder->join('kategori', 'kategori.produk_id = product.id', 'left'); // Use 'left' for LEFT JOIN
+        $this->builder->join('users', 'users.id = product.user_id', 'left'); // Use 'left' for LEFT JOIN
+        $this->builder->where('product.kategori_id', 1); // Filter products with kategori_id = 1
+        $this->builder->distinct(); // Make sure only distinct products are selected
+        $this->builder->orderBy('product.id', 'DESC');
+
+        $query = $this->builder->get();
+        $products = $query->getResultArray();
+
+        return $products;
+    }
+
+    private function getCategoriesProductsDC()
+    {
+        // Get distinct products with kategori_id = 1
+        $this->builder = $this->db->table('product');
+        $this->builder->select('product.id as produkid, product.nama_produk,product.kategori_id, product.harga_produk, product.photos_filenames, users.foto, users.lokasi');
+        $this->builder->join('kategori', 'kategori.produk_id = product.id', 'left'); // Use 'left' for LEFT JOIN
+        $this->builder->join('users', 'users.id = product.user_id', 'left'); // Use 'left' for LEFT JOIN
+        $this->builder->where('product.kategori_id', 2); // Filter products with kategori_id = 1
+        $this->builder->distinct(); // Make sure only distinct products are selected
+        $this->builder->orderBy('product.id', 'DESC');
+
+        $query = $this->builder->get();
+        $products = $query->getResultArray();
+
+        return $products;
+    }
+
+    private function getCategoriesProductsNon()
+    {
+        // Get distinct products with kategori_id = 1
+        $this->builder = $this->db->table('product');
+        $this->builder->select('product.id as produkid, product.nama_produk,product.kategori_id, product.harga_produk, product.photos_filenames, users.foto, users.lokasi');
+        $this->builder->join('kategori', 'kategori.produk_id = product.id', 'left'); // Use 'left' for LEFT JOIN
+        $this->builder->join('users', 'users.id = product.user_id', 'left'); // Use 'left' for LEFT JOIN
+        $this->builder->where('product.kategori_id', 3); // Filter products with kategori_id = 1
+        $this->builder->distinct(); // Make sure only distinct products are selected
+        $this->builder->orderBy('product.id', 'DESC');
+
+        $query = $this->builder->get();
+        $products = $query->getResultArray();
+
+        return $products;
     }
 
     public function errorpage()

@@ -16,6 +16,8 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Add Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Vj6tzy4Hg7J1K25b4ml2p15zYLq6xWq5rI3/ABttrKA2Ap" crossorigin="anonymous">
     <style>
         /* Rounded carousel */
@@ -104,6 +106,25 @@
             flex-direction: column;
             align-items: center;
             text-align: center;
+        }
+
+        /* Add your custom styles here */
+        /* Add your custom styles here */
+        .custom-carousel {
+            /* Adjust the container height and other styles as needed */
+            max-width: 100%;
+            overflow: hidden;
+            position: relative;
+        }
+
+        .custom-carousel .carousel-inner {
+            display: flex;
+        }
+
+        /* Add your custom styles here */
+        .custom-card {
+            margin-bottom: 20px;
+            /* Add margin between cards */
         }
     </style>
 
@@ -284,117 +305,99 @@
         <section class="mt-5 py-5 bg-light rounded-3">
             <div class="container px-4 px-lg-5 mt-3">
                 <h2 class="fw-bolder mb-4">Bundle</h2>
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    <?php if (!empty($relatedProducts)) : ?>
-                        <?php foreach ($relatedProducts as $relatedProduct) : ?>
-                            <div class="col mb-5">
-                                <a href="<?= base_url('home/detail/' . $relatedProduct['produkid']) ?>" class="card h-100 custom-link">
-                                    <!-- Related Product image -->
-                                    <img class="card-img-top" src="<?= base_url('uploads/' . $relatedProduct['photos_filenames']) ?>" alt="Related Product Image" />
-                                    <!-- Related Product details -->
+                <?php if (!empty($categoriesProducts)) : ?>
+                    <div class="row">
+                        <?php foreach ($categoriesProducts as $categoriesProduct) : ?>
+                            <div class="col-md-3 custom-card">
+                                <a href="<?= base_url('home/detail/' . $categoriesProduct['produkid']) ?>" class="card h-100 custom-link">
+                                    <img class="card-img-top" src="<?= base_url('uploads/' . $categoriesProduct['photos_filenames']) ?>" alt="Related Product Image" />
                                     <div class="card-body p-4">
                                         <div class="text-start">
-                                            <!-- Related Product name -->
-                                            <h5 class="fw-bolder"><?= $relatedProduct['nama_produk']; ?></h5>
-                                            <!-- Related Product price -->
-                                            Rp.<?= number_format($relatedProduct['harga_produk'], 0, ',', '.'); ?>
+                                            <h5 class="fw-bolder"><?= $categoriesProduct['nama_produk']; ?></h5>
+                                            Rp.<?= number_format($categoriesProduct['harga_produk'], 0, ',', '.'); ?>
                                         </div>
                                         <div class="d-flex align-items-center mt-2">
-                                            <!-- User photo -->
-                                            <img src="<?= base_url('/images/' . $relatedProduct['foto']) ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
-                                            <!-- Location text -->
-                                            <span class="small"><?= $relatedProduct['lokasi']; ?></span>
+                                            <img src="<?= base_url('/images/' . $categoriesProduct['foto']) ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
+                                            <span class="small"><?= $categoriesProduct['lokasi']; ?></span>
                                         </div>
                                     </div>
                                 </a>
                             </div>
                         <?php endforeach; ?>
-                    <?php else : ?>
-                        <div class="d-flex justify-content-center align-items-center mt-2" role="alert" style="height: 200px;">
-                            <div class="col-12 text-center">
-                                <p>No related packages found.</p>
-                            </div>
+                    </div>
+                <?php else : ?>
+                    <div class="d-flex justify-content-center align-items-center mt-2" role="alert" style="height: 200px;">
+                        <div class="col-12 text-center">
+                            <p>No packages bundles found.</p>
                         </div>
-                    <?php endif; ?>
-                </div>
+                    </div>
+                <?php endif; ?>
             </div>
         </section>
 
         <section class="mt-5 py-5 bg-light rounded-3">
             <div class="container px-4 px-lg-5 mt-3">
-                <h2 class="fw-bolder mb-4">Non Bundles</h2>
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    <?php if (!empty($relatedProducts)) : ?>
-                        <?php foreach ($relatedProducts as $relatedProduct) : ?>
-                            <div class="col mb-5">
-                                <a href="<?= base_url('home/detail/' . $relatedProduct['produkid']) ?>" class="card h-100 custom-link">
-                                    <!-- Related Product image -->
-                                    <img class="card-img-top" src="<?= base_url('uploads/' . $relatedProduct['photos_filenames']) ?>" alt="Related Product Image" />
-                                    <!-- Related Product details -->
+                <h2 class="fw-bolder mb-4">Non-Bundle</h2>
+                <?php if (!empty($categoriesProductsNon)) : ?>
+                    <div class="row">
+                        <?php foreach ($categoriesProductsNon as $categoriesProduct) : ?>
+                            <div class="col-md-3 custom-card">
+                                <a href="<?= base_url('home/detail/' . $categoriesProduct['produkid']) ?>" class="card h-100 custom-link">
+                                    <img class="card-img-top" src="<?= base_url('uploads/' . $categoriesProduct['photos_filenames']) ?>" alt="Related Product Image" />
                                     <div class="card-body p-4">
                                         <div class="text-start">
-                                            <!-- Related Product name -->
-                                            <h5 class="fw-bolder"><?= $relatedProduct['nama_produk']; ?></h5>
-                                            <!-- Related Product price -->
-                                            Rp.<?= number_format($relatedProduct['harga_produk'], 0, ',', '.'); ?>
+                                            <h5 class="fw-bolder"><?= $categoriesProduct['nama_produk']; ?></h5>
+                                            Rp.<?= number_format($categoriesProduct['harga_produk'], 0, ',', '.'); ?>
                                         </div>
                                         <div class="d-flex align-items-center mt-2">
-                                            <!-- User photo -->
-                                            <img src="<?= base_url('/images/' . $relatedProduct['foto']) ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
-                                            <!-- Location text -->
-                                            <span class="small"><?= $relatedProduct['lokasi']; ?></span>
+                                            <img src="<?= base_url('/images/' . $categoriesProduct['foto']) ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
+                                            <span class="small"><?= $categoriesProduct['lokasi']; ?></span>
                                         </div>
                                     </div>
                                 </a>
                             </div>
                         <?php endforeach; ?>
-                    <?php else : ?>
-                        <div class="d-flex justify-content-center align-items-center mt-2" role="alert" style="height: 200px;">
-                            <div class="col-12 text-center">
-                                <p>No related packages found.</p>
-                            </div>
+                    </div>
+                <?php else : ?>
+                    <div class="d-flex justify-content-center align-items-center mt-2" role="alert" style="height: 200px;">
+                        <div class="col-12 text-center">
+                            <p>No packages bundles found.</p>
                         </div>
-                    <?php endif; ?>
-                </div>
+                    </div>
+                <?php endif; ?>
             </div>
         </section>
 
         <section class="mt-5 py-5 bg-light rounded-3">
             <div class="container px-4 px-lg-5 mt-3">
                 <h2 class="fw-bolder mb-4">Documentation</h2>
-                <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                    <?php if (!empty($relatedProducts)) : ?>
-                        <?php foreach ($relatedProducts as $relatedProduct) : ?>
-                            <div class="col mb-5">
-                                <a href="<?= base_url('home/detail/' . $relatedProduct['produkid']) ?>" class="card h-100 custom-link">
-                                    <!-- Related Product image -->
-                                    <img class="card-img-top" src="<?= base_url('uploads/' . $relatedProduct['photos_filenames']) ?>" alt="Related Product Image" />
-                                    <!-- Related Product details -->
+                <?php if (!empty($categoriesProductsDC)) : ?>
+                    <div class="row">
+                        <?php foreach ($categoriesProductsDC as $categoriesProduct) : ?>
+                            <div class="col-md-3 custom-card">
+                                <a href="<?= base_url('home/detail/' . $categoriesProduct['produkid']) ?>" class="card h-100 custom-link">
+                                    <img class="card-img-top" src="<?= base_url('uploads/' . $categoriesProduct['photos_filenames']) ?>" alt="Related Product Image" />
                                     <div class="card-body p-4">
                                         <div class="text-start">
-                                            <!-- Related Product name -->
-                                            <h5 class="fw-bolder"><?= $relatedProduct['nama_produk']; ?></h5>
-                                            <!-- Related Product price -->
-                                            Rp.<?= number_format($relatedProduct['harga_produk'], 0, ',', '.'); ?>
+                                            <h5 class="fw-bolder"><?= $categoriesProduct['nama_produk']; ?></h5>
+                                            Rp.<?= number_format($categoriesProduct['harga_produk'], 0, ',', '.'); ?>
                                         </div>
                                         <div class="d-flex align-items-center mt-2">
-                                            <!-- User photo -->
-                                            <img src="<?= base_url('/images/' . $relatedProduct['foto']) ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
-                                            <!-- Location text -->
-                                            <span class="small"><?= $relatedProduct['lokasi']; ?></span>
+                                            <img src="<?= base_url('/images/' . $categoriesProduct['foto']) ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
+                                            <span class="small"><?= $categoriesProduct['lokasi']; ?></span>
                                         </div>
                                     </div>
                                 </a>
                             </div>
                         <?php endforeach; ?>
-                    <?php else : ?>
-                        <div class="d-flex justify-content-center align-items-center mt-2" role="alert" style="height: 200px;">
-                            <div class="col-12 text-center">
-                                <p>No related packages found.</p>
-                            </div>
+                    </div>
+                <?php else : ?>
+                    <div class="d-flex justify-content-center align-items-center mt-2" role="alert" style="height: 200px;">
+                        <div class="col-12 text-center">
+                            <p>No packages bundles found.</p>
                         </div>
-                    <?php endif; ?>
-                </div>
+                    </div>
+                <?php endif; ?>
             </div>
         </section>
 
@@ -527,6 +530,34 @@
             document.getElementById('carouselExample').addEventListener('mouseleave', function() {
                 document.querySelector('.carousel-control-prev').style.display = 'none';
                 document.querySelector('.carousel-control-next').style.display = 'none';
+            });
+        </script>
+
+        <!-- Add Owl Carousel JavaScript -->
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/OwlCarousel2/2.3.4/owl.carousel.min.js"></script>
+        <script>
+            $(document).ready(function() {
+                $(".custom-carousel").owlCarousel({
+                    items: 4,
+                    loop: true,
+                    nav: true,
+                    navText: ["<i class='fas fa-chevron-left'></i>", "<i class='fas fa-chevron-right'></i>"],
+                    dots: false,
+                    responsive: {
+                        0: {
+                            items: 1
+                        },
+                        576: {
+                            items: 2
+                        },
+                        992: {
+                            items: 3
+                        },
+                        1200: {
+                            items: 4
+                        }
+                    }
+                });
             });
         </script>
 
