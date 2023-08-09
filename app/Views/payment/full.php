@@ -114,7 +114,7 @@
                 <!-- ... (rest of the header code) ... -->
                 <div class="container">
                     <a class="navbar-brand" href="<?= base_url('home'); ?>">
-                        <img src="<?= base_url(); ?>/images/logo.svg" alt="logo" srcset="" width="100" height="" class="d-inline-block align-text-top">
+                        <img src="<?= base_url(); ?>/images/logo.jpg" alt="logo" srcset="" width="100" height="100" class="d-inline-block align-text-top">
                     </a>
 
                     <div class="container">
@@ -272,9 +272,9 @@
                     <nav aria-label="breadcrumb" class="bg-white rounded-3 p-3 mb-4">
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="<?= base_url('home') ?>">Home</a></li>
-                            <li class="breadcrumb-item"><a href="<?base_url('home/produk')?>">Detail</a></li>
-                            <li class="breadcrumb-item"><a href="<?base_url('home/produk')?>"><?= $reservation['nama_produk']; ?></a></li>
-                            <li class="breadcrumb-item"><a href="<?=base_url('payment')?>">Payment</a></li>
+                            <li class="breadcrumb-item"><a href="<? base_url('home/produk') ?>">Detail</a></li>
+                            <li class="breadcrumb-item"><a href="<? base_url('home/produk') ?>"><?= $reservation['nama_produk']; ?></a></li>
+                            <li class="breadcrumb-item"><a href="<?= base_url('payment') ?>">Payment</a></li>
                             <li class="breadcrumb-item active" aria-current="page"><?= $reservation['id_transaksi']; ?></li>
                         </ol>
                     </nav>
