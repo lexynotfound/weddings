@@ -264,6 +264,18 @@ class Payment extends BaseController
         return redirect()->to('payment/invoice/' . $paymentData['id_payment'])->with('success', 'Your reservation has been created successfully.');
     }
 
+    /* Menampilkan data Payment per user id atau sesuai yang login*/
+    private function getPaymentDataForUser($userId)
+    {
+        $this->builder = $this->db->table('payment');
+        $this->builder->select('payment.id as payment_id, payment.user_id, payment.id_payment, payment.transaksi_id, payment.reservation_id, payment.total_payment, payment.payment_receipt, payment.status, payment.payment_date, payment.payment_updated, transaksi.*, reservation.*, users.username, users.email, users.nama');
+        $this->builder->join('transaksi', 'transaksi.id = payment.transaksi_id', 'left');
+        $this->builder->join('reservation', 'reservation.id = payment.reservation_id', 'left');
+        $this->builder->join('users', 'users.id = payment.user_id', 'left');
+        $this->builder->where('payment.user_id', $userId);
+
+        return $this->builder->get()->getResultArray();
+    }
     
       /* // Set your Midtrans server key
         Config::$serverKey = 'SB-Mid-server-KGJ8_8kepWGli0XcAaGJ0xa7';

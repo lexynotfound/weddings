@@ -153,7 +153,7 @@
                         <div class="card-body p-0">
                             <ul class="list-group list-group-flush rounded-3">
                                 <li class="list-group-item d-flex justify-content-between align-items-center p-3">
-                                    <i class="fas fa-globe fa-lg text-warning"></i>
+                                    <i class="fas fa-solid fa-calendar-days fa-lg text-warning"></i>
                                     <p class="mb-0">https://mdbootstrap.com</p>
                                 </li>
                                 <li class="list-group-item d-flex justify-content-between align-items-center p-3">

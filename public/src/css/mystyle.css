@@ -162,6 +162,28 @@ body {
     border-radius: 3rem;
 }
 
+ /* Gaya untuk efek scroll */
+ .scrollable-card {
+     max-height: 300px;
+     overflow-y: auto;
+     border: 1px solid #e6e6e6;
+     border-radius: 8px;
+ }
+
+ /* Gaya untuk bilah scroll */
+ .scrollable-card::-webkit-scrollbar {
+     width: 6px;
+ }
+
+ .scrollable-card::-webkit-scrollbar-thumb {
+     background-color: #888;
+     border-radius: 4px;
+ }
+
+ .scrollable-card::-webkit-scrollbar-track {
+     background-color: #f1f1f1;
+ }
+
 
 
 
