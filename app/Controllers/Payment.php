@@ -40,6 +40,32 @@ class Payment extends BaseController
         $this->paymentModel = new PaymentModel();
     }
 
+    public function transaction(){
+        $data = [
+            'title' => 'List Payments',
+        ];
+        $payments = $this->db->table('payment')
+            ->select('payment.id as paymentsid, payment.id_payment, payment.reservation_id, payment.transaksi_id, payment.payment_receipt, payment.user_id, payment.total_payment, payment.payment_date,payment.status, reservation.tgl_acara,reservation.lokasi, transaksi.id_transaksi, transaksi.total_harga, transaksi.produk_id,product.nama_produk,product.description,product.photos_filenames,product.harga_produk,user_produk.nama,user_produk.foto,user_produk.lokasi,user_produk.jenis_kelamin,user_produk.telepon')
+            ->join('reservation', 'reservation.id = payment.reservation_id', 'left')
+            ->join('transaksi', 'transaksi.id = payment.transaksi_id', 'left')
+            ->join('product', 'product.id = transaksi.produk_id', 'left')
+            ->join('users as user_produk', 'user_produk.id = product.user_id', 'left')
+            ->orderBy('payment.payment_date', 'DESC')
+            ->get()
+            ->getResultArray();
+
+        // Check if the payment exists
+        if (!$payments) {
+            // Redirect to some error page or show an error message
+            return redirect()->to('payment/error-page');
+        }
+
+        // Pass the payment data to the view
+        $data['payments'] = $payments;
+
+        return view('payment/transaction', $data);
+    }
+
     // Method untuk menampilkan halaman transaksi
     public function index($id = 0)
     {
@@ -265,17 +291,6 @@ class Payment extends BaseController
     }
 
     /* Menampilkan data Payment per user id atau sesuai yang login*/
-    private function getPaymentDataForUser($userId)
-    {
-        $this->builder = $this->db->table('payment');
-        $this->builder->select('payment.id as payment_id, payment.user_id, payment.id_payment, payment.transaksi_id, payment.reservation_id, payment.total_payment, payment.payment_receipt, payment.status, payment.payment_date, payment.payment_updated, transaksi.*, reservation.*, users.username, users.email, users.nama');
-        $this->builder->join('transaksi', 'transaksi.id = payment.transaksi_id', 'left');
-        $this->builder->join('reservation', 'reservation.id = payment.reservation_id', 'left');
-        $this->builder->join('users', 'users.id = payment.user_id', 'left');
-        $this->builder->where('payment.user_id', $userId);
-
-        return $this->builder->get()->getResultArray();
-    }
     
       /* // Set your Midtrans server key
         Config::$serverKey = 'SB-Mid-server-KGJ8_8kepWGli0XcAaGJ0xa7';

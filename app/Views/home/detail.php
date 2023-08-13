@@ -19,6 +19,7 @@
     <link href="<? base_url() ?>/src/css/style.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 </head>
 
 <body>
@@ -190,6 +191,57 @@
             <?php endif; ?>
         </div>
     </section>
+
+    <!-- Reviews -->
+    <section class="bg-white">
+        <div class="container my-5 py-5 text-dark">
+            <div class="row d-flex justify-content-center">
+                <div class="col-md-10 col-lg-16 col-xl-16">
+                    <div class="container">
+                        <div class="container-fluid">
+                            <div class="d-flex flex-start w-100">
+                                <img class="rounded-circle shadow-1-strong me-3" src="https://mdbcdn.b-cdn.net/img/Photos/Avatars/img%20(21).webp" alt="avatar" width="65" height="65" />
+                                <form action="">
+                                    <div class="w-100">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <p class="text-muted mb-0">Rating:</p>
+                                            <div class="ms-auto text-warning">
+                                                <input type="radio" name="rating" id="star1" class="star-radio" value="5">
+                                                <label for="star1" title="Excellent"><i class="fa fa-star-o star-icon"></i></label>
+    
+                                                <input type="radio" name="rating" id="star2" class="star-radio" value="4">
+                                                <label for="star2" title="Best"><i class="fa fa-star-o star-icon"></i></label>
+    
+                                                <input type="radio" name="rating" id="star3" class="star-radio" value="3">
+                                                <label for="star3" title="Good"><i class="fa fa-star-o star-icon"></i></label>
+    
+                                                <input type="radio" name="rating" id="star4" class="star-radio" value="2">
+                                                <label for="star4" title="Poor"><i class="fa fa-star-o star-icon"></i></label>
+    
+                                                <input type="radio" name="rating" id="star5" class="star-radio" value="1">
+                                                <label for="star5" title="Bad"><i class="fa fa-star-o star-icon"></i></label>
+                                            </div>
+                                        </div>
+                                        <h5>Add a Reviews</h5>
+                                        </ul>
+                                        <div class="form-outline">
+                                            <textarea class="form-control" id="textAreaExample" rows="8"></textarea>
+                                        </div>
+                                        <div class="d-flex justify-content-between mt-3">
+                                            <button type="button" class="btn btn-outline-dark">
+                                                Post <i class="fas fa-long-arrow-alt-right ms-2"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <!-- End Reviews -->
 
     <!-- Related items section-->
     <section class="py-5 bg-light">

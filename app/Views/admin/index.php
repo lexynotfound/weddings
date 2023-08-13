@@ -27,6 +27,10 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.5.1/main.min.css' rel='stylesheet' />
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.5.1/main.min.js'></script>
+
+
 
 </head>
 
@@ -38,7 +42,7 @@
         <!-- Sidebar -->
         <ul class="navbar-nav bg-white sidebar sidebar-white accordion" id="accordionSidebar">
             <!-- Nav Item - Dashboard -->
-        
+
             <li class="nav-item active">
                 <a class="nav-link" href="index.html">
                     <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
@@ -73,6 +77,18 @@
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="<?= base_url('produk/create'); ?>">Tambah Package</a>
                         <a class="collapse-item" href="<?= base_url('produk/daftar_produk') ?>">Daftar</a>
+                    </div>
+                </div>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseTr" aria-expanded="true" aria-controls="collapseTr">
+                    <i class="fas fa-solid fa-money-bills"></i>
+                    <span>Transaction</span>
+                </a>
+                <div id="collapseTr" class="collapse" aria-labelledby="headingProduk" data-parent="#accordionSidebar">
+                    <div class="bg-white py-2 collapse-inner rounded">
+                        <a class="collapse-item" href="<?= base_url('produk/create'); ?>">Tambah Package</a>
+                        <a class="collapse-item" href="<?= base_url('payment/transaction') ?>">Transaction</a>
                     </div>
                 </div>
             </li>
@@ -223,6 +239,141 @@
 
                     <!-- Content Row -->
                     <div class="row">
+                        <!-- Perhitungan Uang -->
+                        <div class="row mb-5">
+                            <div class="col-md-6">
+                                <div class="card mb-4 mb-md-0">
+                                    <div class="card-body">
+                                        <p class="mb-4"><span class="text-primary font-italic me-1">Earnings</span> Income
+                                        </p>
+                                        <!--  -->
+                                        <div class="card mt-4 mb-1" style="height: 200px;">
+                                            <div class="card-body d-flex">
+                                                <div class="icon-container me-3">
+                                                    <i class="fas fa-solid fa-rupiah-sign" style="font-size: 50px;"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="mb-1" style="font-size: .77rem;">Total Paid</p>
+                                                    <p class="mb-0"> Total Paid: <?= number_format($totalPrice, 2); ?></p>
+                                                </div>
+                                                <div class="icon-container ms-4">
+                                                    <i class="fas fa-solid fa-rupiah-sign" style="font-size: 50px;"></i>
+                                                </div>
+                                                <div class="ms-3">
+                                                    <p class="mb-1" style="font-size: .77rem;">Total DP</p>
+                                                    <p class="mb-0"><?= number_format($totalDp, 2); ?></p>
+                                                </div>
+                                                <div class="ms-5">
+                                                    <p class="mb-1" style="font-size: .77rem;"></p>
+                                                </div>
+                                            </div>
+                                            <div class="card-body d-flex">
+                                                <div class="icon-container me-3">
+                                                    <i class="fas fa-solid fa-rupiah-sign" style="font-size: 50px;"></i>
+                                                </div>
+                                                <div class="">
+                                                    <p class="mb-1" style="font-size: .77rem;">Total Payment</p>
+                                                    <p class="mb-0"><?= number_format($totalPayment, 2); ?></p>
+                                                </div>
+                                                <div class="ms-5">
+                                                    <p class="mb-1" style="font-size: .77rem;"></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-4 mb-md-0">
+                                    <div class="card-body">
+                                        <p class="mb-4"><span class="text-primary font-italic me-1">Calendar</span>
+                                        </p>
+                                        <!--  -->
+                                        <div class="card mt-4 mb-1" style="height: 200px;">
+                                            <div class="card-body d-flex">
+                                                <div id="calendar"></div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!-- Akhir dari Perhitungan -->
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="card mb-4 mb-md-0 scrollable-card">
+                                    <div class="card-body">
+                                        <p class="mb-4"><span class="text-primary font-italic me-1">recent & status</span> Transaction
+                                        </p>
+                                        <!--Mengambil Data pembayaran yang terjadi  -->
+                                        <?php foreach ($payments as $payment) : ?>
+                                            <div class="card mt-4 mb-1" style="height: 200px;">
+                                                <div class="card-body d-flex">
+                                                    <div class="icon-container me-3">
+                                                        <i class="fas fa-credit-card" style="font-size: 20px;"></i>
+                                                    </div>
+                                                    <div>
+                                                        <p class="mb-1" style="font-size: .77rem;">Transaction ID</p>
+                                                        <p class="mb-0"><?= $payment['id_payment']; ?></p>
+                                                    </div>
+                                                    <div class="ms-5">
+                                                        <p class="mb-1" style="font-size: .77rem;"><?= $payment['payment_date']; ?></p>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body d-flex">
+                                                    <img src="<?= base_url('uploads/' . $payment['photos_filenames']) ?>" alt="Image" class="me-3" style="width: 50px; height: 50px;">
+                                                    <div>
+                                                        <p class="mb-1" style="font-size: .77rem;">Product Name:</p>
+                                                        <p class="mb-0"><?= $payment['nama_produk']; ?></p>
+                                                    </div>
+                                                    <div class="ms-auto">
+                                                        <p class="mb-1" style="font-size: .77rem;">Payment Status:</p>
+                                                        <p class="mb-0"><?= $payment['status']; ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="card mb-4 mb-md-0 scrollable-card">
+                                    <div class="card-body">
+                                        <p class="mb-4"><span class="text-primary font-italic me-1">recent</span> Reservation
+                                        </p>
+                                        <?php foreach ($reservation as $reservation) : ?>
+                                            <div class="card mt-4 mb-1" style="height: 200px;">
+                                                <div class="card-body d-flex">
+                                                    <div class="icon-container me-3">
+                                                        <i class="fas fa-calendar-days" style="font-size: 20px;"></i>
+                                                    </div>
+                                                    <div>
+                                                        <p class="mb-1" style="font-size: .77rem;">Date</p>
+                                                        <p class="mb-0"><?= date('l, d F Y', strtotime($reservation['tgl_acara'])); ?></p>
+                                                    </div>
+                                                    <div class="icon-container ms-5">
+                                                        <i class="fas fa-solid fa-user" style="font-size: 20px;"></i>
+                                                    </div>
+                                                    <div class="ms-3">
+                                                        <p class="mb-1" style="font-size: .77rem;">Bride Name</p>
+                                                        <p class="mb-0"><?= $reservation['nama']; ?></p>
+                                                    </div>
+                                                </div>
+                                                <div class="card-body d-flex">
+                                                    <div class="icon-container me-3">
+                                                        <i class="fas fa-solid fa-location-dot" style="font-size: 20px;"></i>
+                                                    </div>
+                                                    <div>
+                                                        <p class="mb-1" style="font-size: .77rem;">Location</p>
+                                                        <p class="mb-0"><?= $reservation['lokasi']; ?></p>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        <?php endforeach; ?>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
 
                         <!-- Bagian Dashboard paling atas bawah content -->
                         <!-- Content Row -->
@@ -395,7 +546,20 @@
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
             <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.12.0/dist/umd/popper.min.js" integrity="sha384-N5ZRprfQq9MgP13e+t4FkTqi7X9WVj54V2VXpOD4z8B65C7BK2gjHdouP84fS7Ld" crossorigin="anonymous"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-B4gt1FWAbeJ3GzFQNzppbXk6v5zxG4T/4By2vckIgXvb7bPLhpvGhmfhA1t1b8RM" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var calendarEl = document.getElementById('calendar');
+
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                        initialView: 'dayGridMonth',
+                        events: '/admin/getReservations', // Controller endpoint to fetch reservation data
+                    });
+
+                    calendar.render();
+                });
+            </script>
 </body>
 
 </html>

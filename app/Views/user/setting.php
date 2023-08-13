@@ -128,7 +128,8 @@
                     <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
                         <ol class="breadcrumb mb-0">
                             <li class="breadcrumb-item"><a href="<?= base_url('home') ?>">Home</a></li>
-                            <li class="breadcrumb-item"><a href="<?= base_url('user') ?>">User</a></li>
+                            <li class="breadcrumb-item"><a href="<?= base_url('user/setting') ?>">User</a></li>
+                            <li class="breadcrumb-item"><a href="<?= base_url('user/setting') ?>">Settings</a></li>
                             <li class="breadcrumb-item active" aria-current="page">User Profile</li>
                         </ol>
                     </nav>
@@ -261,15 +262,18 @@
                                                     <i class="fas fa-credit-card" style="font-size: 20px;"></i>
                                                 </div>
                                                 <div>
-                                                    <p class="mb-1" style="font-size: .77rem;">Transaction ID:</p>
+                                                    <p class="mb-1" style="font-size: .77rem;">Transaction ID</p>
                                                     <p class="mb-0"><?= $payment['id_payment']; ?></p>
+                                                </div>
+                                                <div>
+                                                    <p class="mb-1" style="font-size: .77rem;"><?= $payment['payment_date']; ?></p>
                                                 </div>
                                             </div>
                                             <div class="card-body d-flex">
-                                                <img src=<?= base_url('uploads/' . $payment['photos_filenames']) ?>" alt="Image" class="me-3" style="width: 50px; height: 50px;">
+                                                <img src="<?= base_url('uploads/' . $payment['photos_filenames']) ?>" alt="Image" class="me-3" style="width: 50px; height: 50px;">
                                                 <div>
                                                     <p class="mb-1" style="font-size: .77rem;">Product Name:</p>
-                                                    <p class="mb-0">Web Design</p>
+                                                    <p class="mb-0"><?= $payment['nama_produk']; ?></p>
                                                 </div>
                                                 <div class="ms-auto">
                                                     <p class="mb-1" style="font-size: .77rem;">Payment Status:</p>
@@ -286,26 +290,28 @@
                                 <div class="card-body">
                                     <p class="mb-4"><span class="text-primary font-italic me-1">recent</span> Reservation
                                     </p>
-                                    <p class="mb-1" style="font-size: .77rem;">Web Design</p>
-                                    <div class="progress rounded" style="height: 5px;">
-                                        <div class="progress-bar" role="progressbar" style="width: 80%" aria-valuenow="80" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <p class="mt-4 mb-1" style="font-size: .77rem;">Website Markup</p>
-                                    <div class="progress rounded" style="height: 5px;">
-                                        <div class="progress-bar" role="progressbar" style="width: 72%" aria-valuenow="72" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <p class="mt-4 mb-1" style="font-size: .77rem;">One Page</p>
-                                    <div class="progress rounded" style="height: 5px;">
-                                        <div class="progress-bar" role="progressbar" style="width: 89%" aria-valuenow="89" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <p class="mt-4 mb-1" style="font-size: .77rem;">Mobile Template</p>
-                                    <div class="progress rounded" style="height: 5px;">
-                                        <div class="progress-bar" role="progressbar" style="width: 55%" aria-valuenow="55" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
-                                    <p class="mt-4 mb-1" style="font-size: .77rem;">Backend API</p>
-                                    <div class="progress rounded mb-2" style="height: 5px;">
-                                        <div class="progress-bar" role="progressbar" style="width: 66%" aria-valuenow="66" aria-valuemin="0" aria-valuemax="100"></div>
-                                    </div>
+                                    <?php foreach ($reservation as $reservation) : ?>
+                                        <div class="card mt-4 mb-1" style="height: 200px;">
+                                            <div class="card-body d-flex">
+                                                <div class="icon-container me-3">
+                                                    <i class="fas fa-calendar-days" style="font-size: 20px;"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="mb-1" style="font-size: .77rem;">Date</p>
+                                                    <p class="mb-0"><?= date('l, d F Y', strtotime($reservation['tgl_acara'])); ?></p>
+                                                </div>
+                                            </div>
+                                            <div class="card-body d-flex">
+                                                <div class="icon-container me-3">
+                                                    <i class="fas fa-solid fa-location-dot" style="font-size: 20px;"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="mb-1" style="font-size: .77rem;">Location</p>
+                                                    <p class="mb-0"><?= $reservation['lokasi']; ?></p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    <?php endforeach; ?>
                                 </div>
                             </div>
                         </div>
@@ -322,7 +328,7 @@
             <div class="col mb-3">
                 <!-- logo -->
                 <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
-                    <img class="bi me-2" width="200" src="<?= base_url(); ?>/images/logo.svg">
+                    <img class="bi me-2" width="200" src="<?= base_url(); ?>/images/logo.jpg">
 
                     </img>
                 </a>

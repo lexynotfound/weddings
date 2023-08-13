@@ -73,26 +73,64 @@ class User extends BaseController
         $user = $this->userModel->where('id', user_id())->first();
 
         if (!$user) {
-            return redirect()->to('user/login');
+            return redirect()->to('auth/login');
         }
 
         $userId = $user->id;
 
         $payments = $this->db->table('payment')
-        ->select('payment.id as paymentid, payment.id_payment, payment.reservation_id, payment.transaksi_id, payment.payment_receipt, payment.user_id, payment.total_payment, payment.payment_date,payment.status, reservation.tgl_acara, transaksi.id_transaksi, transaksi.total_harga, transaksi.produk_id,product.nama_produk,product.description,product.photos_filenames')
+        ->select('payment.id as paymentid, payment.id_payment, payment.reservation_id, payment.transaksi_id, payment.payment_receipt, payment.user_id, payment.total_payment, payment.payment_date,payment.status, reservation.tgl_acara,reservation.lokasi, transaksi.id_transaksi, transaksi.total_harga, transaksi.produk_id,product.nama_produk,product.description,product.photos_filenames,user_produk.nama,user_produk.foto,user_produk.lokasi,user_produk.jenis_kelamin,user_produk.telepon')
         ->join('reservation', 'reservation.id = payment.reservation_id', 'left')
         ->join('transaksi', 'transaksi.id = payment.transaksi_id', 'left')
         ->join('product', 'product.id = transaksi.produk_id', 'left')
+        ->join('users as user_produk', 'user_produk.id = product.user_id', 'left')
         ->where('payment.user_id', $userId)
             ->orderBy('payment.payment_date', 'DESC')
             ->get()
             ->getResultArray();
 
+        $reservation = $this->db->table('reservation')
+        ->select('reservation.id as reservationid, reservation.tgl_acara,reservation.user_id,reservation.lokasi, transaksi.id_transaksi, transaksi.total_harga, transaksi.produk_id,product_transaksi.nama_produk,product_transaksi.description,product_transaksi.photos_filenames,user_produk.nama,user_produk.foto,user_produk.lokasi,user_produk.jenis_kelamin,user_produk.telepon')
+        ->join('transaksi', 'transaksi.id = reservation.transaksi_id', 'left')
+        ->join('product as product_transaksi', 'product_transaksi.id = transaksi.produk_id', 'left')
+        ->join('users as user_produk', 'user_produk.id = product_transaksi.user_id', 'left')
+        ->where('reservation.user_id', $userId)
+            ->orderBy('reservation.tgl_acara', 'DESC')
+            ->get()
+            ->getResultArray();
+
         $data['payments'] = $payments;
+        $data['reservation'] = $reservation;
 
         return view('user/setting', $data);
     }
 
+
+    private function Reservation()
+    {
+        $user = $this->userModel->where('id', user_id())->first();
+
+        if (!$user) {
+            return redirect()->to('user/login');
+        }
+
+        $userId = $user->id;
+
+        $reservation = $this->db->table('reservation')
+        ->select('reservation.id as reservationid, reservation.tgl_acara,reservation.user_id,reservation.lokasi, transaksi.id_transaksi, transaksi.total_harga, transaksi.produk_id,product_transaksi.nama_produk,product_transaksi.description,product_transaksi.photos_filenames,user_produk.nama,user_produk.foto,user_produk.lokasi,user_produk.jenis_kelamin,user_produk.telepon')
+        ->join('reservation', 'reservation.id = payment.reservation_id', 'left')
+        ->join('transaksi', 'transaksi.id = payment.transaksi_id', 'left')
+        ->join('product as product_transaksi', 'product_transaksi.id = transaksi.produk_id', 'left')
+        ->join('users as user_produk', 'user_produk.id = product.user_id', 'left')
+        ->where('reservation.user_id', $userId)
+            ->orderBy('reservation.tgl_acara', 'DESC')
+            ->get()
+            ->getResultArray();
+
+        $data['reservation'] = $reservation;
+
+        return view('user/setting', $data);
+    }
 
     public function errorpage()
     {

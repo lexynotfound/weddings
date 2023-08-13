@@ -35,37 +35,37 @@
  }
 
  /* Styling to hide the "Click to Upload Photo" text when preview is shown */
-.photo-upload-section.hide-text .uploaded-image {
-    display: block;
-}
+ .photo-upload-section.hide-text .uploaded-image {
+     display: block;
+ }
 
-.photo-upload-section.hide-text p {
-    display: none;
-}
+ .photo-upload-section.hide-text p {
+     display: none;
+ }
 
-.description-container {
-    display: absolute;
-    flex-direction: column;
-}
+ .description-container {
+     display: absolute;
+     flex-direction: column;
+ }
 
-.show-more-btn,
-.show-less-btn {
-    margin-top: 5px;
-    background-color: transparent;
-    border: none;
-    color: #007bff;
-    font-size: 14px;
-    cursor: pointer;
-    outline: none;
-    text-decoration: none;
+ .show-more-btn,
+ .show-less-btn {
+     margin-top: 5px;
+     background-color: transparent;
+     border: none;
+     color: #007bff;
+     font-size: 14px;
+     cursor: pointer;
+     outline: none;
+     text-decoration: none;
      /* Remove underline */
-}
+ }
 
-.show-more-btn:hover,
-.show-less-btn:hover {
-    text-decoration: none;
+ .show-more-btn:hover,
+ .show-less-btn:hover {
+     text-decoration: none;
      /* Remove underline */
-}
+ }
 
  /* Fix sidebar position */
  .sidebar {
@@ -80,87 +80,87 @@
      /* Adjust this value to match your sidebar width */
  }
 
-/* CSS */
+ /* CSS */
 
-.option-container {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 10px;
-    flex-direction: row;
-}
+ .option-container {
+     display: flex;
+     flex-wrap: wrap;
+     gap: 10px;
+     flex-direction: row;
+ }
 
-.option-item {
-    display: flex;
-    align-items: center;
-    margin-right: 20px;
-    cursor: pointer;
-}
+ .option-item {
+     display: flex;
+     align-items: center;
+     margin-right: 20px;
+     cursor: pointer;
+ }
 
-.option-item input[type="radio"] {
-    display: none;
-}
+ .option-item input[type="radio"] {
+     display: none;
+ }
 
-.option-content {
-    display: flex;
-    align-items: center;
-    padding: 5px;
-    border: 2px solid #ccc;
-    border-radius: 5px;
-}
+ .option-content {
+     display: flex;
+     align-items: center;
+     padding: 5px;
+     border: 2px solid #ccc;
+     border-radius: 5px;
+ }
 
-.option-content img {
-    width: 30px;
-    height: 30px;
-    margin-right: 5px;
-}
+ .option-content img {
+     width: 30px;
+     height: 30px;
+     margin-right: 5px;
+ }
 
-.option-item input[type="radio"]:checked+.option-content {
-    border-color: #007bff;
-    background-color: #f0f0f0;
-}
+ .option-item input[type="radio"]:checked+.option-content {
+     border-color: #007bff;
+     background-color: #f0f0f0;
+ }
 
-#selectedOptionLabel {
-    font-size: 14px;
-    /* Atur ukuran teks sesuai kebutuhan */
-    margin-top: 10px;
-}
+ #selectedOptionLabel {
+     font-size: 14px;
+     /* Atur ukuran teks sesuai kebutuhan */
+     margin-top: 10px;
+ }
 
-.custom-link {
-    text-decoration: none;
-    /* Remove underline */
-    color: #000;
-    /* Set link color */
-}
+ .custom-link {
+     text-decoration: none;
+     /* Remove underline */
+     color: #000;
+     /* Set link color */
+ }
 
-.custom-link:hover {
-    color: #000;
-    /* Change link color on hover */
-}
+ .custom-link:hover {
+     color: #000;
+     /* Change link color on hover */
+ }
 
-.small-label {
-    font-size: 12px;
-}
+ .small-label {
+     font-size: 12px;
+ }
 
-body {
-    margin-top: 20px;
-    background-color: #ffffff;
-}
+ body {
+     margin-top: 20px;
+     background-color: #ffffff;
+ }
 
-.card {
-    box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
-}
+ .card {
+     box-shadow: 0 20px 27px 0 rgb(0 0 0 / 5%);
+ }
 
-.card {
-    position: relative;
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    word-wrap: break-word;
-    background-color: #ffffff;
-    background-clip: border-box;
-    border: 0 solid rgba(0, 0, 0, .125);
-    border-radius: 3rem;
-}
+ .card {
+     position: relative;
+     display: flex;
+     flex-direction: column;
+     min-width: 0;
+     word-wrap: break-word;
+     background-color: #ffffff;
+     background-clip: border-box;
+     border: 0 solid rgba(0, 0, 0, .125);
+     border-radius: 3rem;
+ }
 
  /* Gaya untuk efek scroll */
  .scrollable-card {
@@ -184,6 +184,32 @@ body {
      background-color: #f1f1f1;
  }
 
+   .star-radio {
+       display: none;
+   }
 
+   .star-icon {
+       font-size: 1.5em;
+       cursor: pointer;
+   }
 
+   .star-icon:before {
+       content: '\f005';
+       color: #ccc;
+   }
 
+   .star-radio:checked~label .star-icon:before {
+       color: orange;
+       content: '\f005';
+       animation: fillStar 1s;
+   }
+
+   @keyframes fillStar {
+       from {
+           width: 0;
+       }
+
+       to {
+           width: 100%;
+       }
+   }

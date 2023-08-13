@@ -71,6 +71,7 @@ $routes->group('payment', ['namespace' => 'App\Controllers'], function ($routes)
     $routes->post('paid/(:num)', 'Payment::paid/$1');
     $routes->get('error-page', 'Reservation::errorpage');
     $routes->get('invoice/(:segment)', 'Payment::invoice/$1');
+    $routes->get('transaction', 'Payment::transaction', ['filter' => 'role:admin']);
 });
 
 $routes->group('invoice', ['namespace' => 'App\Controllers'], function ($routes) {
@@ -99,6 +100,7 @@ $routes->group('admin', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->post('edit/(:num)', 'Admin::updateUser/$1', ['filter' => 'role:admin']); // New delete route
     $routes->get('delete/(:num)', 'Admin::delete/$1');
     $routes->get('data', 'Admin::data', ['filter' => 'role:admin']);
+    $routes->get('index', 'Admin::showCalendar', ['filter' => 'role:admin']);
     $routes->get('register', 'Admin::register');
     $routes->get('profile', 'Admin::profile/$1');
     $routes->get('generatePDF/(:num)', 'Admin::generatePDF/$1', ['filter' => 'role:admin']);

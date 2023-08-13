@@ -8,8 +8,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="description" content="">
     <meta name="author" content="">
+
     <title><?= $title; ?></title>
-    <script src="<?= base_url() ?>/src/js/bootstrap.bundle.js"></script>
+
+
+    <script src="<?= base_url() ?>/js/bootstrap.bundle.js"></script>
     <!-- Custom styles for this template-->
     <link href="<?= base_url() ?>/src/css/sb-admin-2.min.css" rel="stylesheet">
     <link href="<?= base_url() ?>/src/css/sb-admin-2.css" rel="stylesheet">
@@ -24,11 +27,15 @@
     <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/5.2.0/css/bootstrap.min.css">
+    <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.5.1/main.min.css' rel='stylesheet' />
+    <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.5.1/main.min.js'></script>
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/jquery.dataTables.css" />
     <link rel="stylesheet" href="https://cdn.datatables.net/1.13.5/css/dataTables.tailwindcss.min.css" />
     <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.11.4/css/jquery.dataTables.min.css">
     <link rel="stylesheet" href="https://cdn.datatables.net/1.11.5/css/jquery.dataTables.min.css">
+
+
+
 </head>
 
 <body id="page-top">
@@ -41,7 +48,7 @@
             <!-- Nav Item - Dashboard -->
 
             <li class="nav-item active">
-                <a class="nav-link" href="<?= base_url('user/setting') ?>">
+                <a class="nav-link" href="index.html">
                     <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
                     <span><?= user()->username; ?></span>
                 </a>
@@ -171,7 +178,7 @@
                     </button>
 
                     <!-- Topbar Search -->
-                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <!-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
@@ -180,37 +187,14 @@
                                 </button>
                             </div>
                         </div>
-                    </form>
+                    </form> -->
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
 
-                        <!-- Nav Item - Search Dropdown (Visible Only XS) -->
-                        <li class="nav-item dropdown no-arrow d-sm-none">
-                            <a class="nav-link dropdown-toggle" href="#" id="searchDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                <i class="fas fa-search fa-fw"></i>
-                            </a>
-                            <!-- Dropdown - Messages -->
-                            <div class="dropdown-menu dropdown-menu-right p-3 shadow animated--grow-in" aria-labelledby="searchDropdown">
-                                <form class="form-inline mr-auto w-100 navbar-search">
-                                    <div class="input-group">
-                                        <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
-                                        <div class="input-group-append">
-                                            <button class="btn btn-primary" type="button">
-                                                <i class="fas fa-search fa-sm"></i>
-                                            </button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </li>
+                        <div class="topbar-divider d-none d-sm-block"></div>
 
-                        <!-- Nav Item - Alerts -->
-                        <li class="nav-item dropdown no-arrow mx-1">
-
-                            <div class="topbar-divider d-none d-sm-block"></div>
-
-                            <!-- Nav Item - User Information -->
+                        <!-- Nav Item - User Information -->
                         <li class="nav-item dropdown no-arrow">
                             <!-- ... (rest of the user information dropdown code) ... -->
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
@@ -219,20 +203,20 @@
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                <a class="dropdown-item" href="<?= base_url('admin'); ?>">
-                                    <i class="fas fa-fw fa-tachometer-alt mr-2 text-gray-400"></i>
-                                    Dashboard
+                                <a class="dropdown-item" href="<?= base_url('home'); ?>">
+                                    <i class="fas fa-fw fa-solid fa-house mr-2 text-gray-400"></i>
+                                    Home
                                 </a>
                                 <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
-                                    <i class="fas fa-solid fa-calendar-alt mr-2 text-gray-400"></i>
+                                    <i class="fas fa-fw fa-solid fa-calendar-alt mr-2 text-gray-400"></i>
                                     Reservation
                                 </a>
                                 <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
-                                    <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
+                                    <i class="fas fa-fw fa-solid fa-credit-card-alt mr-2 text-gray-400"></i>
                                     Transaction
                                 </a>
                                 <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
-                                    <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
+                                    <i class="fas fa-fw fa-solid fa-sliders mr-2 text-gray-500"></i>
                                     Settings
                                 </a>
                                 <div class="dropdown-divider"></div>
@@ -248,6 +232,7 @@
                 </nav>
                 <!-- End of Topbar -->
 
+                <!-- Begin Page Content -->
                 <!-- Begin Page Content -->
                 <div class="container-fluid bg-white">
 
@@ -276,17 +261,20 @@
                             <thead>
                                 <tr>
                                     <th>No</th>
-                                    <th>Kode Package</th>
-                                    <th>Nama</th>
-                                    <th>Deskripsi</th>
-                                    <th>Harga</th>
+                                    <th>Transaction ID</th>
+                                    <th>Nama Packagep</th>
                                     <th>Foto Package</th>
+                                    <th>Harga</th>
+                                    <th>Lokasi</th>
+                                    <th>Status</th>
+                                    <th>Reservation Date</th>
+                                    <th>Payment Date</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <?php $no = 1;
-                                foreach ($produk as $produk_item) {
+                                foreach ($payments as $produk_item) {
                                     $description = $produk_item['description'];
                                     // Limit the description text to a certain number of characters
                                     $max_length = 100;
@@ -294,9 +282,9 @@
                                 ?>
                                     <tr>
                                         <td><?= $no; ?></td>
-                                        <td><?= $produk_item['id_produk']; ?></td>
+                                        <td><?= $produk_item['id_payment']; ?></td>
                                         <td><?= $produk_item['nama_produk']; ?></td>
-                                        <td>
+                                        <!--  <td>
                                             <div class="description-container">
                                                 <span class="short-description"><?= $display_description; ?></span>
                                                 <?php if (strlen($description) > $max_length) : ?>
@@ -305,18 +293,20 @@
                                                     <button class="btn btn-link show-less-btn" style="display: none;" onclick="toggleDescription(this)">Show Less</button>
                                                 <?php endif; ?>
                                             </div>
-                                        </td>
-                                        <td>Rp.<?= number_format($produk_item['harga_produk'], 0, ',', '.'); ?></td>
+                                        </td> -->
                                         <td>
                                             <center>
                                                 <img src="<?= base_url('uploads/' . $produk_item['photos_filenames']) ?>" class="card-img-top img-fluid rounded w-50 rounded" alt="Gambar">
                                             </center>
                                         </td>
+                                        <td>Rp.<?= number_format($produk_item['total_payment'], 0, ',', '.'); ?></td>
+                                        <td><?= $produk_item['lokasi']; ?></td>
+                                        <td><?= $produk_item['status']; ?></td>
+                                        <td><?= date('l, d F Y', strtotime($produk_item['tgl_acara'])); ?></td>
+                                        <td><?= $produk_item['payment_date']; ?></td>
                                         <td style="width:20%;">
                                             <div class="btn-group">
-                                                <a href="<?= base_url('produk/edit/' . $produk_item['id']); ?>" class="btn btn-success"><i class="fa fa-solid fa-pen"></i></a>
-                                                <a href="<?= base_url('produk/delete/' . $produk_item['id']); ?>" onclick="return confirm('Anda yakin ingin menghapus paket ini <?= $produk_item['nama_produk']; ?> ?');" class="btn btn-danger"><i class="fa fa-trash"></i></a>
-                                                <a href="<?= base_url('produk/detail/' . $produk_item['id']); ?>" target="_blank" class="btn btn-primary"><i class="fas fa-regular fa-boxes-stacked"></i></a>
+                                                <a href="<?= base_url('payment/invoice/' . $produk_item['paymentsid']); ?>" target="_blank" class="btn btn-primary"><i class="fas fa-regular fa-book"></i></a>
                                             </div>
                                         </td>
                                     </tr>
@@ -327,138 +317,114 @@
                     </div>
                 </div>
                 <!-- End of Main Content -->
-
-                <!-- Footer -->
-                <footer class="sticky-footer bg-white">
-                    <div class="container my-auto">
-                        <div class="copyright text-center my-auto">
-                            <span>Copyright &copy; Your Website 2021</span>
-                        </div>
-                    </div>
-                </footer>
-                <!-- End of Footer -->
+                <!-- End of Content Wrapper -->
 
             </div>
-            <!-- End of Content Wrapper -->
+            <!-- End of Page Wrapper -->
 
-        </div>
-        <!-- End of Page Wrapper -->
+            <!-- Scroll to Top Button-->
+            <a class="scroll-to-top rounded" href="#page-top">
+                <i class="fas fa-angle-up"></i>
+            </a>
 
-        <!-- Scroll to Top Button-->
-        <a class="scroll-to-top rounded" href="#page-top">
-            <i class="fas fa-angle-up"></i>
-        </a>
-
-        <!-- Logout Modal-->
-        <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
-                        <button class="close" type="button" data-dismiss="modal" aria-label="Close">
-                            <span aria-hidden="true">×</span>
-                        </button>
-                    </div>
-                    <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
-                    <div class="modal-footer">
-                        <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
-                        <a class="btn btn-primary" href="login.html">Logout</a>
+            <!-- Logout Modal-->
+            <div class="modal fade" id="logoutModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="exampleModalLabel">Ready to Leave?</h5>
+                            <button class="close" type="button" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">×</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">Select "Logout" below if you are ready to end your current session.</div>
+                        <div class="modal-footer">
+                            <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
+                            <a class="btn btn-primary" href="login.html">Logout</a>
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
 
-        <!-- Bootstrap core JavaScript-->
-        <script src="<?= base_url(); ?>/src/jquery/jquery.min.js"></script>
+            <!-- Bootstrap core JavaScript-->
+            <script src="<?= base_url(); ?>/src/jquery/jquery.min.js"></script>
 
-        <!-- Core plugin JavaScript-->
-        <script src="<?= base_url(); ?>/src/jquery-easing/jquery.easing.min.js"></script>
+            <!-- Core plugin JavaScript-->
+            <script src="<?= base_url(); ?>/src/jquery-easing/jquery.easing.min.js"></script>
 
-        <!-- Custom scripts for all pages-->
-        <script src="<?= base_url(); ?>/src/js/sb-admin-2.min.js"></script>
+            <!-- Custom scripts for all pages-->
+            <script src="<?= base_url(); ?>/src/js/sb-admin-2.min.js"></script>
 
-        <!-- Page level plugins -->
-        <script src="<?= base_url(); ?>/src/js/chart.js/Chart.min.js"></script>
+            <!-- Page level plugins -->
+            <script src="<?= base_url(); ?>/src/js/chart.js/Chart.min.js"></script>
 
-        <!-- Page level custom scripts -->
-        <script src="<?= base_url(); ?>/src/js/demo/chart-area-demo.js"></script>
-        <script src="<?= base_url(); ?>/src/js/demo/chart-pie-demo.js"></script>
-        <script src="<?= base_url(); ?>/src/js/message.js"></script>
-        <script src="<?= base_url(); ?>/src/js/bootstrap.bundle.js"></script>
-        <script src="<?= base_url(); ?>/src/js/dropdown-hoover.js"></script>
+            <!-- Page level custom scripts -->
+            <script src="<?= base_url(); ?>/src/js/demo/chart-area-demo.js"></script>
+            <script src="<?= base_url(); ?>/src/js/demo/chart-pie-demo.js"></script>
+            <script src="<?= base_url(); ?>/src/js/message.js"></script>
+            <script src="<?= base_url(); ?>/src/js/bootstrap.bundle.js"></script>
+            <script src="<?= base_url(); ?>/src/js/dropdown-hoover.js"></script>
 
-        <script src="<?= base_url(); ?>/src/js/disablescrool.js"></script>
+            <script src="<?= base_url(); ?>/src/js/disablescrool.js"></script>
 
-        <!-- Bootstrap and jQuery JS -->
-        <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.12.0/dist/umd/popper.min.js" integrity="sha384-N5ZRprfQq9MgP13e+t4FkTqi7X9WVj54V2VXpOD4z8B65C7BK2gjHdouP84fS7Ld" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-B4gt1FWAbeJ3GzFQNzppbXk6v5zxG4T/4By2vckIgXvb7bPLhpvGhmfhA1t1b8RM" crossorigin="anonymous"></script>
-        <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
-        <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
-        <script src="https://cdn.datatables.net/datetime/1.4.1/js/dataTables.dateTime.min.js"></script>
-        <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
-        <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
-        <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
-        <script src="https://cdn.datatables.net/1.13.5/js/dataTables.tailwindcss.min.js"></script>
-        <!-- Include jQuery -->
-        <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+            <!-- Bootstrap and jQuery JS -->
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.12.0/dist/umd/popper.min.js" integrity="sha384-N5ZRprfQq9MgP13e+t4FkTqi7X9WVj54V2VXpOD4z8B65C7BK2gjHdouP84fS7Ld" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-B4gt1FWAbeJ3GzFQNzppbXk6v5zxG4T/4By2vckIgXvb7bPLhpvGhmfhA1t1b8RM" crossorigin="anonymous"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 
-        <!-- Include DataTables JavaScript -->
-        <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
+            <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+            <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.12.0/dist/umd/popper.min.js" integrity="sha384-N5ZRprfQq9MgP13e+t4FkTqi7X9WVj54V2VXpOD4z8B65C7BK2gjHdouP84fS7Ld" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-B4gt1FWAbeJ3GzFQNzppbXk6v5zxG4T/4By2vckIgXvb7bPLhpvGhmfhA1t1b8RM" crossorigin="anonymous"></script>
+            <script src="https://code.jquery.com/jquery-3.5.1.js"></script>
+            <script src="https://cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.datatables.net/1.13.4/js/dataTables.bootstrap5.min.js"></script>
+            <script src="https://cdn.datatables.net/datetime/1.4.1/js/dataTables.dateTime.min.js"></script>
+            <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+            <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.js"></script>
+            <script src="https://code.jquery.com/jquery-3.7.0.js"></script>
+            <script src="https://cdn.datatables.net/1.13.5/js/jquery.dataTables.min.js"></script>
+            <script src="https://cdn.datatables.net/1.13.5/js/dataTables.tailwindcss.min.js"></script>
+            <!-- Include jQuery -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 
-        <script>
-            function toggleDescription(btn) {
-                var descriptionContainer = btn.closest('.description-container');
-                var shortDescription = descriptionContainer.querySelector('.short-description');
-                var fullDescription = descriptionContainer.querySelector('.full-description');
-                var showMoreBtn = descriptionContainer.querySelector('.show-more-btn');
-                var showLessBtn = descriptionContainer.querySelector('.show-less-btn');
+            <!-- Include DataTables JavaScript -->
+            <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
-                if (btn === showMoreBtn) {
-                    shortDescription.style.display = 'none';
-                    fullDescription.style.display = 'inline';
-                    showMoreBtn.style.display = 'none';
-                    showLessBtn.style.display = 'inline';
-                } else if (btn === showLessBtn) {
-                    shortDescription.style.display = 'inline';
-                    fullDescription.style.display = 'none';
-                    showMoreBtn.style.display = 'inline';
-                    showLessBtn.style.display = 'none';
-                }
-            }
-        </script>
+            <script>
+                document.addEventListener('DOMContentLoaded', function() {
+                    var calendarEl = document.getElementById('calendar');
 
-        <script>
-            new DataTable('#example', {
-                columnDefs: [{
-                        targets: [0],
-                        orderData: [0, 1]
-                    },
-                    {
-                        targets: [1],
-                        orderData: [1, 0]
-                    },
-                    {
-                        targets: [4],
-                        orderData: [4, 0]
-                    }
-                ]
-            });
-        </script>
+                    var calendar = new FullCalendar.Calendar(calendarEl, {
+                        initialView: 'dayGridMonth',
+                        events: '/admin/getReservations', // Controller endpoint to fetch reservation data
+                    });
 
+                    calendar.render();
+                });
+            </script>
 
-        <script>
-            // Hide the success and error messages after 5 seconds
-            setTimeout(function() {
-                document.getElementById('successMessage').style.display = 'none';
-                document.getElementById('errorMessage').style.display = 'none';
-            }, 5000); // 5000 milliseconds = 5 seconds
-        </script>
-
+            <script>
+                new DataTable('#example', {
+                    columnDefs: [{
+                            targets: [0],
+                            orderData: [0, 1]
+                        },
+                        {
+                            targets: [1],
+                            orderData: [1, 0]
+                        },
+                        {
+                            targets: [4],
+                            orderData: [4, 0]
+                        }
+                    ]
+                });
+            </script>
 </body>
 
 </html>

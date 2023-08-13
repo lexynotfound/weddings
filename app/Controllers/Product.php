@@ -474,6 +474,7 @@ class Product extends BaseController
 
             return view('produk/create', $data);
         } else {
+            
             // Get authenticated user data
             $user = service('authentication')->user();
 
@@ -821,8 +822,11 @@ class Product extends BaseController
 
     public function delete($id)
     {
+        // Load the product model
+        $productModel = new ProductModel();
+
         // Fetch the product data from the database
-        $product = $this->productModel->find($id);
+        $product = $productModel->find($id);
 
         // Check if the product exists in the database
         if (!$product) {
@@ -852,14 +856,14 @@ class Product extends BaseController
             $deletedByUser = $userModel->find($product['user_id']);
             $deletedByUsername = $deletedByUser ? $deletedByUser->username : 'Unknown User';
 
-            // Delete the product and its related records (kategori) from the database
-            // (Make sure the foreign key constraint ON DELETE CASCADE is set in the database)
-            if ($this->productModel->delete($id)) {
+            // Update the deleted_at field to mark it as soft deleted
+            $data = ['deleted_at' => date('Y-m-d H:i:s')];
+            if ($productModel->update($id, $data)) {
                 // Product deletion successful
-                session()->setFlashdata('success', 'Package "' . $product['nama_produk'] . '" deleted successfully by user: ' . $deletedByUsername . '.');
+                session()->setFlashdata('success', 'Package "' . $product['nama_produk'] . '" has been soft deleted successfully by user: ' . $deletedByUsername . '.');
             } else {
                 // Product deletion failed
-                session()->setFlashdata('error', 'Failed to delete the package "' . $product['nama_produk'] . '".');
+                session()->setFlashdata('error', 'Failed to soft delete the package "' . $product['nama_produk'] . '".');
             }
         } else {
             // User does not have permission to delete the product
@@ -868,4 +872,6 @@ class Product extends BaseController
 
         return redirect()->to('produk/daftar_produk');
     }
+
+
 }

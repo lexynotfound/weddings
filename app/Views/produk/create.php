@@ -26,7 +26,7 @@
                 <!-- ... (rest of the header code) ... -->
                 <div class="container">
                     <a class="navbar-brand" href="<?= base_url('home'); ?>">
-                        <img src="<?= base_url(); ?>/images/logo.svg" alt="logo" srcset="" width="100" height="" class="d-inline-block align-text-top">
+                        <img src="<?= base_url(); ?>/images/logo.jpg" alt="logo" srcset="" width="100" height="" class="d-inline-block align-text-top">
                     </a>
 
                     <div class="container">

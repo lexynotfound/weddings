@@ -4,6 +4,11 @@ namespace App\Controllers;
 
 use App\Models\ProductModel;
 use App\Models\MenuModel;
+use App\Models\PaymentModel;
+use App\Models\TransaksiModel;
+use App\Models\ReservationModel;
+use App\Models\ReviewsModel;
+use App\Models\RepliesModel;
 use App\Models\CategoriesModel;
 use Myth\Auth\Models\UserModel;
 
@@ -13,6 +18,11 @@ class Home extends BaseController
     protected $builder;
     protected $productModel;
     protected $menuModel;
+    protected $reservationModel;
+    protected $paymentModel;
+    protected $transaksiModel;
+    protected $reviewsModel;
+    protected $repliesModel;
     protected $categoriesModel;
     protected $userModel;
 
@@ -22,6 +32,11 @@ class Home extends BaseController
         $this->builder = $this->db->table('product');
         $this->productModel = new ProductModel();
         $this->menuModel = new MenuModel();
+        $this->reservationModel = new ReservationModel();
+        $this->transaksiModel = new TransaksiModel();
+        $this->paymentModel = new PaymentModel();
+        $this->reviewsModel = new ReviewsModel();
+        $this->repliesModel = new RepliesModel();
         $this->categoriesModel = new CategoriesModel();
         $this->userModel = new UserModel();
     }
@@ -68,6 +83,9 @@ class Home extends BaseController
         /* $this->builder->join('kategori', 'kategori.produk_id = product.id', 'left'); */ // Use 'left' for LEFT JOIN
         $this->builder->join('users', 'users.id = product.user_id', 'left'); // Use 'left' for LEFT JOIN
 
+        // Add condition to check if the data is not soft deleted
+        $this->builder->where('product.deleted_at IS NULL');
+
         // Get the product data with category information and user information
         $products = $this->builder->get()->getResultArray();
 
@@ -76,6 +94,7 @@ class Home extends BaseController
 
         return view('home/index', $data);
     }
+
 
     public function errorpage()
     {
@@ -86,7 +105,7 @@ class Home extends BaseController
         return view('home/error-page', $data);
     }
 
-    // Controller
+    // Detail
     public function detail($id = 0)
     {
         $data = [
@@ -102,6 +121,7 @@ class Home extends BaseController
 
         // Fetch the product data with user names for the given $id
         $this->builder->where('product.id', $id);
+        $this->builder->where('product.deleted_at IS NULL'); // Add this line to filter out soft deleted products
         $product = $this->builder->get()->getRowArray();
 
         // Check if the product exists
@@ -136,6 +156,38 @@ class Home extends BaseController
 
         return view('home/detail', $data);
     }
+    
+
+    // Function to get reviews by payment_id
+    protected function getReviewsByPayment($payment_id)
+    {
+        $this->builder = $this->db->table('reviews');
+        $this->builder->select('reviews.id, reviews.user_id, reviews.payment_id, reviews.review, reviews.rating, reviews.created_at,payment.id_payment,payment.user_id as payment_users,payment.payment_date,payment.transaksi_id, users.username, users.nama, users.foto');
+        $this->builder->join('payment', 'payment.id = reviews.payment_id', 'left'); // LEFT JOIN with users table
+        $this->builder->join('transaksi', 'transaksi.id = payment.transaksi_id', 'left'); // LEFT JOIN with users table
+        $this->builder->join('product', 'product.id = transaksi.produk_id', 'left'); // LEFT JOIN with users table
+        $this->builder->join('users as user_payment', 'user_payment.id = payment.user_id', 'left'); // LEFT JOIN with users table
+        $this->builder->join('users', 'users.id = reviews.user_id', 'left'); // LEFT JOIN with users table
+        $this->builder->where('reviews.payment_id', $payment_id);
+        $this->builder->where('reviews.deleted_at IS NULL'); // Filter out soft deleted reviews
+        $reviews = $this->builder->get()->getResultArray();
+
+        return $reviews;
+    }
+
+    // Function to get replies by review_id
+    protected function getRepliesByReview($review_id)
+    {
+        $this->builder = $this->db->table('replies');
+        $this->builder->select('replies.id, replies.user_id, replies.review_id, replies.reply, replies.created_at, users.username, users.nama, users.foto');
+        $this->builder->join('users', 'users.id = replies.user_id', 'left'); // LEFT JOIN with users table
+        $this->builder->where('replies.review_id', $review_id);
+        $this->builder->where('replies.deleted_at IS NULL'); // Filter out soft deleted replies
+        $replies = $this->builder->get()->getResultArray();
+
+        return $replies;
+    }
+
 
     // Function to get menu options based on produk_id
     protected function getMenuOptions($produk_id)

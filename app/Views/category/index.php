@@ -261,15 +261,15 @@
         <div class="container">
             <ul class="nav justify-content-center">
                 <li class="nav-item">
-                    <a class="nav-link nav-link-bottoms-icons text-center text-black" aria-current="page" href="<?= base_url('best') ?>">
-                        <img src="<?= base_url(); ?>/images/Star.svg" alt="Best" style="width: 40px; height: 40px;">
-                        Best
+                    <a class="nav-link nav-link-bottoms-icons text-center text-black" aria-current="page" href="<?= base_url('home') ?>">
+                        <img src="<?= base_url(); ?>/images/alls.png" alt="Best" style="width: 40px; height: 40px;">
+                        All
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link nav-link-bottoms-icons text-center text-black" aria-current="page" href="<?= base_url('lokasi') ?>">
-                        <img src="<?= base_url(); ?>/images/lc.svg" alt="Best" style="width: 40px; height: 40px;">
-                        Location
+                    <a class="nav-link nav-link-bottoms-icons text-center text-black" aria-current="page" href="<?= base_url('best') ?>">
+                        <img src="<?= base_url(); ?>/images/Star.svg" alt="Best" style="width: 40px; height: 40px;">
+                        Best
                     </a>
                 </li>
                 <li class="nav-item">
@@ -386,7 +386,7 @@
                 <div class="col mb-3">
                     <!-- logo -->
                     <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
-                        <img class="bi me-2" width="200" src="<?= base_url(); ?>/images/logo.svg">
+                        <img class="bi me-2" width="200" src="<?= base_url(); ?>/images/logo.jpg">
 
                         </img>
                     </a>
