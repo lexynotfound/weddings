@@ -291,8 +291,8 @@ class Payment extends BaseController
     }
 
     /* Menampilkan data Payment per user id atau sesuai yang login*/
-    
-      /* // Set your Midtrans server key
+
+    /* // Set your Midtrans server key
         Config::$serverKey = 'SB-Mid-server-KGJ8_8kepWGli0XcAaGJ0xa7';
         // Set to Development/Sandbox environment (change to false for production)
         Config::$isProduction = false;
@@ -368,7 +368,7 @@ class Payment extends BaseController
     } */
 
     // Controller for the "Continue Payment" page
-    public function continuePayment($id_payment)
+    /*  public function continuePayment($id_payment)
     {
         // Find the payment data by id_payment
         $payment = $this->paymentModel->where('id_payment', $id_payment)->first();
@@ -390,6 +390,46 @@ class Payment extends BaseController
 
         // Add 1 month to the event date
         $eventDate->addMonth();
+
+        if ($currentDate >= $eventDate) {
+            // Update the payment data for remaining payment
+            $dpAmount = $payment['total_harga'] * 0.3;
+            $remainingPayment = $payment['total_harga'] - $dpAmount;
+
+            // Set the status to 'Lakukan Pelunasan'
+            $payment->total_payment = $remainingPayment;
+            $payment->status = 'Lakukan Pelunasan';
+            $payment->payment_updated = date('Y-m-d H:i:s');
+            $payment->save();
+
+            return view('payment/continue_payment', ['payment' => $payment]);
+        }
+
+        // If it's not time to perform the remaining payment, redirect back with an error message
+        return redirect()->back()->with('error', 'It is not yet time to perform the remaining payment.');
+    } */
+
+    public function continuePayment($id_payment)
+    {
+        // Find the payment data by id_payment
+        $payment = $this->paymentModel->where('id_payment', $id_payment)->first();
+
+        if (!$payment) {
+            return redirect()->to('payment/error-page')->with('error', 'Payment not found.');
+        }
+
+        // Fetch the reservation data using reservation_id
+        $reservation = $this->reservationModel->find($payment['reservation_id']);
+
+        if (!$reservation) {
+            return redirect()->to('payment/error-page')->with('error', 'Reservation not found.');
+        }
+
+        // Calculate the event date + 3 days
+        $eventDate = new Carbon($reservation['tgl_acara']);
+        $eventDate->addDays(3);
+
+        $currentDate = Carbon::now();
 
         if ($currentDate >= $eventDate) {
             // Update the payment data for remaining payment

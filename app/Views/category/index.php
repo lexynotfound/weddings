@@ -285,9 +285,9 @@
             <div class="container px-4 px-lg-5 mt-3">
                 <h2 class="fw-bolder mb-4">Bundle</h2>
                 <?php if (!empty($categoriesProducts)) : ?>
-                    <div class="row">
+                    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4">
                         <?php foreach ($categoriesProducts as $categoriesProduct) : ?>
-                            <div class="col-md-3 custom-card">
+                            <div class="col mb-4">
                                 <a href="<?= base_url('home/detail/' . $categoriesProduct['produkid']) ?>" class="card h-100 custom-link">
                                     <img class="card-img-top" src="<?= base_url('uploads/' . $categoriesProduct['photos_filenames']) ?>" alt="Related Product Image" />
                                     <div class="card-body p-4">
@@ -305,7 +305,7 @@
                         <?php endforeach; ?>
                     </div>
                 <?php else : ?>
-                    <div class="d-flex justify-content-center align-items-center mt-2" role="alert" style="height: 200px;">
+                    <div class="d-flex justify-content-center align-items-center mt-4" role="alert" style="height: 150px;">
                         <div class="col-12 text-center">
                             <p>No packages bundles found.</p>
                         </div>

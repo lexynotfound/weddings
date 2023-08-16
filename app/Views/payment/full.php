@@ -429,7 +429,7 @@
                                     <div class="avatar me-3">
                                         <!-- Assuming you have a user profile image URL stored in $reservation['foto'] -->
                                         <label class="lg-label fw-bold">
-                                            Masukkan no rekening berikut ini : 5785785847
+                                            Masukkan no rekening berikut ini :BCA  5785785847
                                             lalu abis itu jika anda menggunakan mobile banking isikan
                                             di note ketikan melakukan transfer dengan memasukkan nama package
                                             yang anda pilih <?= $reservation['nama_produk']; ?>
@@ -448,7 +448,7 @@
                                 </div> -->
                                             <div class="col-md-4">
                                                 <div class="photo-upload-section">
-                                                    <img src="#" class="uploaded-image" alt="Uploaded Photo">
+                                                    <img src="<?= base_url() ?>/images/ups.jpg" class="uploaded-image" alt="Uploaded Photo">
                                                     <input type="file" class="file-input" accept="image/*" name="payment_receipt" onchange="previewImage(event)">
                                                 </div>
                                             </div>

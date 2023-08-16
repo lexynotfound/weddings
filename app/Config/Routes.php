@@ -42,7 +42,9 @@ $routes->group('home', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('/', 'Home::index');
     $routes->get('searc', 'Home::search');
     $routes->get('detail/(:num)', 'Home::detail/$1');
+    $routes->post('save_review/(:num)', 'Home::save_review/$1');
     $routes->get('detail/custom/(:num)', 'Home::custom/$1');
+    $routes->get('search', 'Home::search', ['as' => 'search']);
     $routes->get('error-page', 'Home::errorpage');
 });
 
@@ -59,6 +61,7 @@ $routes->group('best', ['namespace' => 'App\Controllers'], function ($routes) {
 $routes->group('reservation', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('index/(:num)', 'Reservation::index/$1');
     $routes->get('reservation/(:segment)', 'Reservation::reservation/$1');
+    $routes->get('data','Reservation::data', ['filter' => 'role:admin']);
     $routes->post('buy/(:num)', 'Reservation::buy/$1');
     $routes->post('store', 'Reservation::store');
     $routes->get('error-page', 'Reservation::errorpage');
@@ -84,7 +87,31 @@ $routes->group('invoice', ['namespace' => 'App\Controllers'], function ($routes)
 
 $routes->group('user', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('/', 'User::index');
+    $routes->get('verify_email/(:segment)', 'User::verify_email/$1');
+    $routes->post('update_profile', 'User::update_profile');
+    // Rute untuk update nama
+    $routes->post('update_name', 'User::update_name');
+
+    // Rute untuk update email
+    $routes->post('update_email', 'User::update_email');
+
+    // Rute untuk update telepon
+    $routes->post('update_telepon', 'User::update_telepon');
+
+    // Rute untuk update foto
+    $routes->post('update_foto', 'User::update_foto');
+
+    // Rute untuk update lokasi
+    $routes->post('update_lokasi', 'User::update_lokasi');
+
+    // Rute untuk update jenis kelamin
+    $routes->post('update_gender', 'User::update_gender');
     $routes->get('setting', 'User::setting');
+});
+
+$routes->group('review', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('/', 'Reviews::index');
+    $routes->post('save_review/(:num)', 'Reviews::save_review/$1');
 });
 
 $routes->group('admin', ['namespace' => 'App\Controllers'], function ($routes) {

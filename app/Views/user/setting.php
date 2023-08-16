@@ -19,7 +19,7 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Vj6tzy4Hg7J1K25b4ml2p15zYLq6xWq5rI3/ABttrKA2Ap" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Vj6tzy4Hg7J1K25b4ml2p15zYLq6xWq5rI3/ABttrKA2Ap" crossorigin="anonymous">
-
+    <!--  <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet"> -->
 </head>
 
 <body>
@@ -36,9 +36,9 @@
 
                     <div class="container">
                         <div class="row justify-content-center">
-                            <div class="col-md-8"> <!-- Adjust the column width as needed -->
-                                <form action="" class="d-flex align-items-center">
-                                    <input type="text" id="inputPassword5" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;"> <!-- Adjust the width as needed -->
+                            <div class="col-md-8">
+                                <form action="<?= base_url('home/search'); ?>" method="get" class="d-flex align-items-center" id="searchForm">
+                                    <input type="text" id="inputPassword5" name="q" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;">
                                 </form>
                             </div>
                         </div>
@@ -123,6 +123,12 @@
 
     <section style="background-color: #ffff;">
         <div class="container py-5">
+            <?php if (session('error')) : ?>
+                <div class="alert alert-danger" role="alert">
+                    <?= session('error') ?>
+                </div>
+            <?php endif; ?>
+
             <div class="row">
                 <div class="col">
                     <nav aria-label="breadcrumb" class="bg-light rounded-3 p-3 mb-4">
@@ -140,13 +146,28 @@
                 <div class="col-lg-4">
                     <div class="card mb-4">
                         <div class="card-body text-center">
-                            <img src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
-                            <h5 class="my-3"><?= user()->nama; ?></h5>
+                            <?php
+                            if ($user->foto === 'default.png') {
+                                // Jika foto adalah foto default, tampilkan dari folder 'images'
+                            ?>
+                                <img src="<?= base_url(); ?>/images/<?= $user->foto; ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                            <?php
+                            } else {
+                                // Jika foto telah diubah, tampilkan dari folder 'uploads'
+                            ?>
+                                <img src="<?= base_url('uploads/' . $user->foto); ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                            <?php
+                            }
+                            ?>
+                            <h5 class="my-3"><?= $user->nama; ?></h5>
                             <p class="text-muted mb-3">Besar file: maksimum 10.000.000 bytes (10 Megabytes). Ekstensi file yang diperbolehkan: .JPG .JPEG .PNG</p>
                             <div class="d-flex justify-content-center mb-2">
-                                <button type="button" class="btn btn-outline-primary ms-1">Ganti Foto Profile</button>
+                                <button type="button" class="btn btn-outline-primary ms-1" data-bs-toggle="modal" data-bs-target="#choosePhotoModal">
+                                    Ganti Foto Profile
+                                </button>
                             </div>
                         </div>
+
                     </div>
                     <div class="card mb-4 mb-lg-0">
                         <div class="card-body p-0">
@@ -182,8 +203,8 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <p class="text-muted mb-0">
-                                        <?= user()->nama; ?>
-                                        <a href="<?= base_url('user/edit_profile'); ?>" class="ms-2 text-decoration-none">Ubah</a>
+                                        <?= $user->nama; ?>
+                                        <a href="#" class="ms-2 text-decoration-none" data-toggle="modal" data-target="#editNameModal">Ubah</a>
                                     </p>
                                 </div>
                             </div>
@@ -194,8 +215,8 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <p class="text-muted mb-0">
-                                        <?= user()->username; ?>
-                                        <a href="<?= base_url('user/edit_profile'); ?>" class="ms-2 text-decoration-none"></a>
+                                        <?= $user->username; ?>
+
                                     </p>
                                 </div>
                             </div>
@@ -206,8 +227,8 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <p class="text-muted mb-0">
-                                        <?= user()->email; ?>
-                                        <a href="<?= base_url('user/edit_profile'); ?>" class="ms-2 text-decoration-none">Ubah</a>
+                                        <?= $user->email; ?>
+                                        <a href="#" class="ms-2 text-decoration-none" data-toggle="modal" data-target="#editEmailModal">Ubah</a>
                                     </p>
                                 </div>
                             </div>
@@ -218,8 +239,8 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <p class="text-muted mb-0">
-                                        <?= user()->jenis_kelamin; ?>
-                                        <a href="<?= base_url('user/edit_profile'); ?>" class="ms-2 text-decoration-none">Ubah</a>
+                                        <?= $user->jenis_kelamin; ?>
+                                        <a href="#" class="ms-2 text-decoration-none" data-toggle="modal" data-target="#editGenderModal">Ubah</a>
                                     </p>
                                 </div>
                             </div>
@@ -230,8 +251,8 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <p class="text-muted mb-0">
-                                        <?= user()->telepon; ?>
-                                        <a href="<?= base_url('user/edit_profile'); ?>" class="ms-2 text-decoration-none">Ubah</a>
+                                        <?= $user->telepon; ?>
+                                        <a href="#" class="ms-2 text-decoration-none" data-toggle="modal" data-target="#editMobileModal">Ubah</a>
                                     </p>
                                 </div>
                             </div>
@@ -242,8 +263,8 @@
                                 </div>
                                 <div class="col-sm-9">
                                     <p class="text-muted mb-0">
-                                        <?= user()->lokasi; ?>
-                                        <a href="<?= base_url('user/edit_profile'); ?>" class="ms-2 text-decoration-none">Ubah</a>
+                                        <?= $user->lokasi; ?>
+                                        <a href="#" class="ms-2 text-decoration-none" data-toggle="modal" data-target="#editAddressModal">Ubah</a>
                                     </p>
                                 </div>
                             </div>
@@ -321,6 +342,292 @@
         </div>
     </section>
 
+    <!-- Modal for Name Edit -->
+    <!-- Modal for Name Edit -->
+    <div class="modal fade" id="editNameModal" tabindex="-1" role="dialog" aria-labelledby="editNameModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editNameModalLabel">Edit Full Name</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="<?= base_url('user/update_name'); ?>" method="post">
+                    <?= csrf_field() ?>
+                    <div class="modal-body">
+                        <!-- Your form content for editing name here -->
+                        <!-- Name input field -->
+                        <div class="mb-3">
+                            <label for="newName" class="form-label">New Full Name</label>
+                            <input type="text" id="newName" name="nama" value="<?= $user->nama; ?>" class="form-control">
+                        </div>
+
+                        <!-- Display error message if no changes are made -->
+                        <?php if (session('no_changes')) : ?>
+                            <div class="alert alert-danger">
+                                No changes made.
+                            </div>
+                        <?php endif; ?>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Modal for Email Edit -->
+    <div class="modal fade" id="editEmailModal" tabindex="-1" role="dialog" aria-labelledby="editEmailodalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editEmailModalLabel">Changes Email</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="<?= base_url('user/update_email'); ?>" method="POST">
+                    <?= csrf_field() ?>
+                    <div class="modal-body">
+                        <!-- Your form content for editing name here -->
+                        <!-- Name input field -->
+                        <div class="mb-3">
+                            <label for="newName" class="form-label">New Email</label>
+                            <input type="text" id="newEmail" name="email" value="<?= $user->email; ?>" class="form-control">
+                        </div>
+                        <!-- Display error message if no changes are made -->
+                        <?php if (session('no_changes')) : ?>
+                            <div class="alert alert-danger">
+                                No changes made.
+                            </div>
+                        <?php endif; ?>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Gender Edit -->
+    <div class="modal fade" id="editGenderModal" tabindex="-1" role="dialog" aria-labelledby="editGenderModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editGenderModalLabel">Changes Gender</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="<?= base_url('user/update_gender'); ?>" method="POST">
+                    <?= csrf_field() ?>
+                    <div class="modal-body">
+                        <!-- Your form content for editing name here -->
+                        <!-- Name input field -->
+                        <div class="mb-3">
+                            <label for="newGender" class="form-label">Change Your Gender</label>
+                            <select id="newGender" name="jenis_kelamin" class="form-control">
+                                <?php if ($user->jenis_kelamin === 'Laki-laki') : ?>
+                                    <option value="Laki-laki" selected>Laki-laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                <?php elseif ($user->jenis_kelamin === 'Perempuan') : ?>
+                                    <option value="Laki-laki">Laki-laki</option>
+                                    <option value="Perempuan" selected>Perempuan</option>
+                                <?php else : ?>
+                                    <option value="Laki-laki">Laki-laki</option>
+                                    <option value="Perempuan">Perempuan</option>
+                                <?php endif; ?>
+                            </select>
+                        </div>
+                        <!-- Display error message if no changes are made -->
+                        <?php if (session('no_changes')) : ?>
+                            <div class="alert alert-danger">
+                                No changes made.
+                            </div>
+                        <?php endif; ?>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Mobile Edit -->
+    <div class="modal fade" id="editMobileModal" tabindex="-1" role="dialog" aria-labelledby="editMobileModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editMobileModalLabel">Changes Mobile</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form class="form" action="<?= base_url('user/update_telepon'); ?>" method="POST">
+                    <?= csrf_field() ?>
+                    <div class="modal-body">
+                        <!-- Your form content for editing name here -->
+                        <!-- Name input field -->
+                        <div class="mb-3">
+                            <label for="price" class="form-label">Change Your Mobile</label>
+                            <input type="text" inputmode="numeric" id="newMobile" name="telepon" id="price" value="<?= $user->telepon; ?>" class="form-control" oninput="this.value = this.value.replace(/[^0-9]/g, '');">
+                            <div class="invalid-feedback">Please enter a valid price (numbers only).</div>
+                        </div>
+                        <!-- Display error message if no changes are made -->
+                        <?php if (session('no_changes')) : ?>
+                            <div class="alert alert-danger">
+                                No changes made.
+                            </div>
+                        <?php endif; ?>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for AddressEdit -->
+    <div class="modal fade" id="editAddressModal" tabindex="-1" role="dialog" aria-labelledby="editAddressModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editAddressModalLabel">Changes Address</h5>
+                    <button type="button" class="btn-close" data-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="<?= base_url('user/update_lokasi'); ?>" method="POST">
+                    <?= csrf_field() ?>
+                    <div class="modal-body">
+                        <!-- Your form content for editing name here -->
+                        <!-- Name input field -->
+                        <div class="mb-3">
+                            <label for="newName" class="form-label">Changes Address</label>
+                            <input type="text" id="newAddress" name="lokasi" value="<?= $user->lokasi; ?>" class="form-control">
+                        </div>
+                        <!-- Display error message if no changes are made -->
+                        <?php if (session('no_changes')) : ?>
+                            <div class="alert alert-danger">
+                                No changes made.
+                            </div>
+                        <?php endif; ?>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary">Save Changes</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for Changing Profile Photo -->
+    <div class="modal fade" id="choosePhotoModal" tabindex="-1" role="dialog" aria-labelledby="choosePhotoModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="choosePhotoModalLabel">Pilih Foto Profil</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body">
+                    <!-- Your form content for choosing photo here -->
+                    <form action="<?= site_url('user/update_foto'); ?>" method="post" enctype="multipart/form-data">
+                        <?= csrf_field() ?>
+                        <div class="mb-3 text-center">
+                            <label for="photoInputModal" class="form-label">Changes Photo</label>
+                            <div class="d-flex justify-content-center align-items-center">
+                                <div class="photo-upload-section text-center">
+                                    <label for="photoInput" style="cursor: pointer;">
+                                        <?php
+                                        if ($user->foto === 'default.png') {
+                                            // Jika foto adalah foto default, tampilkan dari folder 'images'
+                                        ?>
+                                            <img src="<?= base_url(); ?>/images/<?= $user->foto; ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                        <?php
+                                        } else {
+                                            // Jika foto telah diubah, tampilkan dari folder 'uploads'
+                                        ?>
+                                            <img src="<?= base_url('uploads/' . $user->foto); ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 150px;">
+                                        <?php
+                                        }
+                                        ?>
+                                    </label>
+                                    <input type="file" class="file-input" id="photoInput" accept="image/*" name="foto" onchange="previewImage(event)">
+                                </div>
+
+                            </div>
+                            <!-- Display error message if no changes are made -->
+                            <?php if (session('no_changes')) : ?>
+                                <div class="alert alert-danger">
+                                    No changes made.
+                                </div>
+                            <?php endif; ?>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Tutup</button>
+                            <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Error Modal -->
+    <?php if (session()->getFlashdata('error')) : ?>
+        <div class="modal fade" id="errorModal" tabindex="-1" role="dialog" aria-labelledby="errorModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="errorModalLabel">Error</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <?= session()->getFlashdata('error') ?>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('#errorModal').modal('show');
+        </script>
+    <?php endif; ?>
+
+    <!-- Success Modal -->
+    <?php if (session()->getFlashdata('success')) : ?>
+        <div class="modal fade" id="successModal" tabindex="-1" role="dialog" aria-labelledby="successModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="successModalLabel">Success</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <?= session()->getFlashdata('success') ?>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <script>
+            $('#successModal').modal('show');
+        </script>
+    <?php endif; ?>
+
 
     <!-- Footer -->
     <div class="container">
@@ -395,7 +702,15 @@
             </div>
         </div>
     </div>
+
+
     <!-- Script -->
+
+    <!-- Include jQuery -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+
+    <!-- Include Bootstrap JS -->
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
     <!-- Bootstrap core JavaScript-->
     <script src="<?= base_url(); ?>/src/jquery/jquery.min.js"></script>
 
@@ -423,6 +738,17 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.12.0/dist/umd/popper.min.js" integrity="sha384-N5ZRprfQq9MgP13e+t4FkTqi7X9WVj54V2VXpOD4z8B65C7BK2gjHdouP84fS7Ld" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-B4gt1FWAbeJ3GzFQNzppbXk6v5zxG4T/4By2vckIgXvb7bPLhpvGhmfhA1t1b8RM" crossorigin="anonymous"></script>
+
+    <script>
+        // Set a timeout to hide the alert after 10 seconds
+        setTimeout(function() {
+            var alertElement = document.querySelector('.alert');
+            if (alertElement) {
+                alertElement.style.display = 'none';
+            }
+        }, 10000); // 10000 milliseconds = 10 seconds
+    </script>
+
     <script>
         // Carousel Slide Effect
         const carousel = document.getElementById('carouselExample');
@@ -452,6 +778,25 @@
             document.querySelector('.carousel-control-prev').style.display = 'none';
             document.querySelector('.carousel-control-next').style.display = 'none';
         });
+    </script>
+
+    <script>
+        function previewImage(event) {
+            const fileInput = event.target;
+            const photoUploadSection = fileInput.parentElement;
+
+            if (fileInput.files && fileInput.files[0]) {
+                const reader = new FileReader();
+
+                reader.onload = function(e) {
+                    const uploadedImage = photoUploadSection.querySelector('.uploaded-image');
+                    uploadedImage.src = e.target.result;
+                    photoUploadSection.classList.add('hide-text');
+                };
+
+                reader.readAsDataURL(fileInput.files[0]);
+            }
+        }
     </script>
 
 </body>

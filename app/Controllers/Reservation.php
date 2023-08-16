@@ -61,6 +61,34 @@ class Reservation extends BaseController
         return view('reservation/index', $data);
     }
 
+    public function data()
+    {
+        $data = [
+            'title' => 'List Reservation Weddings',
+        ];
+        $reservation = $this->db->table('reservation')
+        ->select('reservation.id as reservationid, reservation.tgl_acara, reservation.user_id, reservation.transaksi_id, reservation.lokasi, reservation.status, payment.id_payment,payment.total_payment, payment.payment_date,payment.status, reservation.tgl_acara,reservation.lokasi, transaksi.id_transaksi, transaksi.total_harga, transaksi.produk_id,product.nama_produk,product.description,product.photos_filenames,product.harga_produk,user_produk.nama,user_produk.foto,user_produk.lokasi,user_produk.jenis_kelamin,user_produk.telepon,users.nama,users.lokasi,users.jenis_kelamin,users.telepon,users.email')
+        ->join('users', 'users.id = reservation.user_id', 'left')
+        ->join('payment', 'reservation.id = payment.reservation_id', 'left')
+        ->join('transaksi', 'transaksi.id = reservation.transaksi_id', 'left')
+        ->join('product', 'product.id = transaksi.produk_id', 'left')
+        ->join('users as user_produk', 'user_produk.id = product.user_id', 'left')
+        ->orderBy('payment.payment_date', 'DESC')
+        ->get()
+            ->getResultArray();
+
+        // Check if the payment exists
+        if (!$reservation) {
+            // Redirect to some error page or show an error message
+            return redirect()->to('payment/error-page');
+        }
+
+        // Pass the payment data to the view
+        $data['reservation'] = $reservation;
+
+        return view('reservation/data', $data);
+    }
+
     public function reservation($id = 0)
     {
         $data = [

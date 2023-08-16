@@ -1,3 +1,14 @@
+<?php
+// Fungsi untuk membatasi teks dan menambahkan elipsis
+function truncateText($text, $length)
+{
+    if (strlen($text) <= $length) {
+        return $text;
+    } else {
+        return substr($text, 0, $length) . '...';
+    }
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -123,9 +134,9 @@
 
                     <div class="container">
                         <div class="row justify-content-center">
-                            <div class="col-md-8"> <!-- Adjust the column width as needed -->
-                                <form action="" class="d-flex align-items-center">
-                                    <input type="text" id="inputPassword5" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;"> <!-- Adjust the width as needed -->
+                            <div class="col-md-8">
+                                <form action="<?= base_url('home/search'); ?>" method="get" class="d-flex align-items-center" id="searchForm">
+                                    <input type="text" id="inputPassword5" name="q" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;">
                                 </form>
                             </div>
                         </div>
@@ -285,30 +296,41 @@
             <div class="container py-5">
                 <div class="row justify-content-center">
                     <?php foreach ($produk as $pd) : ?>
-                        <div class="col-md-12 col-lg-3 mb-4 mb-lg-0">
+                        <div class="col-12 col-md-6 col-lg-4 mb-3">
                             <a href="<?= base_url('home/detail/' . $pd['produkid']); ?>" class="card-link nav-link">
                                 <div class="card">
                                     <!-- Display product information -->
-                                    <img src="<?= base_url('uploads/' . $pd['photos_filenames']) ?>" class="card-img-top" alt="<?= $pd['produkid']; ?>" />
+                                    <img src="<?= base_url('uploads/' . $pd['photos_filenames']) ?>" class="custom-card-img" alt="<?= $pd['produkid']; ?>" />
                                     <div class="card-body">
                                         <div class="d-flex justify-content-between">
                                             <p class="small"><?= $pd['nama_produk']; ?></p>
+                                            <h5 class="mb-0"><?= $pd['username']; ?></h5>
                                         </div>
 
                                         <div class="d-flex justify-content-between mb-3">
-                                            <h5 class="mb-0"><?= $pd['username']; ?></h5>
-
+                                            <h5 class="mb-0"><?= truncateText($pd['description'], 20); ?></h5>
                                             <h5 class="text-dark mb-0">Rp.<?= number_format($pd['harga_produk'], 0, ',', '.'); ?></h5>
                                         </div>
 
                                         <div class="d-flex justify-content-between mb-2">
                                             <p class="text-muted mb-0">Location: <?= $pd['lokasi']; ?> <span class="fw-bold"></span></p>
                                             <div class="ms-auto text-warning">
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
-                                                <i class="fa fa-star"></i>
+                                                <?php
+                                                $averageRating = round($pd['averageRating']); // Mengubah nilai rata-rata menjadi angka bulat
+                                                $fullStars = min($averageRating, 5); // Batasi hingga 5 bintang
+                                                ?>
+                                                <div class="d-flex">
+                                                    <?php for ($i = 1; $i <= 5; $i++) : ?>
+                                                        <?php if ($i <= $fullStars) : ?>
+                                                            <span class="star fas fa-star text-warning me-1" style="font-size: 14px;"></span>
+                                                        <?php else : ?>
+                                                            <span class="star far fa-star text-warning me-1" style="font-size: 14px;"></span>
+                                                        <?php endif; ?>
+                                                    <?php endfor; ?>
+                                                    <span class="badge bg-primary ms-2"><?= $averageRating ?>.0</span>
+                                                    <span class="badge bg-primary ms-2"><?= $pd['totalReviews'] ?>.0</span>
+
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
@@ -449,6 +471,20 @@
             document.getElementById('carouselExample').addEventListener('mouseleave', function() {
                 document.querySelector('.carousel-control-prev').style.display = 'none';
                 document.querySelector('.carousel-control-next').style.display = 'none';
+            });
+        </script>
+
+        <script>
+            // Tangkap elemen formulir pencarian
+            const searchForm = document.getElementById('searchForm');
+
+            // Tambahkan event listener pada elemen input
+            searchForm.addEventListener('keyup', function(event) {
+                // Pastikan tombol yang ditekan adalah Enter (kode 13)
+                if (event.keyCode === 13) {
+                    // Kirim formulir pencarian
+                    searchForm.submit();
+                }
             });
         </script>
 

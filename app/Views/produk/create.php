@@ -31,9 +31,9 @@
 
                     <div class="container">
                         <div class="row justify-content-center">
-                            <div class="col-md-8"> <!-- Adjust the column width as needed -->
-                                <form action="" class="d-flex align-items-center">
-                                    <input type="text" id="inputPassword5" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;"> <!-- Adjust the width as needed -->
+                            <div class="col-md-8">
+                                <form action="<?= base_url('home/search'); ?>" method="get" class="d-flex align-items-center" id="searchForm">
+                                    <input type="text" id="inputPassword5" name="q" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;">
                                 </form>
                             </div>
                         </div>
@@ -153,8 +153,11 @@
                                 </div>
                                 <div class="additional-info">
                                     <!-- Default input fields -->
-                                    <input type="text" name="nama_menu[]" class="form-control mb-3" placeholder="Masukkan Nama dari Menu">
-                                    <textarea name="deskripsi[]" class="form-control mb-3" placeholder="Masukkan keterangan dengan Nama dari Menu"></textarea>
+                                    <div class="menu-entry">
+                                        <!-- <input type="text" name="nama_menu[]" class="form-control mb-3" placeholder="Masukkan Nama dari Menu">
+                                        <textarea name="deskripsi[]" class="form-control mb-3" placeholder="Masukkan keterangan dengan Nama dari Menu"></textarea>
+                                        <button type="button" class="delete-icon btn btn-circle btn-outline-danger mb-3">Hapus -</button> -->
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -172,7 +175,7 @@
                                 </div> -->
                             <div class="col-md-4">
                                 <div class="photo-upload-section">
-                                    <img src="#" class="uploaded-image" alt="Uploaded Photo">
+                                    <img src="<?= base_url() ?>/images/ups.jpg" class="uploaded-image" alt="Uploaded Photo">
                                     <input type="file" class="file-input" accept="image/*" name="photos_filenames" onchange="previewImage(event)">
                                 </div>
                             </div>
@@ -232,7 +235,8 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.12.0/dist/umd/popper.min.js" integrity="sha384-N5ZRprfQq9MgP13e+t4FkTqi7X9WVj54V2VXpOD4z8B65C7BK2gjHdouP84fS7Ld" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-B4gt1FWAbeJ3GzFQNzppbXk6v5zxG4T/4By2vckIgXvb7bPLhpvGhmfhA1t1b8RM" crossorigin="anonymous"></script>
-    <script>
+
+    <!--  <script>
         document.addEventListener("DOMContentLoaded", function() {
             // Get the add icon button and additional info container
             const addIconBtn = document.querySelector(".add-icon");
@@ -241,14 +245,67 @@
             // Add event listener to the add icon button
             addIconBtn.addEventListener("click", function() {
                 // Clone the default input fields
-                const newInputFields = additionalInfoContainer.cloneNode(true);
+                const newInputFields = additionalInfoContainer.querySelector('.menu-entry').cloneNode(true);
 
                 // Clear the values of the new input fields
                 const inputs = newInputFields.querySelectorAll("input, textarea");
                 inputs.forEach(input => input.value = "");
 
                 // Append the new input fields below the existing ones
-                additionalInfoContainer.parentNode.insertBefore(newInputFields, additionalInfoContainer.nextSibling);
+                additionalInfoContainer.appendChild(newInputFields);
+
+                // Add event listener to the delete icon button in the new input fields
+                const deleteIconBtn = newInputFields.querySelector(".delete-icon");
+                deleteIconBtn.addEventListener("click", function() {
+                    additionalInfoContainer.removeChild(newInputFields);
+                });
+            });
+        });
+    </script> -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const addIconBtn = document.querySelector(".add-icon");
+            const additionalInfoContainer = document.querySelector(".additional-info");
+
+            addIconBtn.addEventListener("click", function() {
+                const newInputFields = document.createElement("div");
+                newInputFields.classList.add("menu-entry");
+
+                const inputName = document.createElement("input");
+                inputName.type = "text";
+                inputName.name = "nama_menu[]";
+                inputName.classList.add("form-control", "mb-3");
+                inputName.required = true;
+
+                const textareaDesc = document.createElement("textarea");
+                textareaDesc.name = "deskripsi[]";
+                textareaDesc.classList.add("form-control", "mb-3");
+                textareaDesc.required = true;
+
+                const deleteIconBtn = document.createElement("button");
+                deleteIconBtn.type = "button";
+                deleteIconBtn.classList.add("delete-icon", "btn", "btn-circle", "btn-outline-danger", "mb-3");
+                deleteIconBtn.innerText = "Hapus -";
+
+                newInputFields.appendChild(inputName);
+                newInputFields.appendChild(textareaDesc);
+                newInputFields.appendChild(deleteIconBtn);
+
+                additionalInfoContainer.appendChild(newInputFields);
+
+                deleteIconBtn.addEventListener("click", function() {
+                    additionalInfoContainer.removeChild(newInputFields);
+                });
+            });
+
+            // Handle existing delete buttons
+            const existingDeleteButtons = additionalInfoContainer.querySelectorAll(".menu-entry .delete-icon");
+            existingDeleteButtons.forEach(deleteButton => {
+                deleteButton.addEventListener("click", function() {
+                    const parentEntry = deleteButton.parentElement;
+                    additionalInfoContainer.removeChild(parentEntry);
+                });
             });
         });
     </script>

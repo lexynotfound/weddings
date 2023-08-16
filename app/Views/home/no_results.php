@@ -2,34 +2,43 @@
 <html lang="en">
 
 <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
-    <meta name="description" content="" />
-    <meta name="author" content="" />
-    <title><?= $product['nama_produk']; ?></title>
-    <!-- Favicon-->
-    <!-- Bootstrap icons-->
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><?= $title; ?></title>
     <link rel="stylesheet" href="<?= base_url(); ?>/src/css/bootstrap.css">
     <link rel="stylesheet" href="<?= base_url(); ?>/src/css/mystyle.css">
     <link rel="stylesheet" href="<?= base_url(); ?>/src/css/caraousel.css">
     <link href="<?= base_url(); ?>/src/fontawesome-free/css/all.min.css" rel="stylesheet" type="text/css">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.5.0/font/bootstrap-icons.css" rel="stylesheet" />
-    <!-- Core theme CSS (includes Bootstrap)-->
+    <link href="<?= base_url(); ?>/src/fontawesome-free-6.4.0/css/all.min.css" rel="stylesheet" type="text/css">
+    <link href="<?= base_url(); ?>/src/fontawesome-free-6.4.0/css/all.css" rel="stylesheet" type="text/css">
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.4/css/all.css" integrity="sha384-DyZ88mC6Up2uqS4h/KRgHuoeGwBcD4Ng9SiP4dIRy0EXTlnuz47vAwmeGwVChigm" crossorigin="anonymous" />
-    <link href="<? base_url() ?>/src/css/style.css" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css?family=Nunito:200,200i,300,300i,400,400i,600,600i,700,700i,800,800i,900,900i" rel="stylesheet">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+Vj6tzy4Hg7J1K25b4ml2p15zYLq6xWq5rI3/ABttrKA2Ap" crossorigin="anonymous">
+
+    <style>
+        .custom-card-img {
+            width: 100%;
+            /* Sesuaikan lebar gambar */
+            max-height: 150px;
+            /* Sesuaikan tinggi gambar */
+            object-fit: cover;
+            /* Agar gambar tetap terlihat proporsional */
+        }
+    </style>
 </head>
 
 <body>
-    <!-- Navigation-->
+
     <header>
-        <div class="container mt-4">
+        <div class="container mt-5">
             <nav class="navbar navbar-expand-lg bg-white ms-auto">
                 <!-- ... (rest of the header code) ... -->
                 <div class="container">
                     <a class="navbar-brand" href="<?= base_url('home'); ?>">
-                        <img src="<?= base_url(); ?>/images/logo.svg" alt="logo" srcset="" width="100" height="" class="d-inline-block align-text-top">
+                        <img src="<?= base_url(); ?>/images/logo.jpg" alt="logo" srcset="" width="100" height="100" class="d-inline-block align-text-top">
                     </a>
 
                     <div class="container">
@@ -119,122 +128,16 @@
         </div>
     </header>
 
-    <!-- Product section-->
-    <section class="py-5">
-        <div class="container px-4 px-lg-5 my-5">
-            <!-- Check if the product data is available -->
-            <?php if ($product) : ?>
-                <div class="row gx-4 gx-lg-5 align-items-center">
-                    <!-- Product Image (col-md-8) -->
-                    <div class="col-md-6 mb-5 mb-md-0">
-                        <img class="card-img-top img-fluid rounded-5" src="<?= base_url('uploads/' . $product['photos_filenames']) ?>" alt="Product Image" />
-                    </div>
-
-                    <!-- Product Information and Buttons (col-md-4) -->
-                    <div class="col-md-4">
-                        <div class="small mb-1"></div>
-                        <h1 class="display-5 fw-bolder"><?= $product['nama_produk']; ?></h1>
-                        <div class="fs-5 mb-3">
-                            <span><?= $product['username']; ?></span>
-                            <span>Rp.<?= number_format($product['harga_produk'], 0, ',', '.'); ?></span>
-                        </div>
-                        <div class="mb-4">
-                            <label id="selectedOptionLabel" class="form-label">Pilihan : </label>
-                            <div class="option-container custom-container">
-                                <?php foreach ($menuOptions as $option) : ?>
-                                    <?php if (!empty($option['nama_menu'])) : ?>
-                                        <label class="option-item">
-                                            <input type="radio" name="customOption1" value="<?= $option['produk_id']; ?>" required>
-                                            <div class="option-content">
-                                                <img src="<?= base_url('uploads/' . $product['photos_filenames']) ?>" alt="Image 1">
-                                                <span><?= $option['nama_menu']; ?></span>
-                                            </div>
-                                        </label>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
-                                <!-- Add more details for the main product as needed -->
-                            </div>
-                        </div>
-
-                        <div class="d-flex flex-column flex-md-row">
-                            <!-- <input class="form-control text-center me-md-3 mb-3" id="inputQuantity" type="number" value="1" style="max-width: 3rem;" /> -->
-                            <a href="<?= site_url('produk/edit/' . $product['produkid']); ?>" class="btn btn-outline-dark flex-shrink-0 me-md-3 mb-3 mb-md-0">
-                                <i class="fas fa-solid fa-pen-alt"></i>
-                                Edit
-                            </a>
-                            <a href="<?= site_url('produk/daftar_produk'); ?>" class="btn btn-outline-dark w-100">
-                                <!--  <i class="bi-cart-fill me-1"></i> -->
-                                Back
-                            </a>
-                        </div>
-
-                    </div>
+    <div class="container mt-5">
+        <div class="row justify-content-center">
+            <div class="col-md-6">
+                <div class="text-center">
+                    <img src="<?= base_url() ?>/images/notfounds.jpg" alt="No Results" width="400" height="400" class="d-inline-block align-text-top img-fluid">
+                    <h2 class="mt-4">Tidak Ada Paket atau Hasil Pencarian Tidak Ditemukan</h2>
                 </div>
-
-                <div class="row mt-5">
-                    <div class="col-md-12">
-                        <h2 class="fw-bolder mb-3">Description:</h2>
-                        <div class="description-wrapper">
-                            <p class="fs-6" id="description"><?= nl2br($product['description']); ?></p>
-                        </div>
-                        <a href="#" class="show-more-link nav-link text-info" onclick="toggleDescription();">Show More</a>
-                    </div>
-                </div>
-                <!-- Product Description (col-md-12) -->
-
-            <?php else : ?>
-                <div class="d-flex justify-content-center align-items-center" role="alert" style="height: 300px;">
-                    <div class="text-center">
-                        <img src="<?= base_url() ?>/images/notproduct.svg" alt="Package not found." class="img-fluid mb-3" style="max-width: 350px;" />
-                        <p class="mb-2" style="font-size: 30px; font-weight: bold;">Yaah Sayang Sekali Paket Yang anda cari tidak ada. Mungkin ada di tempat lain</p>
-                        <a href="<?= base_url('home') ?>">
-                            <button class="btn btn-info">Mungkin Disi</button>
-                        </a>
-                    </div>
-                </div>
-            <?php endif; ?>
-        </div>
-    </section>
-
-    <!-- Related items section-->
-    <section class="py-5 bg-light">
-        <div class="container px-4 px-lg-5 mt-3">
-            <h2 class="fw-bolder mb-4">Related package</h2>
-            <div class="row gx-4 gx-lg-5 row-cols-2 row-cols-md-3 row-cols-xl-4 justify-content-center">
-                <?php if (!empty($relatedProducts)) : ?>
-                    <?php foreach ($relatedProducts as $relatedProduct) : ?>
-                        <div class="col mb-5">
-                            <a href="<?= base_url('home/detail/' . $relatedProduct['produkid']) ?>" class="card h-100 custom-link">
-                                <!-- Related Product image -->
-                                <img class="card-img-top" src="<?= base_url('uploads/' . $relatedProduct['photos_filenames']) ?>" alt="Related Product Image" />
-                                <!-- Related Product details -->
-                                <div class="card-body p-4">
-                                    <div class="text-start">
-                                        <!-- Related Product name -->
-                                        <h5 class="fw-bolder"><?= $relatedProduct['nama_produk']; ?></h5>
-                                        <!-- Related Product price -->
-                                        Rp.<?= number_format($relatedProduct['harga_produk'], 0, ',', '.'); ?>
-                                    </div>
-                                    <div class="d-flex align-items-center mt-2">
-                                        <!-- User photo -->
-                                        <img src="<?= base_url('/images/' . $relatedProduct['foto']) ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
-                                        <!-- Location text -->
-                                        <span class="small"><?= $relatedProduct['lokasi']; ?></span>
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    <?php endforeach; ?>
-                <?php else : ?>
-                    <div class="d-flex justify-content-center align-items-center mt-2" role="alert" style="height: 200px;">
-                        <div class="col-12 text-center">
-                            <p>No related packages found.</p>
-                        </div>
-                    </div>
-                <?php endif; ?>
             </div>
         </div>
-    </section>
+    </div>
 
     <!-- Footer -->
     <div class="container">
@@ -242,7 +145,7 @@
             <div class="col mb-3">
                 <!-- logo -->
                 <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
-                    <img class="bi me-2" width="200" src="<?= base_url(); ?>/images/.svg">
+                    <img class="bi me-2" width="200" src="<?= base_url(); ?>/images/logo.jpg">
 
                     </img>
                 </a>
@@ -287,42 +190,40 @@
     </div>
     <!-- End of Footer -->
 
-    <!-- Bootstrap core JS-->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Core theme JS-->
-    <script src="js/scripts.js"></script>
+
+    <!-- Hanya jika Anda belum memasukkan perpustakaan ion-rangeslider -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
 
     <script>
-        const optionItems = document.querySelectorAll('.option-item');
-        const selectedOptionLabel = document.getElementById('selectedOptionLabel');
+        const priceRangeMinInput = document.getElementById("priceRangeMin1");
+        const priceRangeMaxInput = document.getElementById("priceRangeMax1");
+        const rangeInput = document.getElementById("customRange2");
 
-        optionItems.forEach(item => {
-            const radioInput = item.querySelector('input[type="radio"]');
-            const optionName = item.querySelector('.option-content span').innerText;
-
-            radioInput.addEventListener('click', () => {
-                selectedOptionLabel.innerText = 'Pilihan: ' + optionName;
-            });
-        });
-    </script>
-
-    <script>
-        function toggleDescription() {
-            var descriptionElement = document.getElementById('description');
-            var showMoreLink = document.querySelector('.show-more-link');
-
-            if (descriptionElement.style.webkitLineClamp === '3') {
-                descriptionElement.style.webkitLineClamp = 'unset';
-                showMoreLink.textContent = 'Show Less';
-                // Scroll to the bottom of the description
-                descriptionElement.scrollIntoView({
-                    behavior: 'smooth'
-                });
-            } else {
-                descriptionElement.style.webkitLineClamp = '3';
-                showMoreLink.textContent = 'Show More';
-            }
+        function formatCurrency(amount) {
+            return "Rp." + new Intl.NumberFormat("id-ID").format(amount);
         }
+
+        function parseCurrency(value) {
+            return parseInt(value.replace(/[^\d]/g, ""));
+        }
+
+        rangeInput.addEventListener("input", function() {
+            const selectedValue = parseInt(rangeInput.value);
+            priceRangeMinInput.value = formatCurrency(selectedValue);
+            priceRangeMaxInput.value = formatCurrency(selectedValue);
+        });
+
+        priceRangeMinInput.addEventListener("input", function() {
+            const amount = parseCurrency(priceRangeMinInput.value);
+            rangeInput.value = amount;
+            priceRangeMinInput.value = formatCurrency(amount);
+        });
+
+        priceRangeMaxInput.addEventListener("input", function() {
+            const amount = parseCurrency(priceRangeMaxInput.value);
+            rangeInput.value = amount;
+            priceRangeMaxInput.value = formatCurrency(amount);
+        });
     </script>
 
 

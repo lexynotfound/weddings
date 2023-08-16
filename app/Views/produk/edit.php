@@ -26,7 +26,7 @@
                 <!-- ... (rest of the header code) ... -->
                 <div class="container">
                     <a class="navbar-brand" href="<?= base_url('home'); ?>">
-                        <img src="<?= base_url(); ?>/images/logo.svg" alt="logo" srcset="" width="100" height="" class="d-inline-block align-text-top">
+                        <img src="<?= base_url(); ?>/images/logo.jpg" alt="logo" srcset="" width="100" height="100" class="d-inline-block align-text-top">
                     </a>
 
                     <div class="container">
@@ -45,43 +45,18 @@
                     <div class="collapse navbar-collapse custom-dropdown" id="navbarNav">
                         <ul class="navbar-nav ms-auto">
                             <div class="topbar-divider d-none d-sm-block"></div>
-                            <?php if (logged_in()) : ?>
-                                <!-- Bell Notification Dropdown -->
-                                <li class="nav-item dropdown no-arrow me-1">
-                                    <a class="nav-link dropdown-toggle" href="#" id="bellDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-bell"></i>
-                                        <!-- Notification Badge (optional) -->
-                                        <span class="badge bg-danger">3</span>
-                                    </a>
-                                    <!-- Bell Notification Dropdown Menu -->
-                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="bellDropdown">
-                                        <!-- Notification Items -->
-                                        <li><a class="dropdown-item" href="#">Notification 1</a></li>
-                                        <li><a class="dropdown-item" href="#">Notification 2</a></li>
-                                        <li><a class="dropdown-item" href="#">Notification 3</a></li>
-                                        <!-- Add more notification items as needed -->
-                                    </ul>
-                                </li>
 
-                                <!-- Chat Notification Dropdown -->
-                                <li class="nav-item dropdown no-arrow me-1">
-                                    <a class="nav-link dropdown-toggle" href="#" id="chatDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <i class="fas fa-comments"></i>
-                                        <!-- Notification Badge (optional) -->
-                                        <span class="badge bg-danger">5</span>
-                                    </a>
-                                    <!-- Chat Notification Dropdown Menu -->
-                                    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="chatDropdown">
-                                        <!-- Chat Notification Items -->
-                                        <li><a class="dropdown-item" href="#">Chat 1</a></li>
-                                        <li><a class="dropdown-item" href="#">Chat 2</a></li>
-                                        <li><a class="dropdown-item" href="#">Chat 3</a></li>
-                                        <!-- Add more chat notification items as needed -->
-                                    </ul>
-                                </li>
-                            <?php else : ?>
+                            <!-- Bell Notification Dropdown -->
 
-                            <?php endif ?>
+                            <!-- Chat Notification Dropdown -->
+                            <li class="nav-item dropdown no-arrow me-1">
+                                <a class="nav-link dropdown-toggle" href="https://wa.me/+621295304698" id="chatDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                    <img src="<?= base_url(); ?>/images/WhatsApp.png" style="width: 40px; height: 40px;" alt="">
+                                    <!-- <i class=" fas fa-brands fa-square-whatsapp"></i> -->
+                                    <!-- Notification Badge (optional) -->
+                                    <!-- <span class="badge bg-danger">5</span> -->
+                                </a>
+                            </li>
 
                             <!-- Nav Item - User Information -->
                             <li class="nav-item dropdown no-arrow">
@@ -141,7 +116,6 @@
         </div>
     </header>
 
-
     <div class="container">
         <div class="row justify-content-center mt-5">
             <div class="col-md-10">
@@ -168,21 +142,22 @@
                             </div>
 
                             <!-- Kategori Data Section -->
+                            <!-- Kategori Data Section -->
                             <div class="mb-3">
                                 <label for="kategori_id" class="form-label">Menu:</label>
                                 <div class="input-container">
                                     <button type="button" class="add-icon btn btn-circle btn-outline-dark mb-3">Tambah +</button>
                                 </div>
                                 <div class="additional-info">
-                                    <input type="text" name="nama_menu[]" class="form-control mb-3" required">
-                                    <textarea name="deskripsi[]" class="form-control mb-3" required></textarea>
-                                    <?php foreach ($menuOptions as $item) : ?>
-                                        <input type="text" name="nama_menu[]" class="form-control mb-3" required value="<?= old('nama_menu', $item['nama_menu']); ?>">
-                                        <textarea name="deskripsi[]" class="form-control mb-3" required><?= old('deskripsi', $item['deskripsi']); ?></textarea>
+                                    <?php foreach ($menuOptions as $index => $item) : ?>
+                                        <div class="menu-entry">
+                                            <input type="text" name="nama_menu[]" class="form-control mb-3" value="<?= old('nama_menu', $item['nama_menu']); ?>">
+                                            <textarea name="deskripsi[]" class="form-control mb-3"><?= old('deskripsi', $item['deskripsi']); ?></textarea>
+                                            <button type="button" class="delete-icon btn btn-circle btn-outline-danger mb-3" data-id="<?= $item['id']; ?>">Hapus -</button>
+                                        </div>
                                     <?php endforeach; ?>
                                 </div>
                             </div>
-
                             <!-- Photo Upload Sections -->
                             <div class="row justify-content-center">
                                 <div class="col-md-4 d-flex justify-content-center align-items-center">
@@ -243,23 +218,141 @@
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.12.0/dist/umd/popper.min.js" integrity="sha384-N5ZRprfQq9MgP13e+t4FkTqi7X9WVj54V2VXpOD4z8B65C7BK2gjHdouP84fS7Ld" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-B4gt1FWAbeJ3GzFQNzppbXk6v5zxG4T/4By2vckIgXvb7bPLhpvGhmfhA1t1b8RM" crossorigin="anonymous"></script>
 
-    <script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", function() {
-            // Get the add icon button and additional info container
             const addIconBtn = document.querySelector(".add-icon");
             const additionalInfoContainer = document.querySelector(".additional-info");
 
-            // Add event listener to the add icon button
             addIconBtn.addEventListener("click", function() {
-                // Clone the default input fields
-                const newInputFields = additionalInfoContainer.cloneNode(true);
+                const newInputFields = document.createElement("div");
+                newInputFields.classList.add("menu-entry");
 
-                // Clear the values of the new input fields
-                const inputs = newInputFields.querySelectorAll("input, textarea");
-                inputs.forEach(input => input.value = "");
+                const inputName = document.createElement("input");
+                inputName.type = "text";
+                inputName.name = "nama_menu[]";
+                inputName.classList.add("form-control", "mb-3");
+                inputName.required = true;
 
-                // Append the new input fields below the existing ones
-                additionalInfoContainer.parentNode.insertBefore(newInputFields, additionalInfoContainer.nextSibling);
+                const textareaDesc = document.createElement("textarea");
+                textareaDesc.name = "deskripsi[]";
+                textareaDesc.classList.add("form-control", "mb-3");
+                textareaDesc.required = true;
+
+                const deleteIconBtn = document.createElement("button");
+                deleteIconBtn.type = "button";
+                deleteIconBtn.classList.add("delete-icon", "btn", "btn-circle", "btn-outline-danger", "mb-3");
+                deleteIconBtn.innerText = "Hapus -";
+
+                newInputFields.appendChild(inputName);
+                newInputFields.appendChild(textareaDesc);
+                newInputFields.appendChild(deleteIconBtn);
+
+                additionalInfoContainer.appendChild(newInputFields);
+
+                deleteIconBtn.addEventListener("click", function() {
+                    additionalInfoContainer.removeChild(newInputFields);
+                });
+            });
+
+            const existingDeleteButtons = additionalInfoContainer.querySelectorAll(".menu-entry .delete-icon");
+            existingDeleteButtons.forEach(deleteButton => {
+                deleteButton.addEventListener("click", function() {
+                    const parentEntry = deleteButton.parentElement;
+                    additionalInfoContainer.removeChild(parentEntry);
+                });
+            });
+        });
+    </script> -->
+
+    <!-- <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const addIconBtn = document.querySelector(".add-icon");
+            const additionalInfoContainer = document.querySelector(".additional-info");
+
+            addIconBtn.addEventListener("click", function() {
+                const newInputFields = document.createElement("div");
+                newInputFields.classList.add("menu-entry");
+
+                const inputName = document.createElement("input");
+                inputName.type = "text";
+                inputName.name = "nama_menu[]";
+                inputName.classList.add("form-control", "mb-3");
+                inputName.required = true;
+
+                const textareaDesc = document.createElement("textarea");
+                textareaDesc.name = "deskripsi[]";
+                textareaDesc.classList.add("form-control", "mb-3");
+                textareaDesc.required = true;
+
+                const deleteIconBtn = document.createElement("button");
+                deleteIconBtn.type = "button";
+                deleteIconBtn.classList.add("delete-icon", "btn", "btn-circle", "btn-outline-danger", "mb-3");
+                deleteIconBtn.innerText = "Hapus -";
+
+                newInputFields.appendChild(inputName);
+                newInputFields.appendChild(textareaDesc);
+                newInputFields.appendChild(deleteIconBtn);
+
+                additionalInfoContainer.appendChild(newInputFields);
+
+                deleteIconBtn.addEventListener("click", function() {
+                    additionalInfoContainer.removeChild(newInputFields);
+                });
+            });
+
+            const existingDeleteButtons = additionalInfoContainer.querySelectorAll(".menu-entry .delete-icon");
+            existingDeleteButtons.forEach(deleteButton => {
+                deleteButton.addEventListener("click", function() {
+                    const parentEntry = deleteButton.parentElement;
+                    additionalInfoContainer.removeChild(parentEntry);
+                });
+            });
+        });
+    </script> -->
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const addIconBtn = document.querySelector(".add-icon");
+            const additionalInfoContainer = document.querySelector(".additional-info");
+
+            addIconBtn.addEventListener("click", function() {
+                const newInputFields = document.createElement("div");
+                newInputFields.classList.add("menu-entry");
+
+                const inputName = document.createElement("input");
+                inputName.type = "text";
+                inputName.name = "nama_menu[]";
+                inputName.classList.add("form-control", "mb-3");
+                inputName.required = true;
+
+                const textareaDesc = document.createElement("textarea");
+                textareaDesc.name = "deskripsi[]";
+                textareaDesc.classList.add("form-control", "mb-3");
+                textareaDesc.required = true;
+
+                const deleteIconBtn = document.createElement("button");
+                deleteIconBtn.type = "button";
+                deleteIconBtn.classList.add("delete-icon", "btn", "btn-circle", "btn-outline-danger", "mb-3");
+                deleteIconBtn.innerText = "Hapus -";
+
+                newInputFields.appendChild(inputName);
+                newInputFields.appendChild(textareaDesc);
+                newInputFields.appendChild(deleteIconBtn);
+
+                additionalInfoContainer.appendChild(newInputFields);
+
+                deleteIconBtn.addEventListener("click", function() {
+                    additionalInfoContainer.removeChild(newInputFields);
+                });
+            });
+
+            // Handle existing delete buttons
+            const existingDeleteButtons = additionalInfoContainer.querySelectorAll(".menu-entry .delete-icon");
+            existingDeleteButtons.forEach(deleteButton => {
+                deleteButton.addEventListener("click", function() {
+                    const parentEntry = deleteButton.parentElement;
+                    additionalInfoContainer.removeChild(parentEntry);
+                });
             });
         });
     </script>

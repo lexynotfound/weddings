@@ -30,6 +30,15 @@
     <link href='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.5.1/main.min.css' rel='stylesheet' />
     <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.5.1/main.min.js'></script>
 
+    <style>
+        .modal-content {
+            border-radius: 10px;
+        }
+
+        .modal-header {
+            border-bottom: none;
+        }
+    </style>
 
 
 </head>
@@ -87,7 +96,7 @@
                 </a>
                 <div id="collapseTr" class="collapse" aria-labelledby="headingProduk" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
-                        <a class="collapse-item" href="<?= base_url('produk/create'); ?>">Tambah Package</a>
+                        <!--  -->
                         <a class="collapse-item" href="<?= base_url('payment/transaction') ?>">Transaction</a>
                     </div>
                 </div>
@@ -101,6 +110,7 @@
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="utilities-color.html">Jadwal Kegiatan</a>
+                        <a class="collapse-item" href="<?= base_url('reservation/data') ?>">Data</a>
                     </div>
                 </div>
             </li>
@@ -203,15 +213,15 @@
                                     <i class="fas fa-fw fa-solid fa-house mr-2 text-gray-400"></i>
                                     Home
                                 </a>
-                                <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                     <i class="fas fa-fw fa-solid fa-calendar-alt mr-2 text-gray-400"></i>
                                     Reservation
                                 </a>
-                                <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                     <i class="fas fa-fw fa-solid fa-credit-card-alt mr-2 text-gray-400"></i>
                                     Transaction
                                 </a>
-                                <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                     <i class="fas fa-fw fa-solid fa-sliders mr-2 text-gray-500"></i>
                                     Settings
                                 </a>
@@ -321,7 +331,10 @@
                                                     </div>
                                                 </div>
                                                 <div class="card-body d-flex">
-                                                    <img src="<?= base_url('uploads/' . $payment['photos_filenames']) ?>" alt="Image" class="me-3" style="width: 50px; height: 50px;">
+                                                    <!-- Tautan atau tombol untuk memicu modal -->
+                                                    <a href="#" class="image-link" data-toggle="modal" data-target="#imageModal" data-image="<?= base_url('uploads/' . $payment['payment_receipt']) ?>">
+                                                        <img src="<?= base_url('uploads/' . $payment['payment_receipt']) ?>" alt="Image" class="me-3" style="width: 50px; height: 50px;">
+                                                    </a>
                                                     <div>
                                                         <p class="mb-1" style="font-size: .77rem;">Product Name:</p>
                                                         <p class="mb-0"><?= $payment['nama_produk']; ?></p>
@@ -519,6 +532,35 @@
                 </div>
             </div>
 
+            <!-- Modal Photos -->
+            <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h5 class="modal-title" id="imageModalLabel">Payment Receipt</h5>
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                <span aria-hidden="true">&times;</span>
+                            </button>
+                        </div>
+                        <div class="modal-body">
+                            <img id="modalImage" src="" alt="Image" class="img-fluid">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- Memuat pustaka JavaScript Bootstrap -->
+            <!-- Memuat pustaka JavaScript Bootstrap dan jQuery -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+KG8r+8GAO4fG1pA1l+HRZGj7JqIbbVYUew+OrCXaRkfjIb" crossorigin="anonymous"></script>
+
+
+            <!-- Memuat pustaka JavaScript Bootstrap dan jQuery -->
+            <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
+            <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+KG8r+8GAO4fG1pA1l+HRZGj7JqIbbVYUew+OrCXaRkfjIb" crossorigin="anonymous"></script>
+
+
             <!-- Bootstrap core JavaScript-->
             <script src="<?= base_url(); ?>/src/jquery/jquery.min.js"></script>
 
@@ -530,6 +572,7 @@
 
             <!-- Page level plugins -->
             <script src="<?= base_url(); ?>/src/js/chart.js/Chart.min.js"></script>
+            <script src='https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/5.5.1/main.min.js'></script>
 
             <!-- Page level custom scripts -->
             <script src="<?= base_url(); ?>/src/js/demo/chart-area-demo.js"></script>
@@ -547,6 +590,19 @@
             <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.12.0/dist/umd/popper.min.js" integrity="sha384-N5ZRprfQq9MgP13e+t4FkTqi7X9WVj54V2VXpOD4z8B65C7BK2gjHdouP84fS7Ld" crossorigin="anonymous"></script>
             <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-B4gt1FWAbeJ3GzFQNzppbXk6v5zxG4T/4By2vckIgXvb7bPLhpvGhmfhA1t1b8RM" crossorigin="anonymous"></script>
             <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+
+            <script>
+                $(document).ready(function() {
+                    $('.image-link').click(function() {
+                        var imageSrc = $(this).data('image');
+                        $('#modalImage').attr('src', imageSrc);
+                    });
+
+                    $('#imageModal').on('hidden.bs.modal', function() {
+                        $('#modalImage').attr('src', '');
+                    });
+                });
+            </script>
 
             <script>
                 document.addEventListener('DOMContentLoaded', function() {

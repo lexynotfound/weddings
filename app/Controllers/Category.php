@@ -92,6 +92,7 @@ class Category extends BaseController
         $this->builder->select('product.id as produkid, product.nama_produk,product.kategori_id, product.harga_produk, product.photos_filenames, users.foto, users.lokasi');
         $this->builder->join('kategori', 'kategori.produk_id = product.id', 'left'); // Use 'left' for LEFT JOIN
         $this->builder->join('users', 'users.id = product.user_id', 'left'); // Use 'left' for LEFT JOIN
+        $this->builder->where('product.deleted_at IS NULL');
         $this->builder->where('product.kategori_id', 1); // Filter products with kategori_id = 1
         $this->builder->distinct(); // Make sure only distinct products are selected
         $this->builder->orderBy('product.id', 'DESC');
@@ -109,6 +110,7 @@ class Category extends BaseController
         $this->builder->select('product.id as produkid, product.nama_produk,product.kategori_id, product.harga_produk, product.photos_filenames, users.foto, users.lokasi');
         $this->builder->join('kategori', 'kategori.produk_id = product.id', 'left'); // Use 'left' for LEFT JOIN
         $this->builder->join('users', 'users.id = product.user_id', 'left'); // Use 'left' for LEFT JOIN
+        $this->builder->where('product.deleted_at IS NULL');
         $this->builder->where('product.kategori_id', 2); // Filter products with kategori_id = 1
         $this->builder->distinct(); // Make sure only distinct products are selected
         $this->builder->orderBy('product.id', 'DESC');
@@ -126,6 +128,7 @@ class Category extends BaseController
         $this->builder->select('product.id as produkid, product.nama_produk,product.kategori_id, product.harga_produk, product.photos_filenames, users.foto, users.lokasi');
         $this->builder->join('kategori', 'kategori.produk_id = product.id', 'left'); // Use 'left' for LEFT JOIN
         $this->builder->join('users', 'users.id = product.user_id', 'left'); // Use 'left' for LEFT JOIN
+        $this->builder->where('product.deleted_at IS NULL');
         $this->builder->where('product.kategori_id', 3); // Filter products with kategori_id = 1
         $this->builder->distinct(); // Make sure only distinct products are selected
         $this->builder->orderBy('product.id', 'DESC');

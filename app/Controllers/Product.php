@@ -5,7 +5,6 @@ namespace App\Controllers;
 
 
 use App\Models\ProductModel;
-use App\Models\ProductPhotoModel;
 use App\Models\MenuModel;
 use App\Models\CategoriesModel;
 use Myth\Auth\Models\UserModel;
@@ -18,7 +17,6 @@ class Product extends BaseController
     protected $productModel;
     protected $menuModel;
     protected $categoryModel;
-    protected $productPhotoModel;
     protected $userModel;
 
     public function __construct()
@@ -28,10 +26,9 @@ class Product extends BaseController
         $this->productModel = new ProductModel();
         $this->menuModel = new MenuModel();
         $this->categoryModel = new CategoriesModel();
-        $this->productPhotoModel = new ProductPhotoModel();
         $this->userModel = new UserModel();
     }
-    
+
     public function edit($id = 0)
     {
         $data = [
@@ -40,10 +37,13 @@ class Product extends BaseController
 
         // Perform the LEFT JOIN with product, kategori, and users tables
         $this->builder = $this->db->table('product');
-        $this->builder->select('product.id as produkid, product.nama_produk, product.description, product.user_id, product.kategori_id, product.harga_produk, product.photos_filenames, product.created_at, product.updated_at, product.deleted_at, kategori.nama_menu, kategori.deskripsi, kategori.isi,kategori.produk_id,categories.nama_categories, users.username, users.email, users.nama, users.foto, users.jenis_kelamin, users.telepon, users.lokasi');
+        $this->builder->select('product.id as produkid, product.nama_produk, product.description, product.user_id, product.kategori_id, product.harga_produk, product.photos_filenames, product.created_at, product.updated_at, product.deleted_at, kategori.nama_menu, kategori.deskripsi, kategori.isi, kategori.produk_id, categories.nama_categories, users.username, users.email, users.nama, users.foto, users.jenis_kelamin, users.telepon, users.lokasi');
         $this->builder->join('kategori', 'kategori.produk_id = product.id', 'left'); // Use 'left' for LEFT JOIN
         $this->builder->join('categories', 'categories.id = product.kategori_id', 'left'); // Use 'left' for LEFT JOIN
         $this->builder->join('users', 'users.id = product.user_id', 'left'); // Use 'left' for LEFT JOIN
+
+        // Exclude soft-deleted records from kategori table
+        $this->builder->where('kategori.deleted_at', null);
 
         // Fetch the product data with user names for the given $id
         $this->builder->where('product.id', $id);
@@ -68,6 +68,7 @@ class Product extends BaseController
 
         return view('produk/edit', $data);
     }
+
 
     public function detail($id = 0)
     {
@@ -104,11 +105,11 @@ class Product extends BaseController
         return view('produk/detail', $data);
     }
 
-    // Function to get menu options based on produk_id
     protected function getMenuOptions($produk_id)
     {
         $this->builder = $this->db->table('kategori');
         $this->builder->where('produk_id', $produk_id);
+        $this->builder->where('deleted_at', null); // Filter out soft deleted records
         return $this->builder->get()->getResultArray();
     }
 
@@ -710,13 +711,16 @@ class Product extends BaseController
             ];
 
             // Check if update to the product table is successful
+            $db = db_connect(); // Assuming you are using CodeIgniter 4 database connection
+            $db->transStart(); // Start transaction
+
             if (!$productModel->update($id, $productData)) {
-                // Handle the error if product update fails
-                session()->setFlashdata('error', 'Package "' . $updatedProduct['nama_produk'] . '" gagal diupdate.');
+                session()->setFlashdata('error', 'Package "' . $existingProduct['nama_produk'] . '" gagal diupdate.');
+                $db->transRollback(); // Rollback transaction
                 return view('produk/edit', $data);
             }
 
-            // Save the category data to the database
+            /* // Save the category data to the database
             $nama_menu = $this->request->getPost('nama_menu');
             $deskripsi = $this->request->getPost('deskripsi');
 
@@ -743,15 +747,55 @@ class Product extends BaseController
                         $menuModel->insert($categoryData);
                     }
                 }
+            } */
+
+            // Delete categories marked for deletion
+            $menuModel = new MenuModel();
+            $categoriesToDelete = $this->request->getPost('delete_category'); // Assuming you have a checkbox in your form to mark categories for deletion
+            if ($categoriesToDelete) {
+                foreach ($categoriesToDelete as $categoryId) {
+                    $menuModel->delete($categoryId);
+                }
             }
 
-            // Get the username of the user who updated the product
+            // Update or insert categories
+            $nama_menu = $this->request->getPost('nama_menu');
+            $deskripsi = $this->request->getPost('deskripsi');
+
+            // Get the existing categories for the product
+            $existingCategories = $menuModel->where('produk_id', $id)->findAll();
+
+            foreach ($nama_menu as $index => $menu) {
+                if (!empty($menu) || !empty($deskripsi[$index])) {
+                    if (isset($existingCategories[$index])) {
+                        $id_kategori = $existingCategories[$index]['id_kategori'];
+                        $categoryData = [
+                            'id_kategori' => $id_kategori,
+                            'produk_id' => $id,
+                            'nama_menu' => $menu,
+                            'deskripsi' => $deskripsi[$index],
+                        ];
+                        $menuModel->update($existingCategories[$index]['id'], $categoryData);
+                    } else {
+                        $id_kategori = 'MNU' . strtoupper(bin2hex(random_bytes(3)));
+                        $categoryData = [
+                            'id_kategori' => $id_kategori,
+                            'produk_id' => $id,
+                            'nama_menu' => $menu,
+                            'deskripsi' => $deskripsi[$index],
+                        ];
+                        $menuModel->insert($categoryData);
+                    }
+                }
+            }
+            
+            $db->transCommit(); // Commit transaction
+
             $userModel = new UserModel();
             $updatedByUser = $userModel->find($user->id);
             $updatedByUsername = $updatedByUser ? $updatedByUser->username : 'Unknown User';
 
-            // Redirect ke halaman lain atau tampilkan pesan sukses
-            session()->setFlashdata('success', 'Package "' . $updatedProduct['nama_produk'] . '" berhasil diupdate by user: ' . $updatedByUsername . '.');
+            session()->setFlashdata('success', 'Package "' . $existingProduct['nama_produk'] . '" berhasil diupdate by user: ' . $updatedByUsername . '.');
             return redirect()->to('produk/daftar_produk');
         }
     }

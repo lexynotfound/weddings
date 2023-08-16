@@ -213,3 +213,26 @@
            width: 100%;
        }
    }
+
+.modal-content {
+    border-radius: 10px;
+}
+
+.modal-header {
+    border-bottom: none;
+}
+  .custom-card-img {
+      width: 100%;
+      /* Sesuaikan lebar gambar */
+      max-height: 150px;
+      /* Sesuaikan tinggi gambar */
+      object-fit: cover;
+      /* Agar gambar tetap terlihat proporsional */
+  }
+
+  .icon-img {
+      width: 20px;
+      /* Ubah ukuran gambar sesuai kebutuhan */
+      height: 20px;
+      /* Ubah ukuran gambar sesuai kebutuhan */
+  }

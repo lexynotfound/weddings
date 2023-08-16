@@ -14,7 +14,7 @@ class RepliesModel extends Model
 
     // Add your custom methods if needed
     /* protected $useTimestamps  = true; */
-    protected $createdField   = 'created_at';
+   /*  protected $createdField   = 'created_at';
     protected $updatedField   = 'updated_at';
-    protected $deletedField   = 'deleted_at';
+    protected $deletedField   = 'deleted_at'; */
 }
