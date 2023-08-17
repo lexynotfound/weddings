@@ -236,3 +236,7 @@
       height: 20px;
       /* Ubah ukuran gambar sesuai kebutuhan */
   }
+.menu-entry.marked-for-deletion {
+    background-color: #ffcccc;
+    /* Add your desired styling here */
+}

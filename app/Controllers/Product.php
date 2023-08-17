@@ -719,8 +719,7 @@ class Product extends BaseController
                 $db->transRollback(); // Rollback transaction
                 return view('produk/edit', $data);
             }
-
-            /* // Save the category data to the database
+            // Save the category data to the database
             $nama_menu = $this->request->getPost('nama_menu');
             $deskripsi = $this->request->getPost('deskripsi');
 
@@ -747,48 +746,7 @@ class Product extends BaseController
                         $menuModel->insert($categoryData);
                     }
                 }
-            } */
-
-            // Delete categories marked for deletion
-            $menuModel = new MenuModel();
-            $categoriesToDelete = $this->request->getPost('delete_category'); // Assuming you have a checkbox in your form to mark categories for deletion
-            if ($categoriesToDelete) {
-                foreach ($categoriesToDelete as $categoryId) {
-                    $menuModel->delete($categoryId);
-                }
             }
-
-            // Update or insert categories
-            $nama_menu = $this->request->getPost('nama_menu');
-            $deskripsi = $this->request->getPost('deskripsi');
-
-            // Get the existing categories for the product
-            $existingCategories = $menuModel->where('produk_id', $id)->findAll();
-
-            foreach ($nama_menu as $index => $menu) {
-                if (!empty($menu) || !empty($deskripsi[$index])) {
-                    if (isset($existingCategories[$index])) {
-                        $id_kategori = $existingCategories[$index]['id_kategori'];
-                        $categoryData = [
-                            'id_kategori' => $id_kategori,
-                            'produk_id' => $id,
-                            'nama_menu' => $menu,
-                            'deskripsi' => $deskripsi[$index],
-                        ];
-                        $menuModel->update($existingCategories[$index]['id'], $categoryData);
-                    } else {
-                        $id_kategori = 'MNU' . strtoupper(bin2hex(random_bytes(3)));
-                        $categoryData = [
-                            'id_kategori' => $id_kategori,
-                            'produk_id' => $id,
-                            'nama_menu' => $menu,
-                            'deskripsi' => $deskripsi[$index],
-                        ];
-                        $menuModel->insert($categoryData);
-                    }
-                }
-            }
-            
             $db->transCommit(); // Commit transaction
 
             $userModel = new UserModel();

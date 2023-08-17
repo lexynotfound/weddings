@@ -228,7 +228,7 @@ function truncateText($text, $length)
                                 <div class="col-12">
                                     <div class="d-flex justify-content-between">
                                         <input class="form-control" id="priceRangeMin1" placeholder="Rp.0" type="text" min="0" max="5000000000">
-                                        <input class="form-control" id="priceRangeMax1" placeholder="Rp.5,000,000,000" type="text" min="0" max="5000000000">
+                                        <input class="form-control" id="priceRangeMax1" placeholder="Rp.0" type="text" min="0" max="5000000000">
                                     </div>
                                 </div>
                             </div>
@@ -485,20 +485,16 @@ function truncateText($text, $length)
             checkboxes.forEach(checkbox => {
                 selectedCategories.push(checkbox.value);
             });
+
             // Ganti URL aksi pencarian dengan URL yang sesuai
             const searchUrl = '<?= base_url('home/search') ?>';
             const newUrl = new URL(searchUrl);
 
-            if (!isNaN(minPrice)) {
-                newUrl.searchParams.set("q", "min_price" + minPrice);
-            }
-
-            if (!isNaN(maxPrice)) {
-                newUrl.searchParams.set("max_price", maxPrice);
-            }
+            newUrl.searchParams.set("q","min_price", minPrice);
+            newUrl.searchParams.set("max_price", maxPrice);
 
             if (selectedCategories.length > 0) {
-                newUrl.searchParams.set("q", "category", selectedCategories.join(','));
+                newUrl.searchParams.set("category", selectedCategories.join(','));
             }
 
             window.location.href = newUrl.toString();

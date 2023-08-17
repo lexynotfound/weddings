@@ -148,6 +148,7 @@ $routes->group('produk', ['namespace' => 'App\Controllers'], function ($routes) 
     $routes->get('edit/(:num)', 'Product::edit/$1', ['filter' => 'role:admin']);
     $routes->post('update/(:num)','Product::update/$1', ['filter' => 'role:admin']);
     $routes->get('delete/(:num)', 'Product::delete/$1', ['filter' => 'role:admin']);
+    $routes->get('deletes/(:num)', 'Product::deletes/$1', ['filter' => 'role:admin']);
 });
 
 /*

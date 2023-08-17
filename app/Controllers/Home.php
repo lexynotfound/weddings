@@ -155,6 +155,7 @@ class Home extends BaseController
         if (is_numeric($keyword)) {
             $this->builder->orWhere('product.id_produk', $keyword);
             $this->builder->orWhere('product.id', $keyword);
+            $this->builder->orWhere('product.harga_produk', $keyword);
             $this->builder->orWhere('users.nama', $keyword);
             $this->builder->orWhere('users.username', $keyword);
             $this->builder->orWhere('reviews.rating', $keyword);
@@ -169,27 +170,23 @@ class Home extends BaseController
             }
         }
 
-        // Ambil minPrice dan maxPrice dari permintaan
         $minPrice = $this->request->getVar('min_price');
         $maxPrice = $this->request->getVar('max_price');
 
-        // Konversi minPrice dan maxPrice menjadi angka (hilangkan teks "min_price" dan "max_price" di depannya)
-        $minPriceValue = (int) str_replace('min_price', '', $minPrice);
-        $maxPriceValue = (int) str_replace('max_price', '', $maxPrice);
+        if ((!empty($minPrice) && is_numeric($minPrice)) || (!empty($maxPrice) && is_numeric($maxPrice))) {
+            if (!empty($minPrice) && is_numeric($minPrice)) {
+                $this->builder->where('product.harga_produk >=', (int) $minPrice);
+            }
 
-        // Lakukan pencarian berdasarkan rentang harga jika nilai minimum dan maksimum adalah angka yang valid
-        if ($minPriceValue > 0 && $maxPriceValue > 0 && $minPriceValue <= $maxPriceValue) {
-            $this->builder->orWhere('product.harga_produk >=', $minPriceValue);
-            $this->builder->orWhere('product.harga_produk <=', $maxPriceValue);
+            if (!empty($maxPrice) && is_numeric($maxPrice)) {
+                $this->builder->where('product.harga_produk <=', (int) $maxPrice);
+            }
         }
 
-        // Mendapatkan nilai kategori yang dipilih dari URL
-        $selectedCategories = $this->request->getVar('category');
 
-        // Konversi nilai kategori menjadi array jika tidak kosong
+        $selectedCategories = $this->request->getVar('category');
         $selectedCategoriesArray = !empty($selectedCategories) ? explode(',', $selectedCategories) : [];
 
-        // Lakukan pencarian berdasarkan kategori jika ada kategori yang dipilih
         if (!empty($selectedCategoriesArray)) {
             $this->builder->whereIn('categories.nama_categories', $selectedCategoriesArray);
         }
@@ -233,6 +230,26 @@ class Home extends BaseController
             }
         }
 
+        // Calculate total results for pagination
+        $totalResults = count($filteredProducts);
+
+        // Pagination configuration
+        $perPage = 12; // Number of results per page
+        $totalPages = ceil($totalResults / $perPage);
+
+        // Get the current page number from the URL query
+        $page = $this->request->getVar('page') ?? 1;
+
+        // Calculate the offset for the current page
+        $offset = ($page - 1) * $perPage;
+
+        // Slice the filtered products array for the current page
+        $currentPageProducts = array_slice($filteredProducts, $offset, $perPage);
+
+        $data['currentPage'] = $page;
+        $data['totalPages'] = $totalPages;
+        $data['currentPageProducts'] = $currentPageProducts;
+
         // Jika kata kunci kosong atau hanya berisi spasi, alihkan ke halaman "tanpa hasil"
         if (empty(trim($keyword))) {
             $data['no_results'] = true; // Tandai bahwa tidak ada hasil pencarian
@@ -253,7 +270,6 @@ class Home extends BaseController
             return view('home/search', $data);
         }
     }
-
 
     public function errorpage()
     {
