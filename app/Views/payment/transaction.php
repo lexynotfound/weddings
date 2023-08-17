@@ -39,7 +39,6 @@
 </head>
 
 <body id="page-top">
-
     <!-- Page Wrapper -->
     <div id="wrapper">
 
@@ -49,7 +48,18 @@
 
             <li class="nav-item active">
                 <a class="nav-link" href="<?= base_url('user/setting') ?>">
-                    <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
+                    <?php
+                    $foto = user()->foto;
+                    if ($foto === 'default.png') {
+                    ?>
+                        <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
+                    <?php
+                    } else {
+                    ?>
+                        <img src="<?= base_url('uploads/' . $foto); ?>" class="img-profile rounded-circle ms-auto" alt="Foto Profile" style="width: 40px; height: 40px;">
+                    <?php
+                    }
+                    ?>
                     <span><?= user()->username; ?></span>
                 </a>
             </li>
@@ -105,7 +115,7 @@
                 <div id="collapseUtilities" class="collapse" aria-labelledby="headingUtilities" data-parent="#accordionSidebar">
                     <div class="bg-white py-2 collapse-inner rounded">
                         <a class="collapse-item" href="utilities-color.html">Jadwal Kegiatan</a>
-                        <a class="collapse-item" href="<?=base_url('reservation/data')?>">Data</a>
+                        <a class="collapse-item" href="<?= base_url('reservation/data') ?>">Data</a>
                     </div>
                 </div>
             </li>
@@ -200,7 +210,18 @@
                             <!-- ... (rest of the user information dropdown code) ... -->
                             <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 <span class="mr-4 d-none d-lg-inline text-gray-600 small me-1"><?= user()->username; ?></span>
-                                <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                <?php
+                                $foto = user()->foto;
+                                if ($foto === 'default.png') {
+                                ?>
+                                    <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                <?php
+                                } else {
+                                ?>
+                                    <img src="<?= base_url('uploads/' . $foto); ?>" class="img-profile rounded-circle ms-auto" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                <?php
+                                }
+                                ?>
                             </a>
                             <!-- Dropdown - User Information -->
                             <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

@@ -45,6 +45,7 @@ $routes->group('home', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->post('save_review/(:num)', 'Home::save_review/$1');
     $routes->get('detail/custom/(:num)', 'Home::custom/$1');
     $routes->get('search', 'Home::search', ['as' => 'search']);
+    $routes->post('save/(:num)', 'Home::save/$1');
     $routes->get('error-page', 'Home::errorpage');
 });
 
@@ -112,6 +113,11 @@ $routes->group('user', ['namespace' => 'App\Controllers'], function ($routes) {
 $routes->group('review', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('/', 'Reviews::index');
     $routes->post('save_review/(:num)', 'Reviews::save_review/$1');
+});
+
+$routes->group('replies', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('/', 'Replies::index');
+    $routes->post('save/(:num)', 'Replies::save/$1');
 });
 
 $routes->group('admin', ['namespace' => 'App\Controllers'], function ($routes) {

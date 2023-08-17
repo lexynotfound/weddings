@@ -110,7 +110,7 @@
 
     <header>
         <div class="container mt-4">
-            <nav class="navbar navbar-expand-lg ms-auto">
+            <nav class="navbar navbar-expand-lg bg-white ms-auto">
                 <!-- ... (rest of the header code) ... -->
                 <div class="container">
                     <a class="navbar-brand" href="<?= base_url('home'); ?>">
@@ -119,9 +119,9 @@
 
                     <div class="container">
                         <div class="row justify-content-center">
-                            <div class="col-md-8"> <!-- Adjust the column width as needed -->
-                                <form action="" class="d-flex align-items-center">
-                                    <input type="text" id="inputPassword5" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;"> <!-- Adjust the width as needed -->
+                            <div class="col-md-8">
+                                <form action="<?= base_url('home/search'); ?>" method="get" class="d-flex align-items-center" id="searchForm">
+                                    <input type="text" id="inputPassword5" name="q" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;">
                                 </form>
                             </div>
                         </div>
@@ -153,7 +153,18 @@
 
                                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="mr-4 d-none d-lg-inline text-gray-600 small me-1"><?= user()->username; ?></span>
-                                        <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                        <?php
+                                        $foto = user()->foto;
+                                        if ($foto === 'default.png') {
+                                        ?>
+                                            <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <img src="<?= base_url('uploads/' . $foto); ?>" class="img-profile rounded-circle ms-auto" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                        <?php
+                                        }
+                                        ?>
                                     </a>
                                     <!-- Dropdown - User Information -->
                                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -429,7 +440,7 @@
                                     <div class="avatar me-3">
                                         <!-- Assuming you have a user profile image URL stored in $reservation['foto'] -->
                                         <label class="lg-label fw-bold">
-                                            Masukkan no rekening berikut ini :BCA  5785785847
+                                            Masukkan no rekening berikut ini :BCA 5785785847
                                             lalu abis itu jika anda menggunakan mobile banking isikan
                                             di note ketikan melakukan transfer dengan memasukkan nama package
                                             yang anda pilih <?= $reservation['nama_produk']; ?>
@@ -487,7 +498,7 @@
                 <div class="col mb-3">
                     <!-- logo -->
                     <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
-                        <img class="bi me-2" width="200" src="<?= base_url(); ?>/images/logo.svg">
+                        <img class="bi me-2" width="200" src="<?= base_url(); ?>/images/logo.jpg">
 
                         </img>
                     </a>

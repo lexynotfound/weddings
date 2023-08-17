@@ -123,9 +123,9 @@
 
                     <div class="container">
                         <div class="row justify-content-center">
-                            <div class="col-md-8"> <!-- Adjust the column width as needed -->
-                                <form action="" class="d-flex align-items-center">
-                                    <input type="text" id="inputPassword5" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;"> <!-- Adjust the width as needed -->
+                            <div class="col-md-8">
+                                <form action="<?= base_url('home/search'); ?>" method="get" class="d-flex align-items-center" id="searchForm">
+                                    <input type="text" id="inputPassword5" name="q" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;">
                                 </form>
                             </div>
                         </div>
@@ -157,7 +157,18 @@
 
                                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="mr-4 d-none d-lg-inline text-gray-600 small me-1"><?= user()->username; ?></span>
-                                        <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                        <?php
+                                        $foto = user()->foto;
+                                        if ($foto === 'default.png') {
+                                        ?>
+                                            <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <img src="<?= base_url('uploads/' . $foto); ?>" class="img-profile rounded-circle ms-auto" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                        <?php
+                                        }
+                                        ?>
                                     </a>
                                     <!-- Dropdown - User Information -->
                                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -293,11 +304,28 @@
                                     <div class="card-body p-4">
                                         <div class="text-start">
                                             <h5 class="fw-bolder"><?= $categoriesProduct['nama_produk']; ?></h5>
-                                            Rp.<?= number_format($categoriesProduct['harga_produk'], 0, ',', '.'); ?>
+                                            <p class="mb-1">Rp. <?= number_format($categoriesProduct['harga_produk'], 0, ',', '.'); ?></p>
+                                            <div class="d-flex align-items-center">
+                                                <?php if ($categoriesProduct['foto'] === 'default.png') : ?>
+                                                    <img src="<?= base_url() ?>/images/<?= $categoriesProduct['foto'] ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
+                                                <?php else : ?>
+                                                    <img src="<?= base_url('uploads/' . $categoriesProduct['foto']) ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
+                                                <?php endif; ?>
+                                                <span class="small"><?= $categoriesProduct['lokasi']; ?></span>
+                                            </div>
                                         </div>
                                         <div class="d-flex align-items-center mt-2">
-                                            <img src="<?= base_url('/images/' . $categoriesProduct['foto']) ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
-                                            <span class="small"><?= $categoriesProduct['lokasi']; ?></span>
+                                            <!-- Star icons -->
+                                            <div class="star-rating me-2">
+                                                <?php for ($i = 1; $i <= 5; $i++) : ?>
+                                                    <?php if ($i <= $categoriesProduct['rating']) : ?>
+                                                        <i class="fas fa-star text-warning"></i>
+                                                    <?php else : ?>
+                                                        <i class="far fa-star text-warning"></i>
+                                                    <?php endif; ?>
+                                                <?php endfor; ?>
+                                            </div>
+                                            <span class="rating-text"><?= number_format($categoriesProduct['rating'], 1, '.', ','); ?>/5</span>
                                         </div>
                                     </div>
                                 </a>
@@ -316,21 +344,38 @@
 
         <section class="mt-5 py-5 bg-light rounded-3">
             <div class="container px-4 px-lg-5 mt-3">
-                <h2 class="fw-bolder mb-4">Non-Bundle</h2>
+                <h2 class="fw-bolder mb-4">Non Bundle</h2>
                 <?php if (!empty($categoriesProductsNon)) : ?>
-                    <div class="row">
+                    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4">
                         <?php foreach ($categoriesProductsNon as $categoriesProduct) : ?>
-                            <div class="col-md-3 custom-card">
+                            <div class="col mb-4">
                                 <a href="<?= base_url('home/detail/' . $categoriesProduct['produkid']) ?>" class="card h-100 custom-link">
                                     <img class="card-img-top" src="<?= base_url('uploads/' . $categoriesProduct['photos_filenames']) ?>" alt="Related Product Image" />
                                     <div class="card-body p-4">
                                         <div class="text-start">
                                             <h5 class="fw-bolder"><?= $categoriesProduct['nama_produk']; ?></h5>
-                                            Rp.<?= number_format($categoriesProduct['harga_produk'], 0, ',', '.'); ?>
+                                            <p class="mb-1">Rp. <?= number_format($categoriesProduct['harga_produk'], 0, ',', '.'); ?></p>
+                                            <div class="d-flex align-items-center">
+                                                <?php if ($categoriesProduct['foto'] === 'default.png') : ?>
+                                                    <img src="<?= base_url() ?>/images/<?= $categoriesProduct['foto'] ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
+                                                <?php else : ?>
+                                                    <img src="<?= base_url('uploads/' . $categoriesProduct['foto']) ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
+                                                <?php endif; ?>
+                                                <span class="small"><?= $categoriesProduct['lokasi']; ?></span>
+                                            </div>
                                         </div>
                                         <div class="d-flex align-items-center mt-2">
-                                            <img src="<?= base_url('/images/' . $categoriesProduct['foto']) ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
-                                            <span class="small"><?= $categoriesProduct['lokasi']; ?></span>
+                                            <!-- Star icons -->
+                                            <div class="star-rating me-2">
+                                                <?php for ($i = 1; $i <= 5; $i++) : ?>
+                                                    <?php if ($i <= $categoriesProduct['rating']) : ?>
+                                                        <i class="fas fa-star text-warning"></i>
+                                                    <?php else : ?>
+                                                        <i class="far fa-star text-warning"></i>
+                                                    <?php endif; ?>
+                                                <?php endfor; ?>
+                                            </div>
+                                            <span class="rating-text"><?= number_format($categoriesProduct['rating'], 1, '.', ','); ?>/5</span>
                                         </div>
                                     </div>
                                 </a>
@@ -338,7 +383,7 @@
                         <?php endforeach; ?>
                     </div>
                 <?php else : ?>
-                    <div class="d-flex justify-content-center align-items-center mt-2" role="alert" style="height: 200px;">
+                    <div class="d-flex justify-content-center align-items-center mt-4" role="alert" style="height: 150px;">
                         <div class="col-12 text-center">
                             <p>No packages non-bundles found.</p>
                         </div>
@@ -351,19 +396,36 @@
             <div class="container px-4 px-lg-5 mt-3">
                 <h2 class="fw-bolder mb-4">Documentation</h2>
                 <?php if (!empty($categoriesProductsDC)) : ?>
-                    <div class="row">
+                    <div class="row row-cols-2 row-cols-md-3 row-cols-lg-4">
                         <?php foreach ($categoriesProductsDC as $categoriesProduct) : ?>
-                            <div class="col-md-3 custom-card">
+                            <div class="col mb-4">
                                 <a href="<?= base_url('home/detail/' . $categoriesProduct['produkid']) ?>" class="card h-100 custom-link">
                                     <img class="card-img-top" src="<?= base_url('uploads/' . $categoriesProduct['photos_filenames']) ?>" alt="Related Product Image" />
                                     <div class="card-body p-4">
                                         <div class="text-start">
                                             <h5 class="fw-bolder"><?= $categoriesProduct['nama_produk']; ?></h5>
-                                            Rp.<?= number_format($categoriesProduct['harga_produk'], 0, ',', '.'); ?>
+                                            <p class="mb-1">Rp. <?= number_format($categoriesProduct['harga_produk'], 0, ',', '.'); ?></p>
+                                            <div class="d-flex align-items-center">
+                                                <?php if ($categoriesProduct['foto'] === 'default.png') : ?>
+                                                    <img src="<?= base_url() ?>/images/<?= $categoriesProduct['foto'] ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
+                                                <?php else : ?>
+                                                    <img src="<?= base_url('uploads/' . $categoriesProduct['foto']) ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
+                                                <?php endif; ?>
+                                                <span class="small"><?= $categoriesProduct['lokasi']; ?></span>
+                                            </div>
                                         </div>
                                         <div class="d-flex align-items-center mt-2">
-                                            <img src="<?= base_url('/images/' . $categoriesProduct['foto']) ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
-                                            <span class="small"><?= $categoriesProduct['lokasi']; ?></span>
+                                            <!-- Star icons -->
+                                            <div class="star-rating me-2">
+                                                <?php for ($i = 1; $i <= 5; $i++) : ?>
+                                                    <?php if ($i <= $categoriesProduct['rating']) : ?>
+                                                        <i class="fas fa-star text-warning"></i>
+                                                    <?php else : ?>
+                                                        <i class="far fa-star text-warning"></i>
+                                                    <?php endif; ?>
+                                                <?php endfor; ?>
+                                            </div>
+                                            <span class="rating-text"><?= number_format($categoriesProduct['rating'], 1, '.', ','); ?>/5</span>
                                         </div>
                                     </div>
                                 </a>
@@ -371,7 +433,7 @@
                         <?php endforeach; ?>
                     </div>
                 <?php else : ?>
-                    <div class="d-flex justify-content-center align-items-center mt-2" role="alert" style="height: 200px;">
+                    <div class="d-flex justify-content-center align-items-center mt-4" role="alert" style="height: 150px;">
                         <div class="col-12 text-center">
                             <p>No Documentation found.</p>
                         </div>
@@ -379,6 +441,7 @@
                 <?php endif; ?>
             </div>
         </section>
+
 
         <!-- Footer -->
         <div class="container">

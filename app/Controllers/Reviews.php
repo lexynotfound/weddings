@@ -12,7 +12,7 @@ use App\Models\RepliesModel;
 use App\Models\CategoriesModel;
 use Myth\Auth\Models\UserModel;
 
-class Home extends BaseController
+class Reviews extends BaseController
 {
     protected $db;
     protected $builder;

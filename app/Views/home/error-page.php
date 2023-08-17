@@ -43,16 +43,16 @@
         <div class="container mt-4">
             <nav class="navbar navbar-expand-lg bg-white ms-auto">
                 <!-- ... (rest of the header code) ... -->
-                <div class="container mb-5">
+                <div class="container">
                     <a class="navbar-brand" href="<?= base_url('home'); ?>">
                         <img src="<?= base_url(); ?>/images/logo.jpg" alt="logo" srcset="" width="100" height="100" class="d-inline-block align-text-top">
                     </a>
 
                     <div class="container">
                         <div class="row justify-content-center">
-                            <div class="col-md-8"> <!-- Adjust the column width as needed -->
-                                <form action="" class="d-flex align-items-center">
-                                    <input type="text" id="inputPassword5" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;"> <!-- Adjust the width as needed -->
+                            <div class="col-md-8">
+                                <form action="<?= base_url('home/search'); ?>" method="get" class="d-flex align-items-center" id="searchForm">
+                                    <input type="text" id="inputPassword5" name="q" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;">
                                 </form>
                             </div>
                         </div>
@@ -84,7 +84,18 @@
 
                                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="mr-4 d-none d-lg-inline text-gray-600 small me-1"><?= user()->username; ?></span>
-                                        <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                        <?php
+                                        $foto = user()->foto;
+                                        if ($foto === 'default.png') {
+                                        ?>
+                                            <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <img src="<?= base_url('uploads/' . $foto); ?>" class="img-profile rounded-circle ms-auto" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                        <?php
+                                        }
+                                        ?>
                                     </a>
                                     <!-- Dropdown - User Information -->
                                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -95,15 +106,15 @@
                                             </a>
                                             <div class="dropdown-divider"></div>
                                         <?php endif; ?>
-                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Reservation
                                         </a>
-                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Transaction
                                         </a>
-                                        <a class="dropdown-item" href="<?= base_url('user/settings'); ?>">
+                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
                                             <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
                                             Settings
                                         </a>
@@ -155,6 +166,78 @@
     </section>
 </body>
 
+<!-- Script -->
+<!-- Bootstrap core JavaScript-->
+<script src="<?= base_url(); ?>/src/jquery/jquery.min.js"></script>
+
+<!-- Core plugin JavaScript-->
+<script src="<?= base_url(); ?>/src/jquery-easing/jquery.easing.min.js"></script>
+
+<!-- Custom scripts for all pages-->
+<script src="<?= base_url(); ?>/src/js/sb-admin-2.min.js"></script>
+
+<!-- Page level plugins -->
+<script src="<?= base_url(); ?>/src/js/chart.js/Chart.min.js"></script>
+
+<!-- Page level custom scripts -->
+<script src="<?= base_url(); ?>/src/js/demo/chart-area-demo.js"></script>
+<script src="<?= base_url(); ?>/src/js/demo/chart-pie-demo.js"></script>
+<script src="<?= base_url(); ?>/src/js/message.js"></script>
+<script src="<?= base_url(); ?>/src/js/bootstrap.bundle.js"></script>
+<script src="<?= base_url(); ?>/src/js/dropdown-hoover.js"></script>
+
+<script src="<?= base_url(); ?>/src/js/disablescrool.js"></script>
+
+<!-- Bootstrap and jQuery JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.1/dist/umd/popper.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.12.0/dist/umd/popper.min.js" integrity="sha384-N5ZRprfQq9MgP13e+t4FkTqi7X9WVj54V2VXpOD4z8B65C7BK2gjHdouP84fS7Ld" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.min.js" integrity="sha384-B4gt1FWAbeJ3GzFQNzppbXk6v5zxG4T/4By2vckIgXvb7bPLhpvGhmfhA1t1b8RM" crossorigin="anonymous"></script>
+<script>
+    // Carousel Slide Effect
+    const carousel = document.getElementById('carouselExample');
+    let isSliding = false;
+    carousel.addEventListener('slide.bs.carousel', () => {
+        if (!isSliding) {
+            isSliding = true;
+            carousel.querySelectorAll('.carousel-item').forEach(item => {
+                item.classList.add('sliding');
+            });
+        }
+    });
+    carousel.addEventListener('slid.bs.carousel', () => {
+        isSliding = false;
+        carousel.querySelectorAll('.carousel-item').forEach(item => {
+            item.classList.remove('sliding');
+        });
+    });
+
+    // Show arrows on hover
+    document.getElementById('carouselExample').addEventListener('mouseenter', function() {
+        document.querySelector('.carousel-control-prev').style.display = 'block';
+        document.querySelector('.carousel-control-next').style.display = 'block';
+    });
+
+    document.getElementById('carouselExample').addEventListener('mouseleave', function() {
+        document.querySelector('.carousel-control-prev').style.display = 'none';
+        document.querySelector('.carousel-control-next').style.display = 'none';
+    });
+</script>
+
+<script>
+    // Tangkap elemen formulir pencarian
+    const searchForm = document.getElementById('searchForm');
+
+    // Tambahkan event listener pada elemen input
+    searchForm.addEventListener('keyup', function(event) {
+        // Pastikan tombol yang ditekan adalah Enter (kode 13)
+        if (event.keyCode === 13) {
+            // Kirim formulir pencarian
+            searchForm.submit();
+        }
+    });
+</script>
 
 <!-- <script>
     // Fungsi untuk melakukan self-refresh setiap 5 detik

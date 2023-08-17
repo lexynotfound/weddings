@@ -110,7 +110,7 @@
 
     <header>
         <div class="container mt-4">
-            <nav class="navbar navbar-expand-lg ms-auto">
+            <nav class="navbar navbar-expand-lg bg-white ms-auto">
                 <!-- ... (rest of the header code) ... -->
                 <div class="container">
                     <a class="navbar-brand" href="<?= base_url('home'); ?>">
@@ -119,9 +119,9 @@
 
                     <div class="container">
                         <div class="row justify-content-center">
-                            <div class="col-md-8"> <!-- Adjust the column width as needed -->
-                                <form action="" class="d-flex align-items-center">
-                                    <input type="text" id="inputPassword5" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;"> <!-- Adjust the width as needed -->
+                            <div class="col-md-8">
+                                <form action="<?= base_url('home/search'); ?>" method="get" class="d-flex align-items-center" id="searchForm">
+                                    <input type="text" id="inputPassword5" name="q" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;">
                                 </form>
                             </div>
                         </div>
@@ -153,7 +153,18 @@
 
                                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="mr-4 d-none d-lg-inline text-gray-600 small me-1"><?= user()->username; ?></span>
-                                        <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                        <?php
+                                        $foto = user()->foto;
+                                        if ($foto === 'default.png') {
+                                        ?>
+                                            <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <img src="<?= base_url('uploads/' . $foto); ?>" class="img-profile rounded-circle ms-auto" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                        <?php
+                                        }
+                                        ?>
                                     </a>
                                     <!-- Dropdown - User Information -->
                                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -490,12 +501,13 @@
         </main>
 
         <!-- Footer -->
+        <!-- Footer -->
         <div class="container">
             <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">
                 <div class="col mb-3">
                     <!-- logo -->
                     <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
-                        <img class="bi me-2" width="200" src="<?= base_url(); ?>/images/logo.svg">
+                        <img class="bi me-2" width="200" src="<?= base_url(); ?>/images/logo.jpg">
 
                         </img>
                     </a>
@@ -510,7 +522,7 @@
                 <div class="col mb-3">
                     <h5>Tenda Hj. Yus</h5>
                     <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
+                        <li class="nav-item mb-2"><a href="<?= base_url('home') ?>" class="nav-link p-0 text-muted">Home</a></li>
                         <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Orders History</a></li>
                     </ul>
                 </div>
@@ -538,6 +550,7 @@
             </div> -->
             </footer>
         </div>
+        <!-- End of Footer -->
         <!-- End of Footer -->
     </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.1/dist/js/bootstrap.bundle.min.js"></script>

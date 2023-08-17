@@ -29,7 +29,19 @@
                 <!-- ... (rest of the header code) ... -->
                 <div class="container">
                     <a class="navbar-brand" href="<?= base_url('home'); ?>">
-                        <img src="<?= base_url(); ?>/images/logo.jpg" alt="logo" srcset="" width="100" height="100" class="d-inline-block align-text-top">
+                        <?php
+                        if ($user->foto === 'default.png') {
+                            // Jika foto adalah foto default, tampilkan dari folder 'images'
+                        ?>
+                            <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
+                        <?php
+                        } else {
+                            // Jika foto telah diubah, tampilkan dari folder 'uploads'
+                        ?>
+                            <img src="<?= base_url('uploads/' . $user->foto); ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 40px; height: 40px;">
+                        <?php
+                        }
+                        ?>
                     </a>
 
                     <div class="container">

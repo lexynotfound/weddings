@@ -85,49 +85,145 @@ class Category extends BaseController
         return view('category/index', $data);
     }
 
+    protected function getReview($id)
+    {
+        $user_id = user_id(); // Get the current logged-in user's ID
+
+        $this->builder = $this->db->table('reviews');
+        $this->builder->select('reviews.id as reviewsid, reviews.user_id, reviews.payment_id, reviews.item_id, reviews.review, reviews.rating, reviews.created_at, payment.transaksi_id, users.username, users.nama, users.foto');
+        $this->builder->join('users', 'users.id = reviews.user_id', 'left');
+        $this->builder->join('payment', 'payment.id = reviews.payment_id', 'left');
+        $this->builder->join('transaksi', 'transaksi.id = payment.transaksi_id', 'left'); // LEFT JOIN with transaksi table
+        $this->builder->join('product', 'product.id = reviews.item_id', 'left');
+        $this->builder->where('reviews.deleted_at IS NULL');
+        $this->builder->where('reviews.item_id', $id);
+
+        $reviews = $this->builder->get()->getResultArray();
+
+        $ratingCounts = [0, 0, 0, 0, 0];
+        foreach ($reviews as $review) {
+            $rating = (int)$review['rating'];
+            if ($rating >= 1 && $rating <= 5) {
+                $ratingCounts[$rating - 1]++;
+            }
+        }
+
+        $totalReviews = array_sum($ratingCounts);
+
+        $resultReviews = [];
+        foreach ($reviews as $review) {
+            $rating = (int)$review['rating'];
+            if ($rating >= 1 && $rating <= 5) {
+                $review['rating_count'] = $ratingCounts[$rating - 1];
+                $review['rating_percentage'] = ($totalReviews > 0) ? ($review['rating_count'] / $totalReviews) * 100 : 0;
+            } else {
+                $review['rating_count'] = 0;
+                $review['rating_percentage'] = 0;
+            }
+
+            // Check if the user has already reviewed this item
+            $transaksi_id = $review['transaksi_id'];
+            $review['has_reviewed'] = false; // Initialize to false for users who are not logged in
+            if ($user_id) {
+                // Check if the user has reviewed this transaction
+                $reviewedTransactions = [];
+                foreach ($reviews as $r) {
+                    $reviewedTransactions[$r['transaksi_id']] = true;
+                }
+                $review['has_reviewed'] = isset($reviewedTransactions[$transaksi_id]);
+
+                // Check if the user has made a payment for this transaction
+                $userTransaction = $this->db->table('payment')
+                ->where('user_id', $user_id)
+                    ->where('id', $transaksi_id)
+                    ->get()
+                    ->getRowArray();
+
+                // If the user has made a payment and hasn't reviewed, allow them to review
+                if ($userTransaction && !$review['has_reviewed']) {
+                    $review['allow_review'] = true;
+                } else {
+                    $review['allow_review'] = false;
+                }
+            }
+
+            $resultReviews[] = $review;
+        }
+
+        return $resultReviews;
+    }
+
     private function getCategoriesProducts()
     {
         // Get distinct products with kategori_id = 1
         $this->builder = $this->db->table('product');
-        $this->builder->select('product.id as produkid, product.nama_produk,product.kategori_id, product.harga_produk, product.photos_filenames, users.foto, users.lokasi');
+        $this->builder->select('product.id as produkid, product.nama_produk,product.kategori_id, product.harga_produk, product.photos_filenames, users.foto, users.lokasi,reviews.rating,reviews.review,reviews.created_at');
         $this->builder->join('kategori', 'kategori.produk_id = product.id', 'left'); // Use 'left' for LEFT JOIN
+        $this->builder->join('reviews', 'reviews.item_id = product.id', 'left'); // Use 'left' for LEFT JOIN
         $this->builder->join('users', 'users.id = product.user_id', 'left'); // Use 'left' for LEFT JOIN
         $this->builder->where('product.deleted_at IS NULL');
         $this->builder->where('product.kategori_id', 1); // Filter products with kategori_id = 1
-        $this->builder->distinct(); // Make sure only distinct products are selected
         $this->builder->orderBy('product.id', 'DESC');
 
         $query = $this->builder->get();
         $products = $query->getResultArray();
 
-        return $products;
+        // Store product IDs that have been displayed
+        $displayedProductIds = [];
+
+        // Filter out duplicate products
+        $filteredProducts = [];
+        foreach ($products as $product) {
+            $productId = $product['produkid'];
+            if (!in_array($productId, $displayedProductIds)) {
+                $filteredProducts[] = $product;
+                $displayedProductIds[] = $productId;
+            }
+        }
+
+        return $filteredProducts;
     }
 
     private function getCategoriesProductsDC()
     {
-        // Get distinct products with kategori_id = 1
+        // Get distinct products with kategori_id = 2
         $this->builder = $this->db->table('product');
-        $this->builder->select('product.id as produkid, product.nama_produk,product.kategori_id, product.harga_produk, product.photos_filenames, users.foto, users.lokasi');
+        $this->builder->select('product.id as produkid, product.nama_produk,product.kategori_id, product.harga_produk, product.photos_filenames, users.foto, users.lokasi,reviews.review,reviews.rating,reviews.created_at');
         $this->builder->join('kategori', 'kategori.produk_id = product.id', 'left'); // Use 'left' for LEFT JOIN
         $this->builder->join('users', 'users.id = product.user_id', 'left'); // Use 'left' for LEFT JOIN
+        $this->builder->join('reviews', 'reviews.item_id = product.id', 'left'); // Use 'left' for LEFT JOIN
         $this->builder->where('product.deleted_at IS NULL');
-        $this->builder->where('product.kategori_id', 2); // Filter products with kategori_id = 1
-        $this->builder->distinct(); // Make sure only distinct products are selected
+        $this->builder->where('product.kategori_id', 2); // Filter products with kategori_id = 2
         $this->builder->orderBy('product.id', 'DESC');
 
         $query = $this->builder->get();
         $products = $query->getResultArray();
 
-        return $products;
+        // Store product IDs that have been displayed
+        $displayedProductIds = [];
+
+        // Filter out duplicate products
+        $filteredProducts = [];
+        foreach ($products as $product) {
+            $productId = $product['produkid'];
+            if (!in_array($productId, $displayedProductIds)) {
+                $filteredProducts[] = $product;
+                $displayedProductIds[] = $productId;
+            }
+        }
+
+        return $filteredProducts;
     }
+
 
     private function getCategoriesProductsNon()
     {
         // Get distinct products with kategori_id = 1
         $this->builder = $this->db->table('product');
-        $this->builder->select('product.id as produkid, product.nama_produk,product.kategori_id, product.harga_produk, product.photos_filenames, users.foto, users.lokasi');
+        $this->builder->select('product.id as produkid, product.nama_produk,product.kategori_id, product.harga_produk, product.photos_filenames, users.foto, users.lokasi,reviews.created_at,reviews.review,reviews.rating');
         $this->builder->join('kategori', 'kategori.produk_id = product.id', 'left'); // Use 'left' for LEFT JOIN
         $this->builder->join('users', 'users.id = product.user_id', 'left'); // Use 'left' for LEFT JOIN
+        $this->builder->join('reviews', 'reviews.item_id = product.id', 'left'); // Use 'left' for LEFT JOIN
         $this->builder->where('product.deleted_at IS NULL');
         $this->builder->where('product.kategori_id', 3); // Filter products with kategori_id = 1
         $this->builder->distinct(); // Make sure only distinct products are selected
@@ -161,10 +257,12 @@ class Category extends BaseController
     {
         // Perform a query to fetch related products with the same "kategori_id" randomly and limit to 4 rows
         $this->builder = $this->db->table('product');
-        $this->builder->select('product.id as produkid, product.nama_produk, product.description, product.user_id, product.kategori_id, product.harga_produk, product.photos_filenames, product.created_at, product.updated_at, product.deleted_at,categories.nama_categories,kategori.nama_menu,kategori.deskripsi, users.username, users.email, users.nama, users.foto, users.jenis_kelamin, users.telepon, users.lokasi');
+        $this->builder->select('product.id as produkid, product.nama_produk, product.description, product.user_id, product.kategori_id, product.harga_produk, product.photos_filenames, product.created_at, product.updated_at, product.deleted_at,categories.nama_categories,kategori.nama_menu,kategori.deskripsi, users.username, users.email, users.nama, users.foto, users.jenis_kelamin, users.telepon, users.lokasi,reviews.created_at,reviews.review,reviews.rating');
         $this->builder->join('categories', 'categories.id = product.kategori_id', 'left'); // Use 'left' for LEFT JOIN
         $this->builder->join('kategori', 'kategori.produk_id = product.id', 'left');
+        $this->builder->join('reviews', 'reviews.item_id = product.id', 'left'); // Use 'left' for LEFT JOIN
         $this->builder->join('users', 'users.id = product.user_id', 'left'); // Use 'left' for LEFT JOIN
+        $this->builder->where('product.deleted_at IS NULL');
         $this->builder->where('product.id !=', $currentProductId); // Exclude the current product
         $this->builder->where('product.kategori_id', $kategoriId); // Fetch related products with the same "kategori_id"
         $this->builder->orderBy('RAND()'); // Randomize the order
@@ -229,26 +327,4 @@ class Category extends BaseController
         return view('home/custom', $data);
     }
 
-    // Method to fetch related products with the same category
-    /* private function getRelatedProducts($kategori_id, $current_product_id)
-    {
-        // Load the ProductModel (adjust the model name as per your setup)
-        $productModel = new ProductModel();
-
-        // Perform the LEFT JOIN with users and kategori tables
-        $productModel->select('product.id as produkid, product.id_produk, product.nama_produk, product.harga_produk, product.photos_filenames, kategori.nama_menu,');
-        $productModel->join('kategori', 'kategori.id = product.kategori_id');
-
-        // Fetch related products (products with the same category except the current product)
-        $productModel->where('product.kategori_id', $kategori_id);
-        $productModel->where('product.id_produk !=', $current_product_id);
-
-        // Limit the number of related products (adjust the number as needed)
-        $productModel->limit(4);
-
-        // Get the related product data
-        $relatedProducts = $productModel->findAll();
-
-        return $relatedProducts;
-    } */
 }

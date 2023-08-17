@@ -70,7 +70,20 @@
 
                                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="mr-4 d-none d-lg-inline text-gray-600 small me-1"><?= user()->username; ?></span>
-                                        <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                        <?php
+                                        if ($user->foto === 'default.png') {
+                                            // Jika foto adalah foto default, tampilkan dari folder 'images'
+                                        ?>
+                                            <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                        <?php
+                                        } else {
+                                            // Jika foto telah diubah, tampilkan dari folder 'uploads'
+                                        ?>
+                                            <img src="<?= base_url('uploads/' . $user->foto); ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 40px; height: 40px;">
+                                        <?php
+                                        }
+                                        ?>
+                                    
                                     </a>
                                     <!-- Dropdown - User Information -->
                                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">

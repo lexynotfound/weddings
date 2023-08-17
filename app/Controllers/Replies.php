@@ -13,7 +13,7 @@ use App\Models\CategoriesModel;
 use Myth\Auth\Models\UserModel;
 
 
-class Home extends BaseController
+class Replies extends BaseController
 {
     protected $db;
     protected $builder;
@@ -41,36 +41,6 @@ class Home extends BaseController
         $this->categoriesModel = new CategoriesModel();
         $this->userModel = new UserModel();
     }
-
-    /* public function index()
-    {
-        $data = [
-            'title' => 'Wedding Organizer',
-        ];
-
-        // Load the KategoriModel
-        $kategoriModel = new KategoriModel();
-
-        // Fetch all categories from the database
-        $categories = $kategoriModel->findAll();
-
-        // Pass the category data to the view
-        $data['categories'] = $categories;
-
-        // Perform the LEFT JOIN with product and kategori tables
-        $this->builder = $this->db->table('product');
-        $this->builder->select('product.id as produkid, product.nama_produk, product.description, product.user_id, product.kategori_id, product.harga_produk, product.photos_filenames, product.created_at, product.updated_at, product.deleted_at, users.username, users.email, users.nama, users.foto, users.jenis_kelamin, users.telepon, users.lokasi, kategori.id as kategori_id, kategori.nama_menu, kategori.deskripsi as kategori_deskripsi, kategori.isi');
-        $this->builder->join('kategori', 'kategori.produk_id = product.id', 'left'); // Use 'left' for LEFT JOIN
-        $this->builder->join('users', 'users.id = product.user_id', 'left'); // Use 'left' for LEFT JOIN
-
-        // Get the product data with category information
-        $products = $this->builder->get()->getResultArray();
-
-        // Pass the product data to the view
-        $data['produk'] = $products;
-
-        return view('home/index', $data);
-    } */
 
     public function index()
     {
@@ -118,6 +88,45 @@ class Home extends BaseController
         $data['produk'] = $products;
 
         return view('home/index', $data);
+    }
+
+    public function save($review_id)
+    {
+        // Pastikan pengguna sudah login
+
+        // Tangkap data dari form atau request, seperti user_id, review_id, dan isi balasan
+        $user_id = user_id();
+        $review_id = $this->request->getPost('review_id');
+        $reply = $this->request->getPost('reply');
+
+        // Validasi data jika diperlukan
+
+        // Siapkan data untuk disimpan ke database
+        $data = [
+            'user_id' => $user_id,
+            'review_id' => $review_id, // Ini adalah review yang di-reply
+            'reply' => $reply,
+            'created_at' => date('Y-m-d H:i:s'),
+        ];
+
+        // Simpan data ke database
+        $this->db->table('replies')->insert($data);
+
+        // Siapkan respons JSON
+        $response = [
+                'success' => true,
+                'message' => 'Reply successfully submitted.',
+                'reply' => [
+                    'nama' => user()->nama,
+                    'created_at' => date('l, d F Y'),
+                    'reply' => $reply,
+                    'foto' => user()->foto === 'default.png' ? base_url('images/default.png') : base_url('uploads/' . user()->foto)
+                ]
+            ];
+
+        // Kirim respons dalam format JSON
+        return $this->response->setJSON($response);
+
     }
 
     public function search()
@@ -378,6 +387,7 @@ class Home extends BaseController
         // Pass the review data to the view
         $data['replies'] = $replies;
 
+
         return view('home/detail', $data);
     }
 
@@ -563,44 +573,6 @@ class Home extends BaseController
         return $replies;
     }
 
-    public function save($review_id)
-    {
-        // Pastikan pengguna sudah login
-
-        // Tangkap data dari form atau request, seperti user_id, review_id, dan isi balasan
-        $user_id = user_id();
-        $review_id = $this->request->getPost('review_id');
-        $reply = $this->request->getPost('reply');
-
-        // Validasi data jika diperlukan
-
-        // Siapkan data untuk disimpan ke database
-        $data = [
-            'user_id' => $user_id,
-            'review_id' => $review_id, // Ini adalah review yang di-reply
-            'reply' => $reply,
-            'created_at' => date('Y-m-d H:i:s'),
-        ];
-
-        // Simpan data ke database
-        $this->db->table('replies')->insert($data);
-
-        // Siapkan respons JSON
-        $response = [
-            'success' => true,
-            'message' => 'Reply successfully submitted.',
-            'reply' => [
-                'nama' => user()->nama,
-                'created_at' => date('l, d F Y'),
-                'reply' => $reply,
-                'foto' => user()->foto === 'default.png' ? base_url('images/default.png') : base_url('uploads/' . user()->foto)
-            ]
-        ];
-
-        // Kirim respons dalam format JSON
-        return $this->response->setJSON($response);
-    }
-
     public function save_review($payment_id)
     {
         // Ambil data dari form
@@ -745,26 +717,4 @@ class Home extends BaseController
         return view('home/custom', $data);
     }
 
-    // Method to fetch related products with the same category
-    /* private function getRelatedProducts($kategori_id, $current_product_id)
-    {
-        // Load the ProductModel (adjust the model name as per your setup)
-        $productModel = new ProductModel();
-
-        // Perform the LEFT JOIN with users and kategori tables
-        $productModel->select('product.id as produkid, product.id_produk, product.nama_produk, product.harga_produk, product.photos_filenames, kategori.nama_menu,');
-        $productModel->join('kategori', 'kategori.id = product.kategori_id');
-
-        // Fetch related products (products with the same category except the current product)
-        $productModel->where('product.kategori_id', $kategori_id);
-        $productModel->where('product.id_produk !=', $current_product_id);
-
-        // Limit the number of related products (adjust the number as needed)
-        $productModel->limit(4);
-
-        // Get the related product data
-        $relatedProducts = $productModel->findAll();
-
-        return $relatedProducts;
-    } */
 }

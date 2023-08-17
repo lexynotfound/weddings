@@ -168,7 +168,18 @@ function truncateText($text, $length)
 
                                     <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                         <span class="mr-4 d-none d-lg-inline text-gray-600 small me-1"><?= user()->username; ?></span>
-                                        <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                        <?php
+                                        $foto = user()->foto;
+                                        if ($foto === 'default.png') {
+                                        ?>
+                                            <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                        <?php
+                                        } else {
+                                        ?>
+                                            <img src="<?= base_url('uploads/' . $foto); ?>" class="img-profile rounded-circle ms-auto" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                        <?php
+                                        }
+                                        ?>
                                     </a>
                                     <!-- Dropdown - User Information -->
                                     <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
@@ -322,14 +333,13 @@ function truncateText($text, $length)
                                                 <div class="d-flex">
                                                     <?php for ($i = 1; $i <= 5; $i++) : ?>
                                                         <?php if ($i <= $fullStars) : ?>
-                                                            <span class="star fas fa-star text-warning me-1" style="font-size: 14px;"></span>
+                                                            <span class="star fas fa-star text-warning me-1"></span>
                                                         <?php else : ?>
-                                                            <span class="star far fa-star text-warning me-1" style="font-size: 14px;"></span>
+                                                            <span class="star far fa-star text-warning me-1"></span>
                                                         <?php endif; ?>
                                                     <?php endfor; ?>
                                                     <span class="badge bg-primary ms-2"><?= $averageRating ?>.0</span>
-                                                    <span class="badge bg-primary ms-2"><?= $pd['totalReviews'] ?>.0</span>
-
+                                                    <span class="badge bg-primary ms-2"><?= $pd['totalReviews'] ?> people</span>
                                                 </div>
                                             </div>
                                         </div>
