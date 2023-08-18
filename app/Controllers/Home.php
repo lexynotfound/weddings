@@ -400,7 +400,7 @@ class Home extends BaseController
     // Function to get payment data for the given $id
     // Function to get payment data for the given user_id
     // Function to get payment data for the logged-in user
-    protected function getPaymentData()
+    protected function getPaymentData($paymentId)
     {
         $user = $this->userModel->where('id', user_id())->first();
 
@@ -419,8 +419,9 @@ class Home extends BaseController
         $this->builder->join('kategori', 'kategori.produk_id = product.id', 'left'); // Use 'left' for LEFT JOIN
         $this->builder->join('categories', 'categories.id = product.kategori_id', 'left'); // Use 'left' for LEFT JOIN
 
-        // Fetch the payment data for the logged-in user
+        // Fetch the payment data for the logged-in user and specific payment ID
         $this->builder->where('payment.user_id', $userId); // Filter by user ID
+        $this->builder->where('payment.id', $paymentId); // Filter by payment ID
         $this->builder->orderBy('payment.payment_date', 'DESC'); // Order by payment date in descending order
         $payment = $this->builder->get()->getRowArray();
 
@@ -617,65 +618,50 @@ class Home extends BaseController
         return $this->response->setJSON($response);
     }
 
-    public function save_review($payment_id)
+    public function save_review($paymentId)
     {
-        // Ambil data dari form
-        $rating = $this->request->getVar('rating');
-        $reviewText = $this->request->getVar('review');
-        $PaymentsID = $this->request->getVar('payment_id');
-
-        // Ambil data user yang sedang login
-        $user = $this->userModel->where('id', user_id())->first();
-
-        if (!$user) {
-            return redirect()->to('auth/login');
+        // Check if the user is logged in
+        if (!logged_in()) {
+            return redirect()->to('home'); // Redirect to home or login page
         }
 
-        // Ambil user_id dari pengguna yang login
-        $userId = $user->id;
+        // Get the logged-in user's ID
+        $userId = user_id();
 
-        // Ambil data pembayaran terbaru berdasarkan payment_id
-        $paymentModel = new PaymentModel();
-        $latestPayment = $paymentModel->where('id', $payment_id)
-            ->orderBy('payment_date', 'DESC')
-            ->first();
-
-        if (!$latestPayment) {
-            return redirect()->to('home/error-page');
+        // Check if the payment ID is valid and belongs to the logged-in user
+        $payment = $this->getPaymentData($paymentId);
+        if (!$payment || $payment['user_id'] !== $userId) {
+            return redirect()->to('home'); // Redirect to home or error page
         }
 
-        // Ambil data produk terbaru berdasarkan produk_id pada pembayaran terbaru
-        $productModel = new ProductModel();
-        $latestProduct = $productModel->find($latestPayment['id']);
+        // Get the review data from the form
+        $rating = $this->request->getPost('rating');
+        $review = $this->request->getPost('review');
+        $item_id = $this->request->getPost('item_id'); // Assuming you have an input for item_id
 
-        if (!$latestProduct || !is_null($latestProduct['deleted_at'])) {
-            return redirect()->to('home/error-page');
+        // Validation: Check if all required fields are provided
+        if (empty($rating) || empty($review) || empty($item_id)) {
+            return redirect()->back()->withInput()->with('error', 'Please provide all required information.');
         }
 
-        // Simpan data ulasan ke dalam tabel reviews
-        $reviewsModel = new ReviewsModel();
-        $data = [
-            'rating' => $rating,
-            'review' => $reviewText,
+        // Validation: Check if the rating is valid (you can add more validation here)
+        if (!in_array($rating, [1, 2, 3, 4, 5])) {
+            return redirect()->back()->withInput()->with('error', 'Invalid rating value.');
+        }
+
+        // Save the review to the database using the ReviewsModel
+        $this->reviewsModel->insert([
             'user_id' => $userId,
-            'payment_id' => $PaymentsID,
-            'item_id' => $latestPayment['id'], // Use the latest product ID from the payment
+            'payment_id' => $paymentId,
+            'item_id' => $item_id,
+            'review' => $review,
+            'rating' => $rating,
             'created_at' => date('Y-m-d H:i:s'),
-        ];
+            'updated_at' => date('Y-m-d H:i:s'),
+        ]);
 
-        // Coba lakukan operasi penyimpanan data
-        try {
-            $reviewsModel->insert($data);
-
-            // Tandai pembayaran sebagai telah direview
-            $paymentModel->update($payment_id, ['reviewed_at' => date('Y-m-d H:i:s')]);
-
-            // Redirect kembali ke halaman detail produk
-            return redirect()->to('home/detail/' . $latestProduct['id']);
-        } catch (\Exception $e) {
-            // Tampilkan pesan error atau lakukan penanganan error sesuai kebutuhan
-            echo 'Error while saving review: ' . $e->getMessage();
-        }
+        // Redirect back to the product detail page with a success message
+        return redirect()->back()->with('success', 'Review submitted successfully.');
     }
 
     // Function to get menu options based on produk_id

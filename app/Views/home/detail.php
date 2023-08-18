@@ -761,44 +761,6 @@
         }
     </script>
 
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const form = document.querySelector('#reviewForm');
-            const messageDiv = document.querySelector('#message');
-
-            form.addEventListener('submit', async function(e) {
-                e.preventDefault();
-
-                const formData = new FormData(form);
-
-                try {
-                    const response = await fetch(form.action, {
-                        method: 'POST',
-                        body: formData,
-                    });
-
-                    if (response.ok) {
-                        // Tampilkan pesan konfirmasi
-                        messageDiv.innerHTML = '<p class="text-success">Review saved successfully!</p>';
-
-                        // Bersihkan formulir
-                        form.reset();
-
-                        // Tunggu sebentar dan perbarui halaman
-                        setTimeout(function() {
-                            location.reload();
-                        }, 1500);
-                    } else {
-                        messageDiv.innerHTML = '<p class="text-danger">An error occurred while saving the review.</p>';
-                    }
-                } catch (error) {
-                    console.error('Error:', error);
-                    messageDiv.innerHTML = '<p class="text-danger">An error occurred while saving the review.</p>';
-                }
-            });
-        });
-    </script>
-
     <!-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             const replyButtons = document.querySelectorAll(".reply-button");

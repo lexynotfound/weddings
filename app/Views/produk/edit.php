@@ -153,7 +153,7 @@
                                         <div class="menu-entry">
                                             <input type="text" name="nama_menu[]" class="form-control mb-3" value="<?= old('nama_menu', $item['nama_menu']); ?>">
                                             <textarea name="deskripsi[]" class="form-control mb-3"><?= old('deskripsi', $item['deskripsi']); ?></textarea>
-                                            <button type="button" class="delete-icon btn btn-circle btn-outline-danger mb-3" name="delete_category[]" data-id="<?= $item['id']; ?>">Hapus -</button>
+                                            <button type="button" class="delete-icon btn btn-circle btn-outline-danger mb-3" ">Hapus -</button>
                                         </div>
                                     <?php endforeach; ?>
                                 </div>

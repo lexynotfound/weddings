@@ -351,7 +351,19 @@
                         <div class="row g-3">
                             <div class="avatar me-3">
                                 <!-- Assuming you have a user profile image URL stored in $reservation['foto'] -->
-                                <img src="<?= base_url('images/' . $reservation['product_foto']) ?>" alt="Avatar" class="rounded-circle" width="40" height="40">
+                                <?php
+                                if ($reservation['product_foto'] === 'default.png') {
+                                    // Jika foto adalah foto default, tampilkan dari folder 'images'
+                                ?>
+                                    <img src="<?= base_url('images/' . $reservation['product_foto']) ?>" alt="Avatar" class="rounded-circle" width="40" height="40">
+                                <?php
+                                } else {
+                                    // Jika foto telah diubah, tampilkan dari folder 'uploads'
+                                ?>
+                                    <img src="<?= base_url('uploads/' . $reservation['product_foto']) ?>" alt="Avatar" class="rounded-circle" width="40" height="40">
+                                <?php
+                                }
+                                ?>
                                 <label class="lg-label fw-bold">
                                     <?= $reservation['product_username']; ?>
                                 </label>
@@ -390,7 +402,19 @@
                                         <!-- Assuming you have a user profile image URL stored in $reservation['foto'] -->
                                         <div class="avatar me-3 d-flex align-items-center">
                                             <!-- Assuming you have a user profile image URL stored in $reservation['foto'] -->
-                                            <img src="<?= base_url('images/' . $reservation['reservation_foto']) ?>" alt="Avatar" class="rounded-circle" width="40" height="40">
+                                            <?php
+                                            if ($reservation['reservation_foto'] === 'default.png') {
+                                                // Jika foto adalah foto default, tampilkan dari folder 'images'
+                                            ?>
+                                                <img src="<?= base_url('images/' . $reservation['reservation_foto']) ?>" alt="Avatar" class="rounded-circle" width="40" height="40">
+                                            <?php
+                                            } else {
+                                                // Jika foto telah diubah, tampilkan dari folder 'uploads'
+                                            ?>
+                                                <img src="<?= base_url('uploads/' . $reservation['reservation_foto']) ?>" alt="Avatar" class="rounded-circle" width="40" height="40">
+                                            <?php
+                                            }
+                                            ?>
                                             <div class="ms-3">
                                                 <div>
                                                     <label class="lg-label fw-bold mb-0">
