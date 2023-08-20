@@ -112,6 +112,11 @@ $routes->group('user', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('transaksi', 'User::transaksi');
 });
 
+$routes->group('about', ['namespace' => 'App\Controllers'], function ($routes) {
+    $routes->get('/', 'About::index');
+    $routes->post('save_review/(:num)', 'Reviews::save_review/$1');
+});
+
 $routes->group('review', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('/', 'Reviews::index');
     $routes->post('save_review/(:num)', 'Reviews::save_review/$1');
