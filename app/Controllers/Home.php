@@ -134,73 +134,52 @@ class Home extends BaseController
             'keyword' => $keyword,
         ];
 
-        // Lakukan query pencarian ke tabel produk dan gabungkan dengan tabel pengguna dan ulasan
-        $this->builder = $this->db->table('product');
-        $this->builder->select('product.id as produkid, product.nama_produk, product.id_produk, product.description, product.user_id, product.kategori_id, product.harga_produk, product.photos_filenames, product.created_at, product.updated_at, product.deleted_at, users.username, users.email, users.nama, users.foto, users.jenis_kelamin, users.telepon, users.lokasi, AVG(reviews.rating) as avg_rating, COUNT(reviews.rating) as total_reviews, categories.nama_categories');
-        $this->builder->join('users', 'users.id = product.user_id', 'left');
-        $this->builder->join('categories', 'categories.id = product.kategori_id', 'left');
-        $this->builder->join('reviews', 'product.id = reviews.item_id', 'left');
+        $builder = $this->db->table('product');
+        $builder->select('product.id as produkid, product.nama_produk, product.id_produk, product.description, product.user_id, product.kategori_id, product.harga_produk, product.photos_filenames, product.created_at, product.updated_at, product.deleted_at, users.username, users.email, users.nama, users.foto, users.jenis_kelamin, users.telepon, users.lokasi, AVG(reviews.rating) as avg_rating, COUNT(reviews.rating) as total_reviews, categories.nama_categories');
+        $builder->join('users', 'users.id = product.user_id', 'left');
+        $builder->join('categories', 'categories.id = product.kategori_id', 'left');
+        $builder->join('reviews', 'product.id = reviews.item_id', 'left');
 
-        // Lakukan pencarian berdasarkan id_produk, nama_produk, nama pengguna, dan username pengguna
-        $this->builder->where('product.deleted_at IS NULL'); // Pastikan produk belum dihapus (soft deleted)
-        $this->builder->like('product.nama_produk', $keyword);
-        $this->builder->orLike('product.description', $keyword);
-        $this->builder->orLike('users.nama', $keyword);
-        $this->builder->orLike('users.username', $keyword);
-        $this->builder->orLike('reviews.rating', $keyword);
-        $this->builder->orLike('product.harga_produk', $keyword);
-        $this->builder->orLike('categories.nama_categories', $keyword);
-
-        // Jika keyword berupa angka, cari semua data yang memiliki hubungan dengan angka tersebut
-        if (is_numeric($keyword)) {
-            $this->builder->orWhere('product.id_produk', $keyword);
-            $this->builder->orWhere('product.id', $keyword);
-            $this->builder->orWhere('product.harga_produk', $keyword);
-            $this->builder->orWhere('users.nama', $keyword);
-            $this->builder->orWhere('users.username', $keyword);
-            $this->builder->orWhere('reviews.rating', $keyword);
-        }
+        $builder->where('product.deleted_at IS NULL');
+        $builder->groupStart();
+        $builder->like('product.nama_produk', $keyword);
+        $builder->orLike('product.description', $keyword);
+        $builder->orLike('users.nama', $keyword);
+        $builder->orLike('users.username', $keyword);
+        $builder->orLike('product.harga_produk', $keyword);
+        $builder->orLike('categories.nama_categories', $keyword);
+        $builder->groupEnd();
 
         // Lakukan pencarian berdasarkan rating
         $ratingKeyword = strtolower($keyword);
         if (strpos($ratingKeyword, 'bintang') !== false && preg_match('/[0-9]+/', $ratingKeyword, $matches)) {
             $ratingValue = (int) $matches[0];
             if ($ratingValue >= 1 && $ratingValue <= 5) {
-                $this->builder->having('avg_rating', $ratingValue);
+                $builder->having('avg_rating', $ratingValue);
             }
         }
 
         $minPrice = $this->request->getVar('min_price');
         $maxPrice = $this->request->getVar('max_price');
 
-        if ((!empty($minPrice) && is_numeric($minPrice)) || (!empty($maxPrice) && is_numeric($maxPrice))) {
-            if (!empty($minPrice) && is_numeric($minPrice)) {
-                $this->builder->where('product.harga_produk >=', (int) $minPrice);
-            }
-
-            if (!empty($maxPrice) && is_numeric($maxPrice)) {
-                $this->builder->where('product.harga_produk <=', (int) $maxPrice);
-            }
+        // Periksa apakah parameter min_price dan max_price ada di URL
+        if ($minPrice !== null && $maxPrice !== null) {
+            $builder->where('product.harga_produk >=', (int) $minPrice);
+            $builder->where('product.harga_produk <=', (int) $maxPrice);
         }
 
-
+        // Periksa apakah parameter category ada di URL
         $selectedCategories = $this->request->getVar('category');
-        $selectedCategoriesArray = !empty($selectedCategories) ? explode(',', $selectedCategories) : [];
-
-        if (!empty($selectedCategoriesArray)) {
-            $this->builder->whereIn('categories.nama_categories', $selectedCategoriesArray);
+        if (!empty($selectedCategories)) {
+            $selectedCategoriesArray = explode(',', $selectedCategories);
+            $builder->whereIn('categories.nama_categories', $selectedCategoriesArray);
+            $data['selectedCategoriesArray'] = $selectedCategoriesArray;
         }
 
-        $data['selectedCategoriesArray'] = $selectedCategoriesArray;
+        $builder->groupBy('product.id');
+        $builder->orderBy('avg_rating', 'DESC');
 
-        // Group by product ID to calculate average rating and total reviews
-        $this->builder->groupBy('product.id');
-
-        // Order by average rating in descending order
-        $this->builder->orderBy('avg_rating', 'DESC');
-
-        // Get the search results
-        $products = $this->builder->get()->getResultArray();
+        $products = $builder->get()->getResultArray();
 
         $categories = []; // Array untuk menyimpan informasi kategori
 
@@ -230,14 +209,15 @@ class Home extends BaseController
             }
         }
 
+        $data['filteredProducts'] = $filteredProducts;
+
         // Calculate total results for pagination
         $totalResults = count($filteredProducts);
 
-        // Pagination configuration
         $perPage = 12; // Number of results per page
         $totalPages = ceil($totalResults / $perPage);
 
-        // Get the current page number from the URL query
+        // Get the current page number from the URL query or AJAX request
         $page = $this->request->getVar('page') ?? 1;
 
         // Calculate the offset for the current page
@@ -250,21 +230,40 @@ class Home extends BaseController
         $data['totalPages'] = $totalPages;
         $data['currentPageProducts'] = $currentPageProducts;
 
+        // Return JSON response for AJAX request
+        if ($this->request->isAJAX()) {
+            return $this->response->setJSON($data);
+        }
+
+
         // Jika kata kunci kosong atau hanya berisi spasi, alihkan ke halaman "tanpa hasil"
         if (empty(trim($keyword))) {
             $data['no_results'] = true; // Tandai bahwa tidak ada hasil pencarian
-            return view('home/no_results', $data); // Tampilkan view khusus jika tidak ada hasil pencarian
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON($data); // Kembalikan respons JSON jika ini adalah permintaan AJAX
+            } else {
+                return view('home/no_results', $data); // Tampilkan view khusus jika tidak ada hasil pencarian
+            }
         }
 
         if (empty($filteredProducts)) {
-            $data['no_results'] = true; // Tandai bahwa tidak ada hasil pencarian
+            $data['no_results'] = true;
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON($data); // Kembalikan respons JSON jika ini adalah permintaan AJAX
+            } else {
+                return view('home/no_results', $data);
+            }
         } else {
             $data['produk'] = $filteredProducts;
         }
 
         if (empty($filteredProducts)) {
-            $data['no_results'] = true; // Tandai bahwa tidak ada hasil pencarian
-            return view('home/no_results', $data); // Tampilkan view khusus jika tidak ada hasil pencarian
+            $data['no_results'] = true;
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON($data); // Kembalikan respons JSON jika ini adalah permintaan AJAX
+            } else {
+                return view('home/no_results', $data);
+            }
         } else {
             $data['produk'] = $filteredProducts;
             return view('home/search', $data);
@@ -561,26 +560,29 @@ class Home extends BaseController
                     $review['allow_review'] = false;
                 }
             }
-
+            
+            // Mengambil data replies berdasarkan review_id
+            $review['replies'] = $this->getRepliesByReview($review['reviewsid']);
             $resultReviews[] = $review;
         }
 
         return $resultReviews;
     }
 
-    protected function getRepliesByReview($review_id)
+    protected function getRepliesByReview($id)
     {
         $this->builder = $this->db->table('replies');
-        $this->builder->select('replies.id, replies.user_id, replies.review_id, replies.reply, replies.created_at, users.username, users.nama, users.foto');
+        $this->builder->select('replies.id as repliesid, replies.user_id, replies.review_id, replies.reply, replies.created_at, users.username, users.nama, users.foto');
         $this->builder->join('users', 'users.id = replies.user_id', 'left'); // LEFT JOIN with users table
-        $this->builder->where('replies.review_id', $review_id);
+        $this->builder->where('replies.review_id', $id);
         $this->builder->where('replies.deleted_at IS NULL'); // Filter out soft deleted replies
         $replies = $this->builder->get()->getResultArray();
-
+        
+        
         return $replies;
     }
 
-    public function save($review_id)
+    /* public function save($review_id)
     {
         // Pastikan pengguna sudah login
 
@@ -608,7 +610,7 @@ class Home extends BaseController
             'message' => 'Reply successfully submitted.',
             'reply' => [
                 'nama' => user()->nama,
-                'created_at' => date('l, d F Y'),
+                'created_at' => date('l, d F Y', strtotime($data['created_at'])), // Ubah format tanggal di sini
                 'reply' => $reply,
                 'foto' => user()->foto === 'default.png' ? base_url('images/default.png') : base_url('uploads/' . user()->foto)
             ]
@@ -616,7 +618,100 @@ class Home extends BaseController
 
         // Kirim respons dalam format JSON
         return $this->response->setJSON($response);
+    } */
+
+    /* public function save($review_id)
+    {
+        // Pastikan pengguna sudah login
+        if (!logged_in()) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Unauthorized']);
+        }
+
+        // Memeriksa apakah ada POST data yang diterima
+        if ($this->request->getPost()) {
+            // Tangkap data dari form atau request, seperti user_id, review_id, dan isi balasan
+            $user_id = user_id();
+            $reply = $this->request->getPost('reply');
+
+            // Siapkan data untuk disimpan ke database
+            $data = [
+                'user_id' => $user_id,
+                'review_id' => $review_id,
+                'reply' => $reply,
+                'created_at' => date('Y-m-d H:i:s'),
+            ];
+
+            // Simpan data ke database
+            $this->db->table('replies')->insert($data);
+
+            // Siapkan respons JSON
+            $response = [
+                'success' => true,
+                'message' => 'Reply successfully submitted.',
+                'reply' => [
+                    'nama' => user()->nama,
+                    'created_at' => date('l, d F Y', strtotime($data['created_at'])),
+                    'reply' => $reply,
+                    'foto' => user()->foto === 'default.png' ? base_url('images/default.png') : base_url('uploads/' . user()->foto)
+                ]
+            ];
+
+            // Kirim respons dalam format JSON
+            return $this->response->setJSON($response);
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'Invalid Request']);
+        }
+    } */
+
+    public function save($review_id)
+    {
+        // Pastikan pengguna sudah login
+        
+        if (!logged_in()) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Unauthorized']);
+        }
+
+        // Memeriksa apakah ada POST data yang diterima
+        if ($this->request->getPost()) {
+            // Tangkap data dari form atau request, seperti user_id, review_id, dan isi balasan
+            $user_id = user_id();
+            $reply = $this->request->getPost('reply');
+
+            // Siapkan data untuk disimpan ke database
+            $data = [
+                'user_id' => $user_id,
+                'review_id' => $review_id,
+                'reply' => $reply,
+                'created_at' => date('Y-m-d H:i:s'),
+            ];
+
+            try {
+                // Simpan data ke database
+                $this->db->table('replies')->insert($data);
+
+                // Siapkan respons JSON
+                $response = [
+                    'success' => true,
+                    'message' => 'Reply successfully submitted.',
+                    'reply' => [
+                        'nama' => user()->nama,
+                        'created_at' => date('l, d F Y', strtotime($data['created_at'])),
+                        'reply' => $reply,
+                        'foto' => user()->foto === 'default.png' ? base_url('images/default.png') : base_url('uploads/' . user()->foto)
+                    ]
+                ];
+
+                // Kirim respons dalam format JSON
+                return $this->response->setJSON($response);
+            } catch (\Exception $e) {
+                // Jika terjadi kesalahan, kirim respons JSON dengan status error
+                return $this->response->setJSON(['success' => false, 'message' => 'Error while saving reply']);
+            }
+        } else {
+            return $this->response->setJSON(['success' => false, 'message' => 'Invalid Request']);
+        }
     }
+
 
     public function save_review($paymentId)
     {

@@ -155,26 +155,23 @@ class Best extends BaseController
 
     private function getBestProducts()
     {
-        // Get distinct products with kategori_id = 1
         $this->builder = $this->db->table('transaksi');
-        $this->builder->select('transaksi.id as transaksiid, transaksi.id_transaksi,transaksi.id_transaksi,transaksi.user_id, transaksi.menu_id,transaksi.produk_id,transaksi.total_harga,transaksi.status,transaksi.tgl_transaksi,product.nama_produk,product.description,product.harga_produk, product.user_id as product_user_id,product.kategori_id, product.photos_filenames,kategori.nama_menu,kategori.produk_id as kategori_produk_id,kategori.deskripsi, users.foto, users.lokasi,reviews.review,reviews.rating,reviews.created_at');
-        $this->builder->join('product', 'product.id = transaksi.produk_id', 'left'); // Use 'left' for LEFT JOIN
-        $this->builder->join('kategori', 'kategori.id = transaksi.menu_id', 'left'); // Use 'left' for LEFT JOIN
-        $this->builder->join('users', 'users.id = transaksi.user_id', 'left'); // Use 'left' for LEFT JOIN
-        $this->builder->join('reviews', 'reviews.item_id = product.id', 'left'); // Use 'left' for LEFT JOIN
-       /*  $this->builder->join('reviews as rw', 'rw.payment_id = payment.id', 'left'); // Use 'left' for LEFT JOIN
-        $this->builder->join('payment', 'payment.transaksi_id = payment.id', 'left'); // Use 'left' for LEFT JOIN */
-        $this->builder->join('users as product_users', 'product_users.id = product.user_id', 'left'); // Use 'left' for LEFT JOIN
+        $this->builder->select('transaksi.produk_id, COUNT(transaksi.id) as total_transactions, product.nama_produk, product.description, product.harga_produk, product.photos_filenames, MAX(products_users.foto) as foto, MAX(products_users.nama) as users_nama, MAX(products_users.username) as username, MAX(products_users.lokasi) as lokasi, MAX(products_users.telepon) as telepon,MAX(reviews.rating) as rating,MAX(reviews.review) as review');
+        $this->builder->join('product', 'product.id = transaksi.produk_id', 'left');
+        $this->builder->join('reviews', 'product.id = reviews.item_id', 'left');
+        $this->builder->join('users as products_users', 'products_users.id = product.user_id', 'left');
         $this->builder->where('product.deleted_at IS NULL');
-        $this->builder->where('transaksi.produk_id', 2); // Filter products with kategori_id = 1
-        $this->builder->distinct(); // Make sure only distinct products are selected
-        $this->builder->orderBy('transaksi.id', 'DESC');
+        $this->builder->groupBy('transaksi.produk_id, product.nama_produk, product.description, product.harga_produk, product.photos_filenames');
+        $this->builder->orderBy('total_transactions', 'DESC');
+        $this->builder->limit(10); // Limit to the top 10 products
 
         $query = $this->builder->get();
         $transaksi = $query->getResultArray();
 
         return $transaksi;
     }
+
+
 
     private function getCategoriesProductsDC()
     {

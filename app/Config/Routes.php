@@ -108,6 +108,8 @@ $routes->group('user', ['namespace' => 'App\Controllers'], function ($routes) {
     // Rute untuk update jenis kelamin
     $routes->post('update_gender', 'User::update_gender');
     $routes->get('setting', 'User::setting');
+    $routes->get('reservation', 'User::reservations');
+    $routes->get('transaksi', 'User::transaksi');
 });
 
 $routes->group('review', ['namespace' => 'App\Controllers'], function ($routes) {

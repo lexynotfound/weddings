@@ -5,6 +5,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no" />
     <meta name="description" content="" />
+    <meta name="csrf-token" content="<?= csrf_hash() ?>">
     <meta name="author" content="" />
     <title><?= $product['nama_produk']; ?></title>
     <!-- Favicon-->
@@ -427,24 +428,16 @@
                         <div class=" p-4">
                             <h4 class="text-start mb-4 pb-2"></h4>
                             <div class="row">
-                                <div class="col">
-                                    <?php if (logged_in() && $payment) : ?>
+                                <?php if (logged_in()) : ?>
+                                    <div class="col">
                                         <?php foreach ($reviews as $review) : ?>
                                             <div class="review-item">
                                                 <div class="d-flex flex-start">
-                                                    <?php
-                                                    if ($review['foto'] === 'default.png') {
-                                                        // Jika foto adalah foto default, tampilkan dari folder 'images'
-                                                    ?>
+                                                    <?php if ($review['foto'] === 'default.png') : ?>
                                                         <img class="rounded-circle shadow-1-strong me-3" src="<?= base_url() ?>/images/<?= $review['foto']; ?>" alt="avatar" width="65" height="65" />
-                                                    <?php
-                                                    } else {
-                                                        // Jika foto telah diubah, tampilkan dari folder 'uploads'
-                                                    ?>
+                                                    <?php else : ?>
                                                         <img class="rounded-circle shadow-1-strong me-3" src="<?= base_url('uploads/' . $review['foto']); ?>" alt="avatar" width="65" height="65" />
-                                                    <?php
-                                                    }
-                                                    ?>
+                                                    <?php endif; ?>
                                                     <div class="flex-grow-1 flex-shrink-1">
                                                         <div class="mb-3 mt-3">
                                                             <div class="d-flex justify-content-between align-items-center">
@@ -460,8 +453,9 @@
                                                             </p>
                                                         </div>
                                                         <div class="replies-container">
-                                                            <?php foreach ($replies as $reply) : ?>
-                                                                <div id="reviewsContainer" class="d-flex flex-start mt-4">
+                                                            <!-- Loop through replies using PHP -->
+                                                            <?php foreach ($review['replies'] as $reply) : ?>
+                                                                <div class="d-flex flex-start mt-3">
                                                                     <a class="me-3" href="#">
                                                                         <?php if ($reply['foto'] === 'default.png') : ?>
                                                                             <img class="rounded-circle shadow-1-strong me-3" src="<?= base_url() ?>/images/<?= $reply['foto']; ?>" alt="avatar" width="65" height="65" />
@@ -473,7 +467,8 @@
                                                                         <div>
                                                                             <div class="d-flex justify-content-between align-items-center">
                                                                                 <p class="mb-1">
-                                                                                    <?= $reply['nama']; ?> <span class="small">- <?= date('l, d F Y', strtotime($reply['created_at'])); ?></span>
+                                                                                    <!--  <?= $reply['nama']; ?> <span class="small">- <?= date('l, d F Y', strtotime($reply['created_at'])); ?></span> -->
+                                                                                    <?= $reply['nama']; ?> <span class="small time-ago" data-timestamp="<?= strtotime($reply['created_at']); ?>"></span>
                                                                                 </p>
                                                                             </div>
                                                                             <p class="small mb-1">
@@ -483,24 +478,20 @@
                                                                     </div>
                                                                 </div>
                                                             <?php endforeach; ?>
+                                                            <!-- Newly added replies through AJAX will be inserted here -->
+                                                            <div class="new-replies-container">
+
+                                                            </div>
                                                         </div>
                                                         <!-- Reply Form -->
-                                                        <form class="reply-form d-none" action="<?= base_url('home/save/' . $review['reviewsid']) ?>" method="post">
+                                                        <form class="reply-form d-none" action="<?= base_url('home/save/' . $review['reviewsid']) ?>" method="">
                                                             <?= csrf_field(); ?>
                                                             <div class="d-flex align-items-center mt-3 ms-2">
-                                                                <?php
-                                                                if (user()->foto === 'default.png') {
-                                                                    // Jika foto adalah foto default, tampilkan dari folder 'images'
-                                                                ?>
+                                                                <?php if (user()->foto === 'default.png') : ?>
                                                                     <img class="rounded-circle shadow-1-strong ms-4" src="<?= base_url() ?>/images/<?= user()->foto; ?>" alt="avatar" width="65" height="65" />
-                                                                <?php
-                                                                } else {
-                                                                    // Jika foto telah diubah, tampilkan dari folder 'uploads'
-                                                                ?>
+                                                                <?php else : ?>
                                                                     <img class="rounded-circle shadow-1-strong ms-4" src="<?= base_url('uploads/' . user()->foto); ?>" alt="avatar" width="65" height="65" />
-                                                                <?php
-                                                                }
-                                                                ?>
+                                                                <?php endif; ?>
                                                                 <input type="hidden" name="review_id" value="<?= $review['reviewsid'] ?>">
                                                                 <input type="text" class="form-control" name="reply" placeholder="Reply to @<?= $review['nama'] ?>" />
                                                                 <button type="submit" class="btn btn-primary btn-sm ms-3">Submit</button>
@@ -514,37 +505,30 @@
                                         <?php foreach ($reviews as $review) : ?>
                                             <div class="review-item">
                                                 <div class="d-flex flex-start">
-                                                    <?php
-                                                    if ($review['foto'] === 'default.png') {
-                                                        // Jika foto adalah foto default, tampilkan dari folder 'images'
-                                                    ?>
+                                                    <?php if ($review['foto'] === 'default.png') : ?>
                                                         <img class="rounded-circle shadow-1-strong me-3" src="<?= base_url() ?>/images/<?= $review['foto']; ?>" alt="avatar" width="65" height="65" />
-                                                    <?php
-                                                    } else {
-                                                        // Jika foto telah diubah, tampilkan dari folder 'uploads'
-                                                    ?>
+                                                    <?php else : ?>
                                                         <img class="rounded-circle shadow-1-strong me-3" src="<?= base_url('uploads/' . $review['foto']); ?>" alt="avatar" width="65" height="65" />
-                                                    <?php
-                                                    }
-                                                    ?>
+                                                    <?php endif; ?>
                                                     <div class="flex-grow-1 flex-shrink-1">
                                                         <div class="mb-3 mt-3">
                                                             <div class="d-flex justify-content-between align-items-center">
                                                                 <p class="mb-1">
-                                                                    <?= $review['nama'] ?> <span class="small">- <?= date('l, d F Y', strtotime($review['created_at'])); ?></span>
+                                                                    <!-- <?= $review['nama'] ?> <span class="small">- <?= date('l, d F Y', strtotime($review['created_at'])); ?></span> -->
+                                                                    <?= $reply['nama']; ?> <span class="small time-ago" data-timestamp="<?= strtotime($reply['created_at']); ?>"></span>
                                                                 </p>
                                                                 <a href="javascript:void(0);" class="reply-button" data-review-id="<?= $review['reviewsid'] ?>">
-                                                                    <i class="fas fa-solid fa-comments fa-lg"></i><span class="small"></span>
+                                                                    <!-- <i class="fas fa-solid fa-comments fa-lg"></i><span class="small"></span> -->
                                                                 </a>
                                                             </div>
                                                             <p class="small mb-0">
                                                                 <?= $review['review'] ?>
                                                             </p>
                                                         </div>
-
                                                         <div class="replies-container">
-                                                            <?php foreach ($replies as $reply) : ?>
-                                                                <div id="reviewsContainer" class="d-flex flex-start mt-4">
+                                                            <!-- Loop through replies using PHP -->
+                                                            <?php foreach ($review['replies'] as $reply) : ?>
+                                                                <div class="d-flex flex-start mt-3">
                                                                     <a class="me-3" href="#">
                                                                         <?php if ($reply['foto'] === 'default.png') : ?>
                                                                             <img class="rounded-circle shadow-1-strong me-3" src="<?= base_url() ?>/images/<?= $reply['foto']; ?>" alt="avatar" width="65" height="65" />
@@ -556,7 +540,8 @@
                                                                         <div>
                                                                             <div class="d-flex justify-content-between align-items-center">
                                                                                 <p class="mb-1">
-                                                                                    <?= $reply['nama']; ?> <span class="small">- <?= date('l, d F Y', strtotime($reply['created_at'])); ?></span>
+                                                                                    <!-- <?= $reply['nama']; ?> <span class="small">- <?= date('l, d F Y', strtotime($reply['created_at'])); ?></span> -->
+                                                                                    <?= $reply['nama']; ?> <span class="small time-ago" data-timestamp="<?= strtotime($reply['created_at']); ?>"></span>
                                                                                 </p>
                                                                             </div>
                                                                             <p class="small mb-1">
@@ -566,13 +551,18 @@
                                                                     </div>
                                                                 </div>
                                                             <?php endforeach; ?>
+                                                            <!-- Newly added replies through AJAX will be inserted here -->
+                                                            <div class="new-replies-container">
+
+                                                            </div>
                                                         </div>
+                                                        <!-- Reply Form -->
                                                     </div>
                                                 </div>
                                             </div>
                                         <?php endforeach; ?>
-                                    <?php endif; ?>
-                                </div>
+                                    </div>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>
@@ -580,6 +570,7 @@
             </div>
         </div>
     </section>
+
 
     <!-- End Reviews -->
 
@@ -693,6 +684,9 @@
             </div> -->
         </footer>
     </div>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
     <!-- End of Footer -->
 
     <!-- Bootstrap core JavaScript-->
@@ -741,6 +735,39 @@
             });
         });
     </script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const timeAgoElements = document.querySelectorAll(".time-ago");
+
+            timeAgoElements.forEach(timeAgoElement => {
+                const timestamp = parseInt(timeAgoElement.getAttribute("data-timestamp")) * 1000;
+                const formattedTime = formatTimeAgo(timestamp);
+
+                timeAgoElement.textContent = formattedTime;
+            });
+
+            function formatTimeAgo(timestamp) {
+                const currentTime = new Date();
+                const timeDifference = currentTime - timestamp;
+                const seconds = Math.floor(timeDifference / 1000);
+
+                if (seconds < 60) {
+                    return `${seconds} seconds ago`;
+                } else if (seconds < 3600) {
+                    const minutes = Math.floor(seconds / 60);
+                    return `${minutes} minutes ago`;
+                } else if (seconds < 86400) {
+                    const hours = Math.floor(seconds / 3600);
+                    return `${hours} hours ago`;
+                } else {
+                    const days = Math.floor(seconds / 86400);
+                    return `${days} days ago`;
+                }
+            }
+        });
+    </script>
+
 
     <script>
         function toggleDescription() {
@@ -793,7 +820,7 @@
 
 
     <!-- Ajax halaman reply -->
-    <script>
+    <!-- <script>
         function createReviewElement(reviewData) {
             const reviewElement = document.createElement("div");
             reviewElement.classList.add("d-flex", "flex-start", "mt-4");
@@ -817,14 +844,15 @@
 
             return reviewElement;
         }
-    </script>
+    </script> -->
     <!-- End Of Ajax Halaman reply -->
-    
-    <script>
+
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <!-- <script>
         document.addEventListener("DOMContentLoaded", function() {
             const replyButtons = document.querySelectorAll(".reply-button");
 
-            // Function to close all reply forms
             function closeAllReplyForms() {
                 const replyForms = document.querySelectorAll(".reply-form");
                 replyForms.forEach(replyForm => {
@@ -834,81 +862,366 @@
 
             replyButtons.forEach(replyButton => {
                 replyButton.addEventListener("click", function() {
-                    const replyForm = replyButton.closest('.review-item').querySelector('.reply-form');
+                    closeAllReplyForms();
+
+                    const reviewItem = replyButton.closest('.review-item');
+                    const replyForm = reviewItem.querySelector('.reply-form');
                     replyForm.classList.toggle('d-none');
                 });
-            });
-
-            // Close reply forms when clicking outside
-            document.addEventListener("click", function(event) {
-                const clickedElement = event.target;
-
-                if (!clickedElement.closest(".review-item")) {
-                    closeAllReplyForms();
-                }
             });
 
             const replyForms = document.querySelectorAll(".reply-form");
 
             replyForms.forEach(replyForm => {
-                replyForm.addEventListener("submit", function(event) {
+                replyForm.addEventListener("submit", async function(event) {
                     event.preventDefault();
 
                     const formData = new FormData(replyForm);
                     const url = replyForm.getAttribute("action");
 
-                    fetch(url, {
+                    try {
+                        const response = await fetch(url, {
                             method: "POST",
                             body: formData
-                        })
-                        .then(response => response.json())
-                        .then(data => {
-                            console.log(data.message);
-
-                            if (data.success) {
-                                const reviewContainer = replyForm.closest('.review-item');
-                                const reviewsContainer = document.querySelector('.replies-container',
-                                    '.reviewsContainer');
-
-                                const replyContent = `
-                                <div id="reviewsContainer" class="d-flex flex-start mt-4">
-                                    <div class="d-flex flex-start mt-4">
-                                        <a class="me-3" href="#">
-                                            <img class="rounded-circle shadow-1-strong me-3" src="${data.reply.foto}" alt="avatar" width="65" height="65" />
-                                        </a>
-                                        <div class="flex-grow-1 flex-shrink-1">
-                                            <div>
-                                                <div class="d-flex justify-content-between align-items-center">
-                                                    <p class="mb-1">
-                                                        ${data.reply.nama} <span class="small">- ${data.reply.created_at}</span>
-                                                    </p>
-                                                </div>
-                                                    <p class="small mb-1">
-                                                    ${data.reply.reply}
-                                                    </p>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            `;
-
-                                const newReply = document.createElement('div');
-                                newReply.classList.add('review-item');
-                                newReply.innerHTML = replyContent;
-
-                                reviewsContainer.insertBefore(newReply, reviewContainer.nextSibling);
-
-                                replyForm.classList.add('d-none');
-                            }
-                        })
-                        .catch(error => {
-                            console.error(error);
                         });
+
+                        const data = await response.json();
+
+                        if (data.success) {
+                            const newReplyHTML = generateReplyHTML(data.reply);
+                            const newRepliesContainer = replyForm.closest('.review-item').querySelector('.new-replies-container');
+
+                            const newReplyElement = document.createElement('div');
+                            newReplyElement.classList.add('d-flex', 'flex-start', 'mt-4');
+                            newReplyElement.innerHTML = newReplyHTML;
+
+                            newRepliesContainer.appendChild(newReplyElement);
+
+                            replyForm.reset();
+                            replyForm.classList.add('d-none');
+                        } else {
+                            console.log("Reply submission failed:", data.message);
+                        }
+                    } catch (error) {
+                        console.error("Error:", error);
+                    }
+                });
+            });
+
+            function generateReplyHTML(reply) {
+                return `
+                <div class="d-flex flex-start mt-4">
+                    <a class="me-3" href="#">
+                        <img class="rounded-circle shadow-1-strong me-3" src="${reply.foto}" alt="avatar" width="65" height="65" />
+                    </a>
+                    <div class="flex-grow-1 flex-shrink-1">
+                        <div>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <p class="mb-1">
+                                    ${reply.nama} <span class="small">- ${reply.created_at}</span>
+                                </p>
+                            </div>
+                            <p class="small mb-1">
+                                ${reply.reply}
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            `;
+            }
+        });
+    </script> -->
+
+
+    <!--  <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const replyButtons = document.querySelectorAll(".reply-button");
+
+            function closeAllReplyForms() {
+                const replyForms = document.querySelectorAll(".reply-form");
+                replyForms.forEach(replyForm => {
+                    replyForm.classList.add('d-none');
+                });
+            }
+
+            replyButtons.forEach(replyButton => {
+                replyButton.addEventListener("click", function() {
+                    closeAllReplyForms();
+
+                    const reviewItem = replyButton.closest('.review-item');
+                    const replyForm = reviewItem.querySelector('.reply-form');
+                    replyForm.classList.toggle('d-none');
+                });
+            });
+
+            const replyForms = document.querySelectorAll(".reply-form");
+
+            replyForms.forEach(replyForm => {
+                replyForm.addEventListener("submit", async function(event) {
+                    event.preventDefault();
+
+                    const formData = new FormData(replyForm);
+                    const url = replyForm.getAttribute("action");
+
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                    try {
+                        const response = await fetch(url, {
+                            method: "POST",
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': csrfToken,
+                            },
+                        });
+
+                        const data = await response.json();
+
+                        if (data.success) {
+                            const newReplyHTML = generateReplyHTML(data.reply);
+                            const newRepliesContainer = replyForm.closest('.review-item').querySelector('.new-replies-container');
+
+                            const newReplyElement = document.createElement('div');
+                            newReplyElement.classList.add('d-flex', 'flex-start', 'mt-4');
+                            newReplyElement.innerHTML = newReplyHTML;
+
+                            newRepliesContainer.appendChild(newReplyElement);
+
+                            replyForm.reset();
+                            replyForm.classList.add('d-none');
+                        } else {
+                            console.log("Reply submission failed:", data.message);
+                        }
+                    } catch (error) {
+                        console.error("Error:", error);
+                    }
+                });
+            });
+
+            function generateReplyHTML(reply) {
+                return `
+    <div class="d-flex flex-start mt-4">
+        <a class="me-3" href="#">
+            <img class="rounded-circle shadow-1-strong me-3" src="${reply.foto}" alt="avatar" width="65" height="65" />
+        </a>
+        <div class="flex-grow-1 flex-shrink-1">
+            <div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <p class="mb-1">
+                        ${reply.nama} <span class="small">- ${reply.created_at}</span>
+                    </p>
+                </div>
+                <p class="small mb-1">
+                    ${reply.reply}
+                </p>
+            </div>
+        </div>
+    </div>
+    `;
+            }
+        });
+    </script> -->
+
+    <script>
+        /*  document.addEventListener("DOMContentLoaded", function() {
+            const replyButtons = document.querySelectorAll(".reply-button");
+
+            function closeAllReplyForms() {
+                const replyForms = document.querySelectorAll(".reply-form");
+                replyForms.forEach(replyForm => {
+                    replyForm.classList.add('d-none');
+                });
+            }
+
+            replyButtons.forEach(replyButton => {
+                replyButton.addEventListener("click", function() {
+                    closeAllReplyForms();
+
+                    const reviewItem = replyButton.closest('.review-item');
+                    const replyForm = reviewItem.querySelector('.reply-form');
+                    replyForm.classList.toggle('d-none');
+                });
+            });
+
+            const replyForms = document.querySelectorAll(".reply-form");
+
+            replyForms.forEach(replyForm => {
+                replyForm.addEventListener("submit", async function(event) {
+                    event.preventDefault();
+
+                    const formData = new FormData(replyForm);
+                    const url = replyForm.getAttribute("action");
+
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                    try {
+                        const response = await fetch(url, {
+                            method: "POST",
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': csrfToken,
+                            },
+                        });
+
+                        const data = await response.json();
+
+                        if (data.success) {
+                            const newReplyHTML = generateReplyHTML(data.reply);
+                            const newRepliesContainer = replyForm.closest('.review-item').querySelector('.new-replies-container');
+
+                            const newReplyElement = document.createElement('div');
+                            newReplyElement.classList.add('d-flex', 'flex-start', 'mt-4');
+                            newReplyElement.innerHTML = newReplyHTML;
+
+                            newRepliesContainer.appendChild(newReplyElement);
+
+                            replyForm.reset();
+                            replyForm.classList.add('d-none');
+                        } else {
+                            console.log("Reply submission failed:", data.message);
+                        }
+                    } catch (error) {
+                        console.error("Error:", error);
+                    }
+                });
+            });
+
+            function generateReplyHTML(reply) {
+                return `
+    <div class="d-flex flex-start mt-3">
+        <a class="me-3" href="#">
+            <img class="rounded-circle shadow-1-strong me-3" src="${reply.foto}" alt="avatar" width="65" height="65" />
+        </a>
+        <div class="flex-grow-1 flex-shrink-1">
+            <div>
+                <div class="d-flex justify-content-between align-items-center">
+                    <p class="mb-1">
+                        ${reply.nama} <span class="small">- ${reply.created_at}</span>
+                    </p>
+                </div>
+                <p class="small mb-1">
+                    ${reply.reply}
+                </p>
+            </div>
+        </div>
+    </div>
+    `;
+            }
+        }); */
+
+        document.addEventListener("DOMContentLoaded", function() {
+            const replyButtons = document.querySelectorAll(".reply-button");
+
+            function closeAllReplyForms() {
+                const replyForms = document.querySelectorAll(".reply-form");
+                replyForms.forEach(replyForm => {
+                    replyForm.classList.add('d-none');
+                });
+            }
+
+            replyButtons.forEach(replyButton => {
+                replyButton.addEventListener("click", function() {
+                    closeAllReplyForms();
+
+                    const reviewItem = replyButton.closest('.review-item');
+                    const replyForm = reviewItem.querySelector('.reply-form');
+                    replyForm.classList.toggle('d-none');
+                });
+            });
+
+            function formatTimeAgo(timestamp) {
+                const now = new Date();
+                const timeDiff = now - new Date(timestamp);
+
+                const seconds = Math.floor(timeDiff / 1000);
+                if (seconds < 60) {
+                    return `${seconds}s ago`;
+                }
+
+                const minutes = Math.floor(seconds / 60);
+                if (minutes < 60) {
+                    return `${minutes}m ago`;
+                }
+
+                const hours = Math.floor(minutes / 60);
+                if (hours < 24) {
+                    return `${hours}h ago`;
+                }
+
+                const days = Math.floor(hours / 24);
+                return `${days}d ago`;
+            }
+
+            function generateReplyHTML(reply) {
+                const formattedTime = formatTimeAgo(reply.created_at);
+
+                return `
+        <div class="d-flex flex-start mt-3">
+            <a class="me-3" href="#">
+                <img class="rounded-circle shadow-1-strong me-3" src="${reply.foto}" alt="avatar" width="65" height="65" />
+            </a>
+            <div class="flex-grow-1 flex-shrink-1">
+                <div>
+                    <div class="d-flex justify-content-between align-items-center">
+                        <p class="mb-1">
+                            ${reply.nama} <span class="small">- ${formattedTime}</span>
+                        </p>
+                    </div>
+                    <p class="small mb-1">
+                        ${reply.reply}
+                    </p>
+                </div>
+            </div>
+        </div>
+        `;
+            }
+
+            const replyForms = document.querySelectorAll(".reply-form");
+
+            replyForms.forEach(replyForm => {
+                replyForm.addEventListener("submit", async function(event) {
+                    event.preventDefault();
+
+                    const formData = new FormData(replyForm);
+                    const url = replyForm.getAttribute("action");
+
+                    const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+                    try {
+                        const response = await fetch(url, {
+                            method: "POST",
+                            body: formData,
+                            headers: {
+                                'X-Requested-With': 'XMLHttpRequest',
+                                'X-CSRF-TOKEN': csrfToken,
+                            },
+                        });
+
+                        const data = await response.json();
+
+                        if (data.success) {
+                            const newReplyHTML = generateReplyHTML(data.reply);
+                            const newRepliesContainer = replyForm.closest('.review-item').querySelector('.new-replies-container');
+
+                            const newReplyElement = document.createElement('div');
+                            newReplyElement.classList.add('d-flex', 'flex-start', 'mt-4');
+                            newReplyElement.innerHTML = newReplyHTML;
+
+                            newRepliesContainer.appendChild(newReplyElement);
+
+                            replyForm.reset();
+                            replyForm.classList.add('d-none');
+                        } else {
+                            console.log("Reply submission failed:", data.message);
+                        }
+                    } catch (error) {
+                        console.error("Error:", error);
+                    }
                 });
             });
         });
     </script>
-
 
 
 </body>

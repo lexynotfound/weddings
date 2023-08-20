@@ -149,17 +149,24 @@ function truncateText($text, $length)
                         <ul class="navbar-nav ms-auto">
                             <div class="topbar-divider d-none d-sm-block"></div>
 
+                            <a class="nav-link" href="https://wa.me/+621295304698" id="chatDropdown" target="_blank"  aria-haspopup="true" aria-expanded="false">
+                                <img src="<?= base_url(); ?>/images/WhatsApp.png" style="width: 40px; height: 40px;" alt="">
+                                <!-- <i class=" fas fa-brands fa-square-whatsapp"></i>
+                                Notification Badge (optional)
+                                <span class="badge bg-danger">5</span> -->
+                            </a>
+
                             <!-- Bell Notification Dropdown -->
 
                             <!-- Chat Notification Dropdown -->
-                            <li class="nav-item dropdown no-arrow me-1">
-                                <a class="nav-link dropdown-toggle" href="https://wa.me/+621295304698" id="chatDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                            <!--  <li class="nav-item dropdown no-arrow me-1">
+                                <a class="nav-link" href="https://wa.me/+621295304698" id="chatDropdown" target="_blank" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                     <img src="<?= base_url(); ?>/images/WhatsApp.png" style="width: 40px; height: 40px;" alt="">
-                                    <!-- <i class=" fas fa-brands fa-square-whatsapp"></i> -->
-                                    <!-- Notification Badge (optional) -->
-                                    <!-- <span class="badge bg-danger">5</span> -->
+                                    <i class=" fas fa-brands fa-square-whatsapp"></i>
+                                    Notification Badge (optional)
+                                    <span class="badge bg-danger">5</span>
                                 </a>
-                            </li>
+                            </li> -->
 
                             <!-- Nav Item - User Information -->
                             <li class="nav-item dropdown no-arrow">

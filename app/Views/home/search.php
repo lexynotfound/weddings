@@ -161,6 +161,7 @@ function truncateText($text, $length)
         <div class="row">
             <div class="col-12 col-md-3">
                 <div class="card shadow">
+                    <h3 class="h5 card-title ms-2 mt-2">Filters</h3>
                     <!-- ... (Categories and Product type filters) ... -->
                     <div class="card-body">
                         <h3 class="h5 card-title">Categories</h3>
@@ -490,7 +491,8 @@ function truncateText($text, $length)
             const searchUrl = '<?= base_url('home/search') ?>';
             const newUrl = new URL(searchUrl);
 
-            newUrl.searchParams.set("q","min_price", minPrice);
+            newUrl.searchParams.set("q", "min_price");
+            newUrl.searchParams.set("min_price", minPrice);
             newUrl.searchParams.set("max_price", maxPrice);
 
             if (selectedCategories.length > 0) {
@@ -501,28 +503,13 @@ function truncateText($text, $length)
         });
     </script>
 
-    <script>
-        const categoryCheckboxes = document.querySelectorAll('.form-check-input');
-        const selectedCategories = [];
-
-        categoryCheckboxes.forEach(checkbox => {
-            if (checkbox.checked) {
-                selectedCategories.push(checkbox.value);
-            }
-        });
-
-        if (selectedCategories.length > 0) {
-            newUrl.searchParams.set("categories", selectedCategories.join(','));
-        }
-    </script>
-
-    <script>
+    <!-- <script>
         // Fungsi untuk mengirim permintaan AJAX dan memperbarui hasil pencarian
         function updateSearchResults() {
             const formData = new FormData(document.getElementById('filterForm'));
 
             fetch('<?= base_url('home/search') ?>', {
-                    method: 'GET',
+                    method: 'POST',
                     body: formData
                 })
                 .then(response => response.text())
@@ -542,7 +529,109 @@ function truncateText($text, $length)
 
         // Panggil fungsi pertama kali saat halaman dimuat
         updateSearchResults();
+    </script> -->
+    <!-- Letakkan script ini di bagian bawah halaman Anda -->
+    <script>
+        // Fungsi untuk mengirim permintaan AJAX dan memperbarui hasil pencarian
+        function updateSearchResults(page = 1) {
+            const formData = new FormData(document.getElementById('filterForm'));
+            formData.append('page', page); // Menambahkan nomor halaman ke FormData
+
+            fetch('<?= base_url('home/search') ?>', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(data => {
+                    const searchResultsDiv = document.getElementById('searchResults');
+                    searchResultsDiv.innerHTML = '';
+
+                    if (data.filteredProducts.length === 0) {
+                        // Insert the "No Results" HTML here
+                        const noResultsHTML = `
+            <div class="container mt-5">
+                <div class="row justify-content-center">
+                    <div class="col-md-6">
+                        <div class="text-center">
+                            <img src="<?= base_url() ?>/images/notfounds.jpg" alt="No Results" width="400" height="400" class="d-inline-block align-text-top img-fluid">
+                            <h2 class="mt-4">Tidak Ada Paket atau Hasil Pencarian Tidak Ditemukan</h2>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        `;
+                        searchResultsDiv.innerHTML = noResultsHTML;
+                    } else {
+                        // Loop through the currentPageProducts and create HTML for products
+                        data.currentPageProducts.forEach(product => {
+                            // Create HTML for each product
+                            const productHTML = `
+                        <div class="col-12 col-md-6 col-lg-4 mb-2">
+                            <div class="card shadow mb-4">
+                                <a href="${product.productLink}" class="nav-link">
+                                    <img src="${product.imageURL}" alt="${product.imageAlt}" class="custom-card-img rounded-2">
+                                    <div class="card-footer border-top border-gray-300 p-4">
+                                        <h5 class="h5">${product.productName}</h5>
+                                        <h3 class="h6 fw-light text-gray mt-2">${product.truncatedDescription}</h3>
+                                        <div class="d-flex mt-3">
+                                            ${product.starIcons}
+                                            <span class="badge bg-primary ms-2">${product.rating}.0</span>
+                                            <span class="badge bg-primary ms-2">${product.totalReviews} people</span>
+                                        </div>
+                                        <div class="d-flex justify-content-between align-items-center mt-3">
+                                            <span class="h6 mb-0 text-gray">Rp.${product.formattedPrice}</span>
+                                            <a class="btn btn-xs btn-tertiary" href="#">
+                                                ${product.profileLink}
+                                            </a>
+                                        </div>
+                                    </div>
+                                </a>
+                            </div>
+                        </div>
+                    `;
+                            searchResultsDiv.innerHTML += productHTML;
+                        });
+
+                        // Pagination HTML
+                        const paginationDiv = document.createElement('div');
+                        paginationDiv.className = 'd-flex justify-content-end mt-4';
+                        paginationDiv.innerHTML = `
+                    <nav aria-label="Product Pagination">
+                        <ul class="pagination pagination-sm">
+                            ${data.currentPage > 1 ? '<li class="page-item"><a class="page-link" href="#" onclick="updateSearchResults(' + (data.currentPage - 1) + ')">Previous</a></li>' : ''}
+                            ${Array.from({ length: data.totalPages }, (_, index) => ` <
+                            li class = "page-item ${index + 1 === data.currentPage ? 'active' : ''}" >
+                            <
+                            a class = "page-link"
+                        href = "#"
+                        onclick = "updateSearchResults(${index + 1})" > $ {
+                            index + 1
+                        } < /a> < /
+                        li > `).join('')}
+                        $ {
+                            data.currentPage < data.totalPages ? '<li class="page-item"><a class="page-link" href="#" onclick="updateSearchResults(' + (data.currentPage + 1) + ')">Next</a></li>' : ''
+                        } <
+                        /ul> <
+                        /nav>`;
+                        searchResultsDiv.appendChild(paginationDiv);
+                    }
+                })
+                .catch(error => console.error('Error:', error));
+        }
+
+        // Menangani perubahan pada checkbox
+        const checkboxes = document.querySelectorAll('.form-check-input');
+        checkboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', () => {
+                updateSearchResults();
+            });
+        });
+
+        // Panggil fungsi pertama kali saat halaman dimuat
+        updateSearchResults();
     </script>
+
+
 
 
 </body>
