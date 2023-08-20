@@ -139,16 +139,16 @@
         </div>
     </header>
 
-    <div class="container mt-5">
-        <div class="row justify-content-center">
-            <div class="col-md-6">
-                <div class="text-center">
-                    <img src="<?= base_url() ?>/images/notfounds.jpg" alt="No Results" width="400" height="400" class="d-inline-block align-text-top img-fluid">
-                    <h2 class="mt-4">Tidak Ada Paket atau Hasil Pencarian Tidak Ditemukan</h2>
+        <div class="container mt-5">
+            <div class="row justify-content-center">
+                <div class="col-md-6">
+                    <div class="text-center">
+                        <img src="<?= base_url() ?>/images/notfounds.jpg" alt="No Results" width="400" height="400" class="d-inline-block align-text-top img-fluid">
+                        <h2 class="mt-4">Tidak Ada Paket atau Hasil Pencarian Tidak Ditemukan</h2>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
     <!-- Footer -->
     <div class="container">
