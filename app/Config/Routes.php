@@ -114,6 +114,7 @@ $routes->group('user', ['namespace' => 'App\Controllers'], function ($routes) {
 
 $routes->group('about', ['namespace' => 'App\Controllers'], function ($routes) {
     $routes->get('/', 'About::index');
+    $routes->get('our-story/', 'About::ourstory');
     $routes->post('save_review/(:num)', 'Reviews::save_review/$1');
 });
 

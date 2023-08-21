@@ -121,6 +121,55 @@ class About extends BaseController
         return view('about/index', $data);
     }
 
+    public function ourstory()
+    {
+        $data = [
+            'title' => 'Cerita Kami',
+        ];
+
+        // Perform the LEFT JOIN with product and kategori tables
+        $this->builder = $this->db->table('product');
+        $this->builder->select('product.id as produkid, product.nama_produk, product.description, product.user_id, product.kategori_id, product.harga_produk, product.photos_filenames, product.created_at, product.updated_at, product.deleted_at, users.username, users.email, users.nama, users.foto, users.jenis_kelamin, users.telepon, users.lokasi');
+        /* $this->builder->join('kategori', 'kategori.produk_id = product.id', 'left'); */ // Use 'left' for LEFT JOIN
+        $this->builder->join('users', 'users.id = product.user_id', 'left'); // Use 'left' for LEFT JOIN
+
+        // Add condition to check if the data is not soft deleted
+        $this->builder->where('product.deleted_at IS NULL');
+
+        // Get the product data with category information and user information
+        $products = $this->builder->get()->getResultArray();
+
+        // Calculate the average rating and total reviews for each product
+        foreach ($products as &$product) {
+            $product['averageRating'] = 0;
+            $product['totalReviews'] = 0;
+
+            $reviews = $this->getReview($product['produkid']);
+
+            $totalRating = 0;
+            $totalReviews = 0;
+
+            foreach ($reviews as $review) {
+                if (isset($review['rating_count'])) {
+                    $totalRating += $review['rating'] * $review['rating_count'];
+                    $totalReviews += $review['rating_count'];
+                }
+            }
+
+            if ($totalReviews > 0) {
+                $averageRating = $totalRating / $totalReviews;
+                $product['averageRating'] = number_format($averageRating, 1);
+                $product['totalReviews'] = $totalReviews;
+            }
+        }
+
+        // Pass the product data to the view
+        $data['produk'] = $products;
+
+
+        return view('about/our-story', $data);
+    }
+
     protected function getReview($id)
     {
         $user_id = user_id(); // Get the current logged-in user's ID

@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>PhotoFolio Bootstrap Template - Index</title>
+    <title><?= $title; ?></title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -43,17 +43,17 @@
     <header id="header" class="header d-flex align-items-center fixed-top">
         <div class="container-fluid d-flex align-items-center justify-content-between">
 
-            <a href="index.html" class="logo d-flex align-items-center  me-auto me-lg-0">
+            <a href="<?= base_url('home/about') ?>" class="logo d-flex align-items-center  me-auto me-lg-0">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
                 <!-- <img src="assets/img/logo.png" alt=""> -->
-                <img src="<?= base_url() ?>" class="img-fluid">
-                <h1>PhotoFolio</h1>
+                <img src="<?= base_url() ?>/images/logo.jpg" class="img-fluid">
+                <h1>Tenda Hj Yus</h1>
             </a>
 
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a href="index.html" class="active">Home</a></li>
-                    <li><a href="about.html">About</a></li>
+                    <li><a href="<?= base_url('home/about') ?>" class="active">Home</a></li>
+                    <li><a href="<?= base_url('home/our-story') ?>">About</a></li>
                     <li class="dropdown"><a href="#"><span>Gallery</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
                         <ul>
                             <li><a href="gallery.html">Nature</a></li>
@@ -93,9 +93,9 @@
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-6 text-center">
-                    <h2>I'm <span>Jenny Wilson</span> a Professional Photographer from New York City</h2>
-                    <p>Blanditiis praesentium aliquam illum tempore incidunt debitis dolorem magni est deserunt sed qui libero. Qui voluptas amet.</p>
-                    <a href="contact.html" class="btn-get-started">Available for hire</a>
+                    <h2>Tak ada yang lebih indah daripada mengabadikan momen ajaib dalam perjalanan cinta <span> Kami tenda hj yus</span> hadir untuk menjadi mitra setia Anda dalam menyusun cerita tak terlupakan sebagai Wedding Organizer.</h2>
+                    <p>"Dengan penuh dedikasi dan pengalaman, kami akan merancang setiap detail dengan hati-hati, menghadirkan pernikahan impian Anda menjadi kenyataan yang megah. Seperti seorang seniman, perencanaan kami adalah sapuan kuas yang sempurna, menggambarkan kebahagiaan dan cinta dalam palet warna yang penuh emosi. Bersama, mari kita tuliskan kisah cinta Anda dalam babak baru yang indah, di mana setiap langkah adalah tarian menuju masa depan yang cerah. Saya, Jenny Wilson, Wedding Organizer yang berkomitmen untuk mewujudkan pernikahan yang menginspirasi dan dikenang sepanjang zaman."</p>
+                    <!-- <a href="contact.html" class="btn-get-started">Available for hire</a> -->
                 </div>
             </div>
         </div>
@@ -128,7 +128,7 @@
     <footer id="footer" class="footer">
         <div class="container">
             <div class="copyright">
-                &copy; Copyright <strong><span>PhotoFolio</span></strong>. All Rights Reserved
+                &copy; Copyright <strong><span>Tenda Hj Yus</span></strong>. All Rights Reserved
             </div>
             <div class="credits">
                 <!-- All the links in the footer should remain intact. -->

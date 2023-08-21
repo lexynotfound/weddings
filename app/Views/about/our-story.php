@@ -44,17 +44,17 @@
     <header id="header" class="header d-flex align-items-center fixed-top">
         <div class="container-fluid d-flex align-items-center justify-content-between">
 
-            <a href="index.html" class="logo d-flex align-items-center  me-auto me-lg-0">
+            <a href="<?= base_url('home/about') ?>" class="logo d-flex align-items-center  me-auto me-lg-0">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
                 <!-- <img src="assets/img/logo.png" alt=""> -->
-                <i class="bi bi-camera"></i>
-                <h1>PhotoFolio</h1>
+                <img src="<?= base_url() ?>/images/logo.jpg" class="img-fluid">
+                <h1>Tenda Hj Yus</h1>
             </a>
 
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a href="index.html">Home</a></li>
-                    <li><a href="about.html" class="active">About</a></li>
+                    <li><a href="<?= base_url('home/about') ?>" class="active">Home</a></li>
+                    <li><a href="<?= base_url('home/our-story') ?>">About</a></li>
                     <li class="dropdown"><a href="#"><span>Gallery</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
                         <ul>
                             <li><a href="gallery.html">Nature</a></li>
