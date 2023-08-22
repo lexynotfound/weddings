@@ -43,7 +43,7 @@
     <header id="header" class="header d-flex align-items-center fixed-top">
         <div class="container-fluid d-flex align-items-center justify-content-between">
 
-            <a href="<?= base_url('about/about') ?>" class="logo d-flex align-items-center  me-auto me-lg-0">
+            <a href="<?= base_url('about') ?>" class="logo d-flex align-items-center  me-auto me-lg-0">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
                 <!-- <img src="assets/img/logo.png" alt=""> -->
                 <img src="<?= base_url() ?>/images/logo.jpg" class="img-fluid">

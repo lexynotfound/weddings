@@ -465,13 +465,11 @@ function truncateText($text, $length)
         priceRangeMinInput.addEventListener("input", function() {
             const amount = parseCurrency(priceRangeMinInput.value);
             rangeInput.value = amount;
-            priceRangeMinInput.value = formatCurrency(amount);
         });
 
         priceRangeMaxInput.addEventListener("input", function() {
             const amount = parseCurrency(priceRangeMaxInput.value);
             rangeInput.value = amount;
-            priceRangeMaxInput.value = formatCurrency(amount);
         });
 
         applyFilterBtn.addEventListener("click", function(e) {
@@ -480,28 +478,19 @@ function truncateText($text, $length)
             const minPrice = parseCurrency(priceRangeMinInput.value);
             const maxPrice = parseCurrency(priceRangeMaxInput.value);
 
-            // Mendapatkan nilai checkbox yang dipilih
-            const selectedCategories = [];
-            const checkboxes = document.querySelectorAll('.form-check-input:checked');
-            checkboxes.forEach(checkbox => {
-                selectedCategories.push(checkbox.value);
-            });
-
             // Ganti URL aksi pencarian dengan URL yang sesuai
             const searchUrl = '<?= base_url('home/search') ?>';
             const newUrl = new URL(searchUrl);
 
-            newUrl.searchParams.set("q", "min_price");
+            newUrl.searchParams.set("q", "p"); // Ganti "kata_kunci" dengan kata kunci yang sesuai
             newUrl.searchParams.set("min_price", minPrice);
             newUrl.searchParams.set("max_price", maxPrice);
-
-            if (selectedCategories.length > 0) {
-                newUrl.searchParams.set("category", selectedCategories.join(','));
-            }
 
             window.location.href = newUrl.toString();
         });
     </script>
+
+
 
     <!-- <script>
         // Fungsi untuk mengirim permintaan AJAX dan memperbarui hasil pencarian

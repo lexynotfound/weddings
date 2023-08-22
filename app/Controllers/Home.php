@@ -166,6 +166,10 @@ class Home extends BaseController
         if ($minPrice !== null && $maxPrice !== null) {
             $builder->where('product.harga_produk >=', (int) $minPrice);
             $builder->where('product.harga_produk <=', (int) $maxPrice);
+        } elseif ($minPrice !== null) {
+            $builder->where('product.harga_produk >=', (int) $minPrice);
+        } elseif ($maxPrice !== null) {
+            $builder->where('product.harga_produk <=', (int) $maxPrice);
         }
 
         // Periksa apakah parameter category ada di URL
