@@ -34,8 +34,9 @@
 --------------------------------------------------------------*/
 body {
   font-family: var(--font-default);
-  color: var(--color-default);
-  background-color: #000;
+  color: var(--color-secondary);
+  /* background-color: #000; */
+  background-color: #ffffff;
 }
 
 a {
@@ -72,7 +73,7 @@ h6 {
   margin: 0 0 5px 0;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(116, 113, 113, 0.6);
   font-family: var(--font-primary);
 }
 
@@ -91,7 +92,7 @@ h6 {
   font-size: 36px;
   font-weight: 700;
   font-family: var(--font-secondary);
-  color: #fff;
+  color: #000000;
 }
 
 /*--------------------------------------------------------------
@@ -106,7 +107,7 @@ h6 {
 .page-header h2 {
   font-size: 56px;
   font-weight: 500;
-  color: #fff;
+  color: #3f3f3f;
   font-family: var(--font-secondary);
 }
 
@@ -117,7 +118,7 @@ h6 {
 }
 
 .page-header p {
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(55, 53, 53, 0.8);
 }
 
 .page-header .cta-btn {
@@ -130,7 +131,7 @@ h6 {
   letter-spacing: 1px;
   text-transform: uppercase;
   transition: 0.3s;
-  color: #fff;
+  color: #504f4f;
   background: var(--color-primary);
 }
 
@@ -286,7 +287,8 @@ h6 {
   transition: all 0.5s;
   z-index: 997;
   padding: 30px 0;
-  background-color: #000;
+  /* background-color: #000; */
+  background-color: #ffffff;
 }
 
 .header .logo {
@@ -302,7 +304,7 @@ h6 {
   font-size: 32px;
   margin: 0;
   font-weight: 400;
-  color: #fff;
+  color: #5e5e5e;
   font-family: var(--font-secondary);
 }
 
@@ -327,7 +329,7 @@ h6 {
 }
 
 .header .header-social-links a {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(78, 78, 78, 0.5);
   padding-left: 15px;
   display: inline-block;
   line-height: 0px;
@@ -336,7 +338,7 @@ h6 {
 }
 
 .header .header-social-links a:hover {
-  color: #fff;
+  color: #636262;
 }
 
 @media (max-width: 575px) {
@@ -376,7 +378,7 @@ h6 {
     letter-spacing: 1px;
     font-size: 13px;
     font-weight: 400;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(103, 102, 102, 0.5);
     white-space: nowrap;
     transition: 0.3s;
   }
@@ -392,7 +394,7 @@ h6 {
   .navbar .active,
   .navbar .active:focus,
   .navbar li:hover>a {
-    color: #fff;
+    color: #b8b8b8;
   }
 
   .navbar .dropdown ul {
@@ -428,7 +430,7 @@ h6 {
   .navbar .dropdown ul a:hover,
   .navbar .dropdown ul .active:hover,
   .navbar .dropdown ul li:hover>a {
-    color: #fff;
+    color: #a7a7a7;
   }
 
   .navbar .dropdown:hover>ul {
@@ -489,7 +491,7 @@ h6 {
     inset: 0;
     padding: 50px 0 10px 0;
     margin: 0;
-    background: rgba(0, 0, 0, 0.9);
+    background: rgba(203, 202, 202, 0.9);
     overflow-y: auto;
     transition: 0.3s;
     z-index: 9998;
@@ -505,7 +507,7 @@ h6 {
     font-size: 13px;
     text-transform: uppercase;
     font-weight: 400;
-    color: rgba(255, 255, 255, 0.5);
+    color: rgba(0, 0, 0, 0.5);
     letter-spacing: 1px;
     white-space: nowrap;
     transition: 0.3s;
@@ -522,7 +524,7 @@ h6 {
   .navbar .active,
   .navbar .active:focus,
   .navbar li:hover>a {
-    color: #fff;
+    color: #303030;
   }
 
   .navbar .dropdown ul,
@@ -532,7 +534,7 @@ h6 {
     padding: 10px 0;
     margin: 10px 20px;
     transition: all 0.5s ease-in-out;
-    border: 1px solid black;
+    border: 1px solid rgb(120, 120, 120);
   }
 
   .navbar .dropdown>.dropdown-active,
@@ -541,7 +543,7 @@ h6 {
   }
 
   .mobile-nav-show {
-    color: #fff;
+    color: #aaaaaa;
     font-size: 28px;
     cursor: pointer;
     line-height: 0;
@@ -551,7 +553,7 @@ h6 {
   }
 
   .mobile-nav-hide {
-    color: #fff;
+    color: #777777;
     font-size: 32px;
     cursor: pointer;
     line-height: 0;
@@ -574,7 +576,7 @@ h6 {
     content: "";
     position: fixed;
     inset: 0;
-    background: rgba(22, 23, 24, 0.8);
+    background: rgba(0, 0, 0, 0.8);
     z-index: 9996;
   }
 }
@@ -649,12 +651,12 @@ h6 {
   font-size: 18px;
   font-weight: bold;
   margin: 10px 0 5px 0;
-  color: #fff;
+  color: #000000;
 }
 
 .testimonials .testimonial-item h4 {
   font-size: 14px;
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(0, 0, 0, 0.5);
   margin: 0;
 }
 
@@ -1176,7 +1178,8 @@ h6 {
 .hero {
   width: 100%;
   min-height: 30vh;
-  background: #000;
+  background: #ffffff;
+  /* background: #000; */
   background-size: cover;
   position: relative;
   padding: 140px 0 60px 0;
@@ -1186,7 +1189,7 @@ h6 {
   margin: 0 0 10px 0;
   font-size: 38px;
   font-weight: 700;
-  color: #fff;
+  color: #000000;
   font-family: var(--font-secondary);
 }
 
@@ -1209,7 +1212,7 @@ h6 {
 }
 
 .hero p {
-  color: rgba(255, 255, 255, 0.6);
+  color: rgba(53, 53, 53, 0.6);
   margin-bottom: 30px;
   font-size: 18px;
 }
@@ -1224,7 +1227,7 @@ h6 {
   letter-spacing: 1px;
   text-transform: uppercase;
   transition: 0.3s;
-  color: #fff;
+  color: #393939;
   background: var(--color-primary);
 }
 
@@ -1250,14 +1253,14 @@ h6 {
 
 .footer .copyright {
   text-align: center;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(172, 172, 172, 0.8);
 }
 
 .footer .credits {
   padding-top: 6px;
   text-align: center;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.8);
+  color: rgba(172, 172, 172, 0.8);
 }
 
 .footer .credits a {
