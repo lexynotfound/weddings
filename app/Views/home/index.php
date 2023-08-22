@@ -389,10 +389,8 @@ function truncateText($text, $length)
                     <h5>TENTANG KAMI</h5>
                     <ul class="nav flex-column">
                         <li class="nav-item mb-2"><a href="<?=base_url('about')?>" class="nav-link p-0 text-muted">About</a></li>
-                        <li class="nav-item mb-2"><a href="<?=base_url('')?>" class="nav-link p-0 text-muted">Contact</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
+                        <li class="nav-item mb-2"><a href="<?=base_url('about')?>" class="nav-link p-0 text-muted">Contact</a></li>
                         <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
-                        <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
                     </ul>
                 </div>
 

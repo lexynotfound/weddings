@@ -182,7 +182,7 @@
             <div class="col mb-3">
                 <!-- logo -->
                 <a href="/" class="d-flex align-items-center mb-3 link-dark text-decoration-none">
-                    <img class="bi me-2" width="200" src="<?= base_url(); ?>/images/.svg">
+                    <img class="bi me-2" width="200" src="<?= base_url(); ?>/images/logo.jpg">
 
                     </img>
                 </a>
@@ -197,19 +197,17 @@
             <div class="col mb-3">
                 <h5>Tenda Hj. Yus</h5>
                 <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Home</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Orders History</a></li>
+                    <li class="nav-item mb-2"><a href="<?= base_url('home') ?>" class="nav-link p-0 text-muted">Home</a></li>
+                    <li class="nav-item mb-2"><a href="<?= base_url('user/transaksi') ?>" class="nav-link p-0 text-muted">Orders History</a></li>
                 </ul>
             </div>
 
             <div class="col mb-3">
                 <h5>TENTANG KAMI</h5>
                 <ul class="nav flex-column">
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Contact</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">Pricing</a></li>
+                    <li class="nav-item mb-2"><a href="<?= base_url('about') ?>" class="nav-link p-0 text-muted">About</a></li>
+                    <li class="nav-item mb-2"><a href="<?= base_url('about') ?>" class="nav-link p-0 text-muted">Contact</a></li>
                     <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
-                    <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">About</a></li>
                 </ul>
             </div>
 
@@ -226,6 +224,10 @@
         </footer>
     </div>
     <!-- End of Footer -->
+
+    <a class="scroll-to-top rounded" href="#">
+        <i class="fas fa-angle-up"></i>
+    </a>
 
     <!-- Bootstrap core JS-->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
