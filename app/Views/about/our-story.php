@@ -10,8 +10,8 @@
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="<?= base_url() ?>/src/assets/img/favicon.png" rel="icon">
-    <link href="<?= base_url() ?>/src/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+   <!--  <link href="<?= base_url() ?>/src/assets/img/favicon.png" rel="icon">
+    <link href="<?= base_url() ?>/src/assets/img/apple-touch-icon.png" rel="apple-touch-icon"> -->
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -53,9 +53,9 @@
 
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a href="<?= base_url('home/about') ?>" class="active">Home</a></li>
-                    <li><a href="<?= base_url('home/our-story') ?>">About</a></li>
-                    <li class="dropdown"><a href="#"><span>Gallery</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                    <li><a href="<?= base_url('about') ?>" class="active">Home</a></li>
+                    <li><a href="<?= base_url('about/our-story') ?>">About</a></li>
+                   <!--  <li class="dropdown"><a href="#"><span>Gallery</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
                         <ul>
                             <li><a href="gallery.html">Nature</a></li>
                             <li><a href="gallery.html">People</a></li>
@@ -74,7 +74,7 @@
                     </li>
                     <li><a href="services.html">Services</a></li>
                     <li><a href="contact.html">Contact</a></li>
-                </ul>
+                </ul> -->
             </nav><!-- .navbar -->
 
             <div class="header-social-links">
@@ -97,9 +97,9 @@
                 <div class="row d-flex justify-content-center">
                     <div class="col-lg-6 text-center">
                         <h2>About</h2>
-                        <p>Odio et unde deleniti. Deserunt numquam exercitationem. Officiis quo odio sint voluptas consequatur ut a odio voluptatem. Sit dolorum debitis veritatis natus dolores. Quasi ratione sint. Sit quaerat ipsum dolorem.</p>
+                        <p>Tenda Hj. Yus merupakan bisnis yang didirikan pada tahun 2000 oleh Hj. Yus serta adiknya bernama Pak Nur yang berawal membangun usaha dengan melakukan penyewaan kursi serta tenda yang bersifat kecil untuk orang sekitar.</p>
 
-                        <a class="cta-btn" href="contact.html">Available for hire</a>
+                        <!-- <a class="cta-btn" href="contact.html">Available for hire</a> -->
 
                     </div>
                 </div>
@@ -117,8 +117,7 @@
                     <div class="col-lg-5 content">
                         <h2>Weddings Organizer</h2>
                         <p class="fst-italic py-3">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore
-                            magna aliqua.
+                            
                         </p>
                         <div class="row">
                             <div class="col-lg-6">
@@ -132,38 +131,36 @@
                             <div class="col-lg-6">
                                 <ul>
                                     <li><i class="bi bi-chevron-right"></i> <strong>Age:</strong> <span>30</span></li>
-                                    <li><i class="bi bi-chevron-right"></i> <strong>Degree:</strong> <span>Master</span></li>
+                                    <li><i class="bi bi-chevron-right"></i> <strong>Service:</strong> <span>Excellent </span></li>
                                     <li><i class="bi bi-chevron-right"></i> <strong>Email:</strong> <span>tendahjyus@tendahjyus.com</span></li>
-                                    <li><i class="bi bi-chevron-right"></i> <strong>Freelance:</strong> <span>Available</span></li>
+                                    <li><i class="bi bi-chevron-right"></i> <strong>Reservation:</strong> <span>Available</span></li>
                                 </ul>
                             </div>
                         </div>
                         <p class="py-3">
-                            Officiis eligendi itaque labore et dolorum mollitia officiis optio vero. Quisquam sunt adipisci omnis et ut. Nulla accusantium dolor incidunt officia tempore. Et eius omnis.
-                            Cupiditate ut dicta maxime officiis quidem quia. Sed et consectetur qui quia repellendus itaque neque. Aliquid amet quidem ut quaerat cupiditate. Ab et eum qui repellendus omnis culpa magni laudantium dolores.
+                            Namun Pak Nur membesarkan bisnis tersebut menjadi dikenal dikisaran Ciledug dan sekitarannya, lalu Hj Yus melanjutkan bisnis tersebut selama 7 tahun selang selama 7 tahun di jalani oleh anak nya bernama Ardi hingga saat ini.
                         </p>
                         <p class="m-0">
-                            Recusandae est praesentium consequatur eos voluptatem. Vitae dolores aliquam itaque odio nihil. Neque ut neque ut quae voluptas. Maxime corporis aut ut ipsum consequatur. Repudiandae sunt sequi minus qui et. Doloribus molestiae officiis.
-                            Soluta eligendi fugiat omnis enim. Numquam alias sint possimus eveniet ad. Ratione in earum eum magni totam.
+                            Usaha tenda Hj Yus menyediakan perlengkapan pernikahan seperti dekorasi, makeup, cathering dan perlengkapan lainnya untuk membantu calon pengantin.
                         </p>
                     </div>
                 </div>
 
             </div>
-        </section><!-- End About Section -->
+        </section>
+        <!-- End About Section -->
 
         <!-- ======= Testimonials Section ======= -->
-        <section id="testimonials" class="testimonials">
+        <!-- <section id="testimonials" class="testimonials">
             <div class="container">
 
                 <div class="section-header">
                     <h2>Testimonials</h2>
-                    <p>What they are saying</p>
+                    <p>Perjalanan Kami</p>
                 </div>
 
                 <div class="slides-3 swiper">
                     <div class="swiper-wrapper">
-
                         <div class="swiper-slide">
                             <div class="testimonial-item">
                                 <div class="stars">
@@ -178,9 +175,9 @@
                                     <h4>Ceo &amp; Founder</h4>
                                 </div>
                             </div>
-                        </div><!-- End testimonial item -->
-
-                        <div class="swiper-slide">
+                        </div> -->
+                        <!-- End testimonial item -->
+                       <!--  <div class="swiper-slide">
                             <div class="testimonial-item">
                                 <div class="stars">
                                     <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
@@ -194,9 +191,9 @@
                                     <h4>Designer</h4>
                                 </div>
                             </div>
-                        </div><!-- End testimonial item -->
-
-                        <div class="swiper-slide">
+                        </div> -->
+                        <!-- End testimonial item -->
+                        <!-- <div class="swiper-slide">
                             <div class="testimonial-item">
                                 <div class="stars">
                                     <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
@@ -210,9 +207,9 @@
                                     <h4>Store Owner</h4>
                                 </div>
                             </div>
-                        </div><!-- End testimonial item -->
-
-                        <div class="swiper-slide">
+                        </div> -->
+                        <!-- End testimonial item -->
+                       <!--  <div class="swiper-slide">
                             <div class="testimonial-item">
                                 <div class="stars">
                                     <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
@@ -226,9 +223,9 @@
                                     <h4>Freelancer</h4>
                                 </div>
                             </div>
-                        </div><!-- End testimonial item -->
-
-                        <div class="swiper-slide">
+                        </div> -->
+                        <!-- End testimonial item -->
+                        <!-- <div class="swiper-slide">
                             <div class="testimonial-item">
                                 <div class="stars">
                                     <i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i><i class="bi bi-star-fill"></i>
@@ -242,14 +239,13 @@
                                     <h4>Entrepreneur</h4>
                                 </div>
                             </div>
-                        </div><!-- End testimonial item -->
-
-                    </div>
+                        </div> -->
+                        <!-- End testimonial item -->
+                  <!--   </div>
                     <div class="swiper-pagination"></div>
                 </div>
-
-            </div>
-        </section><!-- End Testimonials Section -->
+            </div> -->
+       <!--  </section> --><!-- End Testimonials Section -->
 
     </main><!-- End #main -->
 

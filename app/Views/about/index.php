@@ -10,8 +10,8 @@
     <meta content="" name="keywords">
 
     <!-- Favicons -->
-    <link href="<?= base_url() ?>/src/assets/img/favicon.png" rel="icon">
-    <link href="<?= base_url() ?>/src/assets/img/apple-touch-icon.png" rel="apple-touch-icon">
+   <!--  <link href="<?= base_url() ?>/src/assets/img/favicon.png" rel="icon">
+    <link href="<?= base_url() ?>/src/assets/img/apple-touch-icon.png" rel="apple-touch-icon"> -->
 
     <!-- Google Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -43,7 +43,7 @@
     <header id="header" class="header d-flex align-items-center fixed-top">
         <div class="container-fluid d-flex align-items-center justify-content-between">
 
-            <a href="<?= base_url('home/about') ?>" class="logo d-flex align-items-center  me-auto me-lg-0">
+            <a href="<?= base_url('about/about') ?>" class="logo d-flex align-items-center  me-auto me-lg-0">
                 <!-- Uncomment the line below if you also wish to use an image logo -->
                 <!-- <img src="assets/img/logo.png" alt=""> -->
                 <img src="<?= base_url() ?>/images/logo.jpg" class="img-fluid">
@@ -52,9 +52,9 @@
 
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a href="<?= base_url('home/about') ?>" class="active">Home</a></li>
-                    <li><a href="<?= base_url('home/our-story') ?>">About</a></li>
-                    <li class="dropdown"><a href="#"><span>Gallery</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
+                    <li><a href="<?= base_url('about') ?>" class="active">Home</a></li>
+                    <li><a href="<?= base_url('about/our-story') ?>">About</a></li>
+                    <!-- <li class="dropdown"><a href="#"><span>Gallery</span> <i class="bi bi-chevron-down dropdown-indicator"></i></a>
                         <ul>
                             <li><a href="gallery.html">Nature</a></li>
                             <li><a href="gallery.html">People</a></li>
@@ -72,7 +72,7 @@
                         </ul>
                     </li>
                     <li><a href="services.html">Services</a></li>
-                    <li><a href="contact.html">Contact</a></li>
+                    <li><a href="contact.html">Contact</a></li> -->
                 </ul>
             </nav><!-- .navbar -->
 
