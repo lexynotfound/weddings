@@ -149,8 +149,8 @@
                             <li class="breadcrumb-item"><a href="<?= base_url('home') ?>">Home</a></li>
                             <li class="breadcrumb-item"><a href="<?= base_url('user/setting') ?>">User</a></li>
                             <li class="breadcrumb-item"><a href="<?= base_url('user/setting') ?>">Settings</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">User Profile</li>
-                            <li class="breadcrumb-item"><a href="<?= base_url('user/Reservation') ?>">Reservation</a></li>
+                            <li class="breadcrumb-item active"> <a href="<?= base_url('user/setting') ?>">User Profile</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><a href="<?= base_url('user/transaksi') ?>">Transaction</a></li>
                         </ol>
                     </nav>
                 </div>
@@ -204,31 +204,39 @@
                 </div>
                 <div class="col-lg-8">
                     <div class="card mb-4">
-                        <div class="card-body">
-                            <div class="row">
-                                <p class="mb-4"><span class="text-primary font-italic me-1">recent</span> Reservation
-                                    <?php foreach ($reservation as $reservation) : ?>
-                                <div class="card mt-4 mb-1" style="height: 200px;">
-                                    <div class="card-body d-flex">
-                                        <div class="icon-container me-3">
-                                            <i class="fas fa-calendar-days" style="font-size: 20px;"></i>
+                        <div class="col-md-16">
+                            <div class="card mb-4 mb-md-0 scrollable-card">
+                                <div class="card-body">
+                                    <p class="mb-4"><span class="text-primary font-italic me-1">recent & status</span> Transaction
+                                    </p>
+                                    <?php foreach ($payments as $payment) : ?>
+                                        <div class="card mt-4 mb-1" style="height: 200px;">
+                                            <div class="card-body d-flex">
+                                                <div class="icon-container me-3">
+                                                    <i class="fas fa-credit-card" style="font-size: 20px;"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="mb-1" style="font-size: .77rem;">Transaction ID</p>
+                                                    <p class="mb-0"><?= $payment['id_payment']; ?></p>
+                                                </div>
+                                                <div>
+                                                    <p class="mb-1" style="font-size: .77rem;"><?= $payment['payment_date']; ?></p>
+                                                </div>
+                                            </div>
+                                            <div class="card-body d-flex">
+                                                <img src="<?= base_url('uploads/' . $payment['photos_filenames']) ?>" alt="Image" class="me-3" style="width: 50px; height: 50px;">
+                                                <div>
+                                                    <p class="mb-1" style="font-size: .77rem;">Product Name:</p>
+                                                    <p class="mb-0"><?= $payment['nama_produk']; ?></p>
+                                                </div>
+                                                <div class="ms-auto">
+                                                    <p class="mb-1" style="font-size: .77rem;">Payment Status:</p>
+                                                    <p class="mb-0"><?= $payment['status']; ?></p>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p class="mb-1" style="font-size: .77rem;">Date</p>
-                                            <p class="mb-0"><?= date('l, d F Y', strtotime($reservation['tgl_acara'])); ?></p>
-                                        </div>
-                                    </div>
-                                    <div class="card-body d-flex">
-                                        <div class="icon-container me-3">
-                                            <i class="fas fa-solid fa-location-dot" style="font-size: 20px;"></i>
-                                        </div>
-                                        <div>
-                                            <p class="mb-1" style="font-size: .77rem;">Location</p>
-                                            <p class="mb-0"><?= $reservation['lokasi']; ?></p>
-                                        </div>
-                                    </div>
+                                    <?php endforeach; ?>
                                 </div>
-                            <?php endforeach; ?>
                             </div>
                         </div>
                     </div>

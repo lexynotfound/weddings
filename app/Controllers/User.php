@@ -147,7 +147,7 @@ class User extends BaseController
         $data['payments'] = $payments;
         $data['reservation'] = $reservation;
 
-        return view('user/setting', $data);
+        return view('user/reservation', $data);
     }
 
     public function transaksi()
@@ -190,7 +190,7 @@ class User extends BaseController
         $data['payments'] = $payments;
         $data['reservation'] = $reservation;
 
-        return view('user/setting', $data);
+        return view('user/transaksi', $data);
     }
 
     /* public function sendVerificationEmail($to, $token)

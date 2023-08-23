@@ -259,8 +259,20 @@
                 <div class="container-fluid bg-white">
 
                     <!-- Page Heading -->
-                    <div class="d-sm-flex align-items-center justify-content-between mb-4">
-                        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+                    <div class="container mt-2">
+                        <div class="row">
+                            <div class="col-md-4 col-sm-12">
+                                <select id="reportFormat" class="form-select form-select-sm mb-2" aria-label="Select Report Format">
+                                    <option value="csv">CSV</option>
+                                    <option value="pdf">PDF</option>
+                                </select>
+                            </div>
+                            <div class="col-md-4 col-sm-12">
+                                <button id="generateReportBtn" class="btn btn-sm btn-primary shadow-sm w-100">
+                                    <i class="fas fa-download fa-sm text-white-50"></i> Generate Report
+                                </button>
+                            </div>
+                        </div>
                     </div>
 
                     <!-- Content Row -->
@@ -423,7 +435,7 @@
 
             <!-- Include DataTables JavaScript -->
             <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
-
+            <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
             <script>
                 document.addEventListener('DOMContentLoaded', function() {
                     var calendarEl = document.getElementById('calendar');
@@ -454,6 +466,34 @@
                     ]
                 });
             </script>
+
+            <script>
+                const generateReportBtn = document.getElementById("generateReportBtn");
+                const reportFormatSelect = document.getElementById("reportFormat");
+
+                generateReportBtn.addEventListener("click", function() {
+                    const selectedFormat = reportFormatSelect.value;
+                    const downloadUrl = generateDownloadUrl(selectedFormat);
+
+                    if (downloadUrl) {
+                        window.location.href = downloadUrl;
+                    }
+                });
+
+                function generateDownloadUrl(format) {
+                    // Logic to generate the download URL based on the selected format
+                    if (format === "csv") {
+                        return "<?= site_url('payment/generateCsv') ?>";
+                    } else if (format === "pdf") {
+                        return "<?= site_url('payment/generatePdf') ?>";
+                    } else {
+                        return null;
+                    }
+                }
+            </script>
+
+            <!-- Font Awesome -->
+            <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
 </body>
 
 </html>

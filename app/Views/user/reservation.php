@@ -149,8 +149,8 @@
                             <li class="breadcrumb-item"><a href="<?= base_url('home') ?>">Home</a></li>
                             <li class="breadcrumb-item"><a href="<?= base_url('user/setting') ?>">User</a></li>
                             <li class="breadcrumb-item"><a href="<?= base_url('user/setting') ?>">Settings</a></li>
-                            <li class="breadcrumb-item active" aria-current="page">User Profile</li>
-                            <li class="breadcrumb-item"><a href="<?= base_url('user/Reservation') ?>">Reservation</a></li>
+                            <li class="breadcrumb-item active"> <a href="<?= base_url('user/setting') ?>">User Profile</a></li>
+                            <li class="breadcrumb-item active" aria-current="page"><a href="<?= base_url('user/Reservation') ?>">Reservation</a></li>
                         </ol>
                     </nav>
                 </div>
@@ -204,31 +204,34 @@
                 </div>
                 <div class="col-lg-8">
                     <div class="card mb-4">
-                        <div class="card-body">
-                            <div class="row">
-                                <p class="mb-4"><span class="text-primary font-italic me-1">recent</span> Reservation
+                        <div class="col-md-16">
+                            <div class="card mb-4 mb-md-0 scrollable-card">
+                                <div class="card-body">
+                                    <p class="mb-4"><span class="text-primary font-italic me-1">recent</span> Reservation
+                                    </p>
                                     <?php foreach ($reservation as $reservation) : ?>
-                                <div class="card mt-4 mb-1" style="height: 200px;">
-                                    <div class="card-body d-flex">
-                                        <div class="icon-container me-3">
-                                            <i class="fas fa-calendar-days" style="font-size: 20px;"></i>
+                                        <div class="card mt-4 mb-1" style="height: 200px;">
+                                            <div class="card-body d-flex">
+                                                <div class="icon-container me-3">
+                                                    <i class="fas fa-calendar-days" style="font-size: 20px;"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="mb-1" style="font-size: .77rem;">Date</p>
+                                                    <p class="mb-0"><?= date('l, d F Y', strtotime($reservation['tgl_acara'])); ?></p>
+                                                </div>
+                                            </div>
+                                            <div class="card-body d-flex">
+                                                <div class="icon-container me-3">
+                                                    <i class="fas fa-solid fa-location-dot" style="font-size: 20px;"></i>
+                                                </div>
+                                                <div>
+                                                    <p class="mb-1" style="font-size: .77rem;">Location</p>
+                                                    <p class="mb-0"><?= $reservation['lokasi']; ?></p>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div>
-                                            <p class="mb-1" style="font-size: .77rem;">Date</p>
-                                            <p class="mb-0"><?= date('l, d F Y', strtotime($reservation['tgl_acara'])); ?></p>
-                                        </div>
-                                    </div>
-                                    <div class="card-body d-flex">
-                                        <div class="icon-container me-3">
-                                            <i class="fas fa-solid fa-location-dot" style="font-size: 20px;"></i>
-                                        </div>
-                                        <div>
-                                            <p class="mb-1" style="font-size: .77rem;">Location</p>
-                                            <p class="mb-0"><?= $reservation['lokasi']; ?></p>
-                                        </div>
-                                    </div>
+                                    <?php endforeach; ?>
                                 </div>
-                            <?php endforeach; ?>
                             </div>
                         </div>
                     </div>

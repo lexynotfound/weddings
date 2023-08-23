@@ -12,6 +12,10 @@ use App\Models\MenuModel;
 use App\Models\TransaksiModel;
 use App\Models\PaymentModel;
 use Myth\Auth\Models\UserModel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 // Controller untuk mengelola customisasi produk
 class Payment extends BaseController
@@ -288,6 +292,84 @@ class Payment extends BaseController
 
         // Redirect to the reservation page or any other success page
         return redirect()->to('payment/invoice/' . $paymentData['id_payment'])->with('success', 'Your reservation has been created successfully.');
+    }
+
+    public function generatePdf()
+    {
+        // Query data dari database
+        $payment = $this->paymentModel->findAll();
+
+        // Buat objek DOMPDF baru
+        $dompdf = new Dompdf();
+
+        // Buat template HTML untuk PDF
+        $html = '<h1 style="text-align: center;">Data Laporan Product</h1>';
+        $html .= '<table style="width: 100%; border-collapse: collapse; margin: 0 auto;">';
+        $html .= '<thead>';
+        $html .= '<tr>';
+        $html .= '<th style="border: 1px solid #000; padding: 8px; border-top-left-radius: 8px;">No</th>';
+        $html .= '<th style="border: 1px solid #000; padding: 8px;">ID Transaction</th>';
+        $html .= '<th style="border: 1px solid #000; padding: 8px;">Nama Package</th>';
+        $html .= '<th style="border: 1px solid #000; padding: 8px;">Harga</th>';
+        $html .= '<th style="border: 1px solid #000; padding: 8px;">Lokasi</th>';
+        $html .= '<th style="border: 1px solid #000; padding: 8px;">Reservation Date</th>';
+        $html .= '<th style="border: 1px solid #000; padding: 8px;">Status</th>';
+        $html .= '<th style="border: 1px solid #000; padding: 8px; border-top-right-radius: 8px;">Payment Date</th>';
+        $html .= '</tr>';
+        $html .= '</thead>';
+        $html .= '<tbody>';
+
+        $no = 1;
+        foreach ($payment as $lp) {
+            $html .= '<tr>';
+            $html .= '<td style="border: 1px solid #000; padding: 8px;">' . $no . '</td>';
+            $html .= '<td style="border: 1px solid #000; padding: 8px;">' . $lp['id_payment'] . '</td>';
+            $buku = $this->productModel->find($lp['transaksi_id']);
+            if ($buku) {
+                $html .= '<td style="border: 1px solid #000; padding: 8px;">' . $buku['nama_produk'] . '</td>';
+            } else {
+                $html .= '<td style="border: 1px solid #000; padding: 8px;"></td>';
+            }
+            $html .= '<td style="border: 1px solid #000; padding: 8px;">' . $lp['total_payment'] . '</td>';
+            $rr = $this->reservationModel->find($lp['reservation_id']);
+            if ($rr) {
+                $html .= '<td style="border: 1px solid #000; padding: 8px;">' . $rr['lokasi'] . '</td>';
+                $html .= '<td style="border: 1px solid #000; padding: 8px;">' . $rr['tgl_acara'] . '</td>';
+            } else {
+                $html .= '<td style="border: 1px solid #000; padding: 8px;"></td>';
+                $html .= '<td style="border: 1px solid #000; padding: 8px;"></td>';
+            }
+            $html .= '<td style="border: 1px solid #000; padding: 8px;">' . $lp['status'] . '</td>';
+            $html .= '<td style="border: 1px solid #000; padding: 8px;">' . $lp['payment_date'] . '</td>';
+            // Ambil data buku berdasarkan buku_id
+            
+            $html .= '</tr>';
+            $no++;
+        }
+
+        $html .= '</tbody></table>';
+
+        // Load konten HTML ke DOMPDF
+        $dompdf->loadHtml($html);
+
+        // Set orientasi landscape
+        $dompdf->setPaper('A4', 'landscape');
+
+        // Aktifkan opsi isRemoteEnabled
+        $dompdf->set_option('isRemoteEnabled', true);
+
+        // Render konten HTML menjadi PDF
+        $dompdf->render();
+
+        // Simpan PDF ke file
+        $output = $dompdf->output();
+        file_put_contents('laporan_transaction.pdf', $output);
+
+        // Unduh file PDF
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="laporan_transaction.pdf"');
+        readfile('laporan_transaction.pdf');
+        exit();
     }
 
     /* Menampilkan data Payment per user id atau sesuai yang login*/

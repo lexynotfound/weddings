@@ -9,6 +9,10 @@ use App\Models\MenuModel;
 use App\Models\CategoriesModel;
 use Myth\Auth\Models\UserModel;
 use Myth\Auth\Models\GroupModel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
 class Product extends BaseController
 {
@@ -104,7 +108,112 @@ class Product extends BaseController
 
         return view('produk/detail', $data);
     }
+    // Add your getProductData function implementation here
+    // This function should retrieve product data based on the provided $id
 
+    public function generatePdf()
+    {
+        // Query data dari database
+        $product = $this->productModel->findAll();
+
+        // Buat objek DOMPDF baru
+        $dompdf = new Dompdf();
+
+        // Buat template HTML untuk PDF
+        $html = '<h1 style="text-align: center;">Data Laporan Product</h1>';
+        $html .= '<table style="width: 100%; border-collapse: collapse; margin: 0 auto;">';
+        $html .= '<thead>';
+        $html .= '<tr>';
+        $html .= '<th style="border: 1px solid #000; padding: 8px; border-top-left-radius: 8px;">No</th>';
+        $html .= '<th style="border: 1px solid #000; padding: 8px;">ID Product</th>';
+        $html .= '<th style="border: 1px solid #000; padding: 8px;">Nama Product</th>';
+        $html .= '<th style="border: 1px solid #000; padding: 8px;">Description</th>';
+        $html .= '<th style="border: 1px solid #000; padding: 8px; border-top-right-radius: 8px;">Harga</th>';
+        $html .= '</tr>';
+        $html .= '</thead>';
+        $html .= '<tbody>';
+
+        $no = 1;
+        foreach ($product as $lp) {
+            $html .= '<tr>';
+            $html .= '<td style="border: 1px solid #000; padding: 8px;">' . $no . '</td>';
+            $html .= '<td style="border: 1px solid #000; padding: 8px;">' . $lp['id_produk'] . '</td>';
+            $html .= '<td style="border: 1px solid #000; padding: 8px;">' . $lp['nama_produk'] . '</td>';
+            $html .= '<td style="border: 1px solid #000; padding: 8px;">' . $lp['description'] . '</td>';
+            $html .= '<td style="border: 1px solid #000; padding: 8px;">' . $lp['harga_produk'] . '</td>';
+            $html .= '</tr>';
+            $no++;
+        }
+
+        $html .= '</tbody></table>';
+
+        // Load konten HTML ke DOMPDF
+        $dompdf->loadHtml($html);
+
+        // Set orientasi landscape
+        $dompdf->setPaper('A4', 'landscape');
+
+        // Aktifkan opsi isRemoteEnabled
+        $dompdf->set_option('isRemoteEnabled', true);
+
+        // Render konten HTML menjadi PDF
+        $dompdf->render();
+
+        // Simpan PDF ke file
+        $output = $dompdf->output();
+        file_put_contents('laporan_product.pdf', $output);
+
+        // Unduh file PDF
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="laporan_product.pdf"');
+        readfile('laporan_product.pdf');
+        exit();
+    }
+
+    public function generateCsv()
+    {
+        // Query data from the database
+        $products = $this->productModel->findAll();
+
+        // Debugging: Display a message to confirm method execution
+        echo "Generating CSV...<br>";
+
+        // Set the response header for CSV download
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="laporan_product.csv"');
+
+        // Debugging: Display headers
+        echo "Headers Sent: <pre>";
+        var_dump(headers_list());
+        echo "</pre>";
+
+        // Create a file pointer connected to the output stream
+        $output = fopen('php://output', 'w');
+
+        // Write the CSV header
+        fputcsv($output, ['No', 'ID Product', 'Nama Product', 'Description']);
+
+        // Loop through the product data and write each row to the CSV
+        $no = 1;
+        foreach ($products as $product) {
+            fputcsv($output, [
+                $no,
+                $product->id_produk,
+                $product->nama_produk,
+                $product->description,
+                $product->harga_produk,
+            ]);
+            $no++;
+        }
+
+        // Close the file pointer
+        fclose($output);
+
+        // Debugging: Display a message to confirm CSV generation
+        echo "CSV Generated and Downloaded.<br>";
+        exit();
+    }
+    
     protected function getMenuOptions($produk_id)
     {
         $this->builder = $this->db->table('kategori');

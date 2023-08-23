@@ -7,10 +7,12 @@
     "require": {
         "php": "^7.4 || ^8.0",
         "codeigniter4/framework": "^4.0",
+        "dompdf/dompdf": "^2.0",
         "midtrans/midtrans-php": "^2.5",
         "myth/auth": "^1.2",
         "nesbot/carbon": "^2.68",
         "paragonie/certainty": "^2.8",
+        "phpoffice/phpexcel": "^1.8",
         "symfony/filesystem": "^6.3"
     },
     "require-dev": {
