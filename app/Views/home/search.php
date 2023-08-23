@@ -445,6 +445,33 @@ function truncateText($text, $length)
     <script src="https://cdnjs.cloudflare.com/ajax/libs/ion-rangeslider/2.3.1/js/ion.rangeSlider.min.js"></script>
 
     <script>
+        const categoryCheckboxes = document.querySelectorAll('.form-check-input');
+
+        categoryCheckboxes.forEach(checkbox => {
+            checkbox.addEventListener('change', function() {
+                const selectedCategories = [];
+                categoryCheckboxes.forEach(checkbox => {
+                    if (checkbox.checked && checkbox.value !== "All") {
+                        selectedCategories.push(checkbox.value);
+                    }
+                });
+
+                const newUrl = new URL(window.location.href);
+                newUrl.searchParams.set("q", "p");
+
+                if (selectedCategories.length > 0) {
+                    newUrl.searchParams.set("category", selectedCategories.join(','));
+                } else {
+                    newUrl.searchParams.delete("category");
+                }
+
+                window.location.href = newUrl.toString();
+            });
+        });
+    </script>
+
+
+    <script>
         const priceRangeMinInput = document.getElementById("priceRangeMin1");
         const priceRangeMaxInput = document.getElementById("priceRangeMax1");
         const applyFilterBtn = document.getElementById("applyFilter");

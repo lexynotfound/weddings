@@ -176,7 +176,13 @@ class Home extends BaseController
         $selectedCategories = $this->request->getVar('category');
         if (!empty($selectedCategories)) {
             $selectedCategoriesArray = explode(',', $selectedCategories);
-            $builder->whereIn('categories.nama_categories', $selectedCategoriesArray);
+
+            $builder->groupStart();
+            foreach ($selectedCategoriesArray as $category) {
+                $builder->orLike('categories.nama_categories', $category);
+            }
+            $builder->groupEnd();
+
             $data['selectedCategoriesArray'] = $selectedCategoriesArray;
         }
 
