@@ -277,7 +277,7 @@
                         <div class="row">
                             <div class="col-md-4 col-sm-12">
                                 <select id="reportFormat" class="form-select form-select-sm mb-2" aria-label="Select Report Format">
-                                    <option value="excel">Excel</option>
+                                    <option value="csv">CSV</option>
                                     <option value="pdf">PDF</option>
                                 </select>
                             </div>
@@ -460,13 +460,6 @@
 
 
         <script>
-            // Hide the success and error messages after 5 seconds
-            setTimeout(function() {
-                document.getElementById('successMessage').style.display = 'none';
-                document.getElementById('errorMessage').style.display = 'none';
-            }, 5000); // 5000 milliseconds = 5 seconds
-        </script>
-        <script>
             const generateReportBtn = document.getElementById("generateReportBtn");
             const reportFormatSelect = document.getElementById("reportFormat");
 
@@ -481,13 +474,10 @@
 
             function generateDownloadUrl(format) {
                 // Logic to generate the download URL based on the selected format
-                // You can modify this function to return the appropriate URL for Excel or PDF
-                if (format === "excel") {
-                    // Generate Excel download URL
-                    return "path/to/excel/download";
+                if (format === "csv") {
+                    return "<?= site_url('reservation/generateCsv') ?>";
                 } else if (format === "pdf") {
-                    // Generate PDF download URL
-                    return "path/to/pdf/download";
+                    return "<?= site_url('reservation/generatePdf') ?>";
                 } else {
                     return null;
                 }

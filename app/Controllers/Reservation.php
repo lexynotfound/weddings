@@ -7,8 +7,13 @@ use App\Models\MenuModel;
 use App\Models\ReservationModel;
 use App\Models\ReservationDetailModel;
 use App\Models\TransaksiModel;
+use App\Models\PaymentModel;
 use Myth\Auth\Models\UserModel;
 use Myth\Auth\Models\GroupModel;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 class Reservation extends BaseController
 {
     protected $db;
@@ -18,6 +23,7 @@ class Reservation extends BaseController
     protected $reservationModel;
     protected $reservationDetailModel;
     protected $transaksiModel;
+    protected $paymentModel;
     protected $userModel;
 
     public function __construct()
@@ -29,6 +35,7 @@ class Reservation extends BaseController
         $this->reservationModel = new ReservationModel();
         $this->reservationDetailModel = new ReservationDetailModel();
         $this->userModel = new UserModel();
+        $this->paymentModel = new PaymentModel();
         $this->transaksiModel = new TransaksiModel();
     }
 
@@ -279,6 +286,83 @@ class Reservation extends BaseController
         return redirect()->to('reservation/reservation/' . $id)->with('success', 'Your reservation has been created successfully.');
     }
 
+    public function generatePdf()
+    {
+        // Query data dari database
+        $payment = $this->reservationModel->findAll();
+
+        // Buat objek DOMPDF baru
+        $dompdf = new Dompdf();
+
+        // Buat template HTML untuk PDF
+        $html = '<h1 style="text-align: center;">Data Laporan Product</h1>';
+        $html .= '<table style="width: 100%; border-collapse: collapse; margin: 0 auto;">';
+        $html .= '<thead>';
+        $html .= '<tr>';
+        $html .= '<th style="border: 1px solid #000; padding: 8px; border-top-left-radius: 8px;">No</th>';
+        $html .= '<th style="border: 1px solid #000; padding: 8px;">Payment ID</th>';
+        $html .= '<th style="border: 1px solid #000; padding: 8px;">Paket Name</th>';
+        $html .= '<th style="border: 1px solid #000; padding: 8px;">Bride Name</th>';
+        $html .= '<th style="border: 1px solid #000; padding: 8px;">Lokasi</th>';
+        $html .= '<th style="border: 1px solid #000; padding: 8px; border-top-right-radius: 8px;">Weddings Date</th>';
+        $html .= '</tr>';
+        $html .= '</thead>';
+        $html .= '<tbody>';
+
+        $no = 1;
+        foreach ($payment as $lp) {
+            $html .= '<tr>';
+            $html .= '<td style="border: 1px solid #000; padding: 8px;">' . $no . '</td>';
+            $buku = $this->paymentModel->find($lp['transaksi_id']);
+            if ($buku) {
+                $html .= '<td style="border: 1px solid #000; padding: 8px;">' . $buku['id_payment'] . '</td>';
+            } else {
+                $html .= '<td style="border: 1px solid #000; padding: 8px;"></td>';
+            }
+            $cc = $this->productModel->find($lp['transaksi_id']);
+            if ($cc) {
+                $html .= '<td style="border: 1px solid #000; padding: 8px;">' . $cc['nama_produk'] . '</td>';
+            } else {
+                $html .= '<td style="border: 1px solid #000; padding: 8px;"></td>';
+            }
+            $rr = $this->userModel->find($lp['user_id']);
+            if ($rr) {
+                $html .= '<td style="border: 1px solid #000; padding: 8px;">' . $rr->nama . '</td>';
+            } else {
+                $html .= '<td style="border: 1px solid #000; padding: 8px;"></td>';
+            }
+            $html .= '<td style="border: 1px solid #000; padding: 8px;">' . $lp['lokasi'] . '</td>';
+            $html .= '<td style="border: 1px solid #000; padding: 8px;">' . $lp['tgl_acara'] . '</td>';
+            // Ambil data buku berdasarkan buku_id
+
+            $html .= '</tr>';
+            $no++;
+        }
+
+        $html .= '</tbody></table>';
+
+        // Load konten HTML ke DOMPDF
+        $dompdf->loadHtml($html);
+
+        // Set orientasi landscape
+        $dompdf->setPaper('A4', 'landscape');
+
+        // Aktifkan opsi isRemoteEnabled
+        $dompdf->set_option('isRemoteEnabled', true);
+
+        // Render konten HTML menjadi PDF
+        $dompdf->render();
+
+        // Simpan PDF ke file
+        $output = $dompdf->output();
+        file_put_contents('laporan_reservasi.pdf', $output);
+
+        // Unduh file PDF
+        header('Content-Type: application/pdf');
+        header('Content-Disposition: attachment; filename="laporan_reservasi.pdf"');
+        readfile('laporan_reservasi.pdf');
+        exit();
+    }
 
     private function isProfileComplete($userData)
     {
