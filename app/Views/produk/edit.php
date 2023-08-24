@@ -122,7 +122,6 @@
                 <!-- Product Form Card -->
                 <p>Edit Package</p>
                 <div class="card mt-4">
-                    <pre><?= print_r($product, true); ?></pre>
                     <form action="<?= site_url('produk/update/' . $product['produkid']); ?>" method="post" enctype="multipart/form-data">
                         <?= csrf_field() ?>
                         <div class="card-body">
@@ -170,14 +169,15 @@
                                 <div class="additional-info">
                                     <?php foreach ($menuOptions as $index => $item) : ?>
                                         <div class="menu-entry">
-                                            <input type="text" name="nama_menu[]" class="form-control mb-3" value="<?= old('nama_menu', $item['nama_menu']); ?>">
-                                            <textarea name="deskripsi[]" class="form-control mb-3"><?= old('deskripsi', $item['deskripsi']); ?></textarea>
-                                            <!-- <button type="button" class="delete-icon btn btn-circle btn-outline-danger mb-3" onclick="deleteMenu(<?= $item['id']; ?>)">Hapus -</button> -->
+                                            <input type="hidden" name="id_kategori[]" value="<?= $item['id']; ?>">
+                                            <input type="text" name="nama_menu[]" class="form-control mb-3" value="<?= old('nama_menu.' . $index, $item['nama_menu']); ?>">
+                                            <textarea name="deskripsi[]" class="form-control mb-3"><?= old('deskripsi.' . $index, $item['deskripsi']); ?></textarea>
                                             <a href="<?= base_url('produk/dlts/' . $item['id']); ?>" onclick="return confirm('Anda yakin ingin menghapus paket ini <?= $item['nama_menu']; ?> ?');" class="delete-icon btn btn-circle btn-outline-danger mb-3"><i class="fa fa-trash"></i></a>
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
                             </div>
+
 
                             <!-- Photo Upload Sections -->
                             <div class=" row justify-content-center">
@@ -340,11 +340,6 @@
                 const newInputFields = document.createElement("div");
                 newInputFields.classList.add("menu-entry");
 
-                const inputId = document.createElement("input");
-                inputId.type = "hidden";
-                inputId.name = "id_kategori[]"; // Use the correct input name
-                inputId.value = ""; // Set an appropriate value here
-
                 const inputName = document.createElement("input");
                 inputName.type = "text";
                 inputName.name = "nama_menu[]";
@@ -361,7 +356,6 @@
                 deleteIconBtn.classList.add("delete-icon", "btn", "btn-circle", "btn-outline-danger", "mb-3");
                 deleteIconBtn.innerText = "Hapus -";
 
-                newInputFields.appendChild(inputId);
                 newInputFields.appendChild(inputName);
                 newInputFields.appendChild(textareaDesc);
                 newInputFields.appendChild(deleteIconBtn);

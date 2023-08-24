@@ -343,8 +343,6 @@ class Home extends BaseController
         // Pass the payment data to the view
         $data['payment'] = $payment;
 
-
-
         // Fetch the reviews data for the given product $id
         $reviews = $this->getReview($id);
 
@@ -358,26 +356,29 @@ class Home extends BaseController
         if (logged_in() && $payment) {
             // Check if the user has made a payment for this transaction
             $userTransaction = $this->db->table('payment')
-                ->where('user_id', $user_id)
+            ->where('user_id', $user_id)
                 ->where('id', $payment['transaksi_id']) // Use 'transaksi_id' from payment data
                 ->get()
                 ->getRowArray();
 
-            // Check if the user has already reviewed this item
-            $has_reviewed = false;
-            foreach ($reviews as $review) {
-                if ($review['transaksi_id'] == $payment['transaksi_id']) {
-                    $has_reviewed = true;
-                    break;
+            if ($userTransaction) {
+                // Check if the user has already reviewed this item
+                $has_reviewed = false;
+                foreach ($reviews as $review) {
+                    if ($review['transaksi_id'] == $payment['transaksi_id']) {
+                        $has_reviewed = true;
+                        break;
+                    }
                 }
-            }
 
-            // If the user has made a payment and hasn't reviewed, allow them to review
-            $allow_review = ($userTransaction && !$has_reviewed);
+                // If the user has not reviewed, allow them to review
+                $allow_review = !$has_reviewed;
+            }
         }
 
         // Pass the allow_review data to the view
         $data['allow_review'] = $allow_review;
+
 
         // Calculate the total rating and total number of reviews
         $totalRating = 0;
@@ -544,41 +545,31 @@ class Home extends BaseController
                 $review['rating_percentage'] = 0;
             }
 
-            // Fetch the payment data for the given $id
-            $payment = $this->getPaymentData($id);
+            // Check if the user has already reviewed this item
+            $transaksi_id = $review['transaksi_id'];
+            $review['has_reviewed'] = false; // Initialize to false for users who are not logged in
+            if ($user_id) {
+                // Check if the user has reviewed this transaction
+                $reviewedTransactions = [];
+                foreach ($reviews as $r) {
+                    $reviewedTransactions[$r['transaksi_id']] = true;
+                }
+                $review['has_reviewed'] = isset($reviewedTransactions[$transaksi_id]);
 
-            // Fetch the reviews data for the given product $id
-            $reviews = $this->getReview($id);
-
-            // Check if the user is logged in and if payment data is available
-            $user_id = user_id();
-            $allow_review = false;
-
-            if (logged_in() && $payment) {
                 // Check if the user has made a payment for this transaction
                 $userTransaction = $this->db->table('payment')
-                ->where('user_id', $user_id)
-                ->where('id', $payment['transaksi_id']) // Use 'transaksi_id' from payment data
-                ->get()
-                ->getRowArray();
+                    ->where('user_id', $user_id)
+                    ->where('id', $transaksi_id)
+                    ->get()
+                    ->getRowArray();
 
-                if ($userTransaction) {
-                    // Check if the user has already reviewed this item
-                    $has_reviewed = false;
-                    foreach ($reviews as $review) {
-                        if ($review['transaksi_id'] == $payment['transaksi_id']) {
-                            $has_reviewed = true;
-                            break;
-                        }
-                    }
-
-                    // If the user has not reviewed, allow them to review
-                    $allow_review = !$has_reviewed;
+                // If the user has made a payment and hasn't reviewed, allow them to review
+                if ($userTransaction && !$review['has_reviewed']) {
+                    $review['allow_review'] = true;
+                } else {
+                    $review['allow_review'] = false;
                 }
             }
-
-            // Pass the allow_review data to the view
-            $data['allow_review'] = $allow_review;
             
             // Mengambil data replies berdasarkan review_id
             $review['replies'] = $this->getRepliesByReview($review['reviewsid']);

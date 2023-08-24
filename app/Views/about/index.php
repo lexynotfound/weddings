@@ -118,7 +118,6 @@
                         </div><!-- End Gallery Item -->
                     <?php endforeach; ?>
                 </div>
-
             </div>
         </section><!-- End Gallery Section -->
 

@@ -81,11 +81,12 @@ class Product extends BaseController
 
         // Perform the LEFT JOIN with product, kategori, and users tables
         $this->builder = $this->db->table('product');
-        $this->builder->select('product.id as produkid, product.nama_produk, product.description, product.user_id, product.kategori_id, product.harga_produk, product.photos_filenames, product.created_at, product.updated_at, product.deleted_at, kategori.nama_menu, kategori.deskripsi, kategori.isi, kategori.produk_id,kategori.deleted_at, kategori.updated_at, categories.nama_categories, users.username, users.email, users.nama, users.foto, users.jenis_kelamin, users.telepon, users.lokasi');
+        $this->builder->select('product.id as produkid, product.nama_produk, product.description, product.user_id, product.kategori_id, product.harga_produk, product.photos_filenames, product.created_at, product.updated_at, product.deleted_at, kategori.nama_menu, kategori.deskripsi, kategori.produk_id,kategori.deleted_at, kategori.updated_at, categories.nama_categories, users.username, users.email, users.nama, users.foto, users.jenis_kelamin, users.telepon, users.lokasi');
         $this->builder->join('kategori', 'kategori.produk_id = product.id', 'left'); // Use 'left' for LEFT JOIN
         $this->builder->join('categories', 'categories.id = product.kategori_id', 'left'); // Use 'left' for LEFT JOIN
         $this->builder->join('users', 'users.id = product.user_id', 'left'); // Use 'left' for LEFT JOIN
         // Exclude soft-deleted records from kategori table
+        
         $this->builder->where('product.deleted_at', null);
 
         // Fetch the product data with user names for the given $id
@@ -879,19 +880,15 @@ class Product extends BaseController
                 ]
             ],
             'kategori_id' => [
-                'rules' => 'max_size[photos_filenames,105000]|ext_in[photos_filenames,jpg,jpeg,png]',
+                'rules' => 'required',
                 'errors' => [
-                    'max_size' => 'Ukuran Foto 1 maksimum adalah 105 MB.',
-                    'ext_in' => 'Format Foto 1 harus jpg, jpeg, atau png.'
+                    'required' => 'Kategori Harus Di isi',
                 ]
             ],
             // Use dot notation to indicate array inputs
             'nama_menu.*' => [],
             'deskripsi.*' => [],
         ];
-
-        // Get the updated product data
-        $updatedProduct = $productModel->find($id);
 
         if (!$this->validate($rules)) {
             $data['validation'] = $this->validator;
@@ -941,15 +938,15 @@ class Product extends BaseController
                 return redirect()->to('produk/daftar_produk'); // Redirect to a page where users are authorized to edit products
             }
 
-            // Upload gambar dengan nama acak jika ada perubahan foto
             $photo1 = $this->request->getFile('photos_filenames');
             if ($photo1->isValid() && !$photo1->hasMoved()) {
                 $newFileName1 = $photo1->getRandomName();
                 $photo1->move('./uploads', $newFileName1);
                 $productData['photos_filenames'] = $newFileName1;
-                // Delete the old image if it exists
-                if (file_exists('./uploads/' . $existingProduct['photos_filenames'])) {
-                    unlink('./uploads/' . $existingProduct['photos_filenames']);
+                // Delete the old image if it exists and is a file
+                $oldImagePath = './uploads/' . $existingProduct['photos_filenames'];
+                if (is_file($oldImagePath)) {
+                    unlink($oldImagePath);
                 }
             }
 
@@ -960,6 +957,7 @@ class Product extends BaseController
                 'harga_produk' => $this->request->getPost('harga_produk'),
                 'kategori_id' => $this->request->getPost('kategori_id'),
                 'user_id' => $user->id,
+                'photos_filenames' => isset($productData['photos_filenames']) ? $productData['photos_filenames'] : $existingProduct['photos_filenames'],
             ];
 
             // Check if update to the product table is successful
@@ -1024,6 +1022,7 @@ class Product extends BaseController
             return redirect()->to('produk/daftar_produk');
         }
     }
+
 
     /* public function update($id)
     {
@@ -1155,6 +1154,12 @@ class Product extends BaseController
             throw new \CodeIgniter\Exceptions\PageNotFoundException('Menu not found');
         }
 
+        // Check if the menu has been soft deleted before
+        if (!empty($menu['deleted_at'])) {
+            session()->setFlashdata('error', 'Menu "' . $menu['nama_menu'] . '" has been already deleted.');
+            return redirect()->back(); // Menggunakan redirect()->back() untuk kembali ke halaman sebelumnya
+        }
+
         // Update the deleted_at field to mark it as soft deleted
         $data = ['deleted_at' => date('Y-m-d H:i:s')];
         if ($menuModel->update($id, $data)) {
@@ -1165,6 +1170,7 @@ class Product extends BaseController
             session()->setFlashdata('error', 'Failed to soft delete the menu "' . $menu['nama_menu'] . '".');
         }
 
-        return redirect()->to('produk/edit/' . $menu['produk_id']); // Ganti dengan URL yang sesuai
+        return redirect()->back(); // Menggunakan redirect()->back() untuk kembali ke halaman sebelumnya
     }
+
 }

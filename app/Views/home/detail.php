@@ -208,118 +208,167 @@
     <section class="bg-white">
         <div class="container my-5 py-5 fw-bolder">
             <h4 class="text-start mb-4 text pb-2">Reviews</h4>
-            <?php if (logged_in() && $allow_review) : ?>
-                <!-- Display review form here -->
-                <div class="row justify-content-center">
-                    <div class="col-md-10 col-lg-16 col-xl-16">
-                        <form id="reviewForm" method="post" action="<?= site_url('home/save_review/' . $payment['paymentid']) ?>">
-                            <?= csrf_field(); ?>
-                            <div class="d-flex flex-start mb-5">
-                                <?php
-                                if ($payment['foto'] === 'default.png') {
-                                    // Jika foto adalah foto default, tampilkan dari folder 'images'
-                                ?>
-                                    <img class="rounded-circle shadow-1-strong me-3" src="<?= base_url() ?>/images/<?= $payment['foto']; ?>" alt="avatar" width="65" height="65" />
-                                <?php
-                                } else {
-                                    // Jika foto telah diubah, tampilkan dari folder 'uploads'
-                                ?>
-                                    <img class="rounded-circle shadow-1-strong me-3" src="<?= base_url('uploads/' . $payment['foto']); ?>" alt="avatar" width="65" height="65" />
-                                <?php
-                                }
-                                ?>
-                                <div class="w-100">
-                                    <div class="d-flex justify-content-between mb-2">
-                                        <div>
-                                            <p class="text-muted mb-0"><?= $payment['username'] ?></p>
-                                            <p class="text-muted mb-0">Rating:</p>
+            <?php if (logged_in()) : ?>
+                <?php if ($allow_review) : ?>
+                    <!-- Display review form here -->
+                    <div class="row justify-content-center">
+                        <div class="col-md-10 col-lg-16 col-xl-16">
+                            <form id="reviewForm" method="post" action="<?= site_url('home/save_review/' . $payment['paymentid']) ?>">
+                                <?= csrf_field(); ?>
+                                <div class="d-flex flex-start mb-5">
+                                    <?php
+                                    if ($payment['foto'] === 'default.png') {
+                                        // Jika foto adalah foto default, tampilkan dari folder 'images'
+                                    ?>
+                                        <img class="rounded-circle shadow-1-strong me-3" src="<?= base_url() ?>/images/<?= $payment['foto']; ?>" alt="avatar" width="65" height="65" />
+                                    <?php
+                                    } else {
+                                        // Jika foto telah diubah, tampilkan dari folder 'uploads'
+                                    ?>
+                                        <img class="rounded-circle shadow-1-strong me-3" src="<?= base_url('uploads/' . $payment['foto']); ?>" alt="avatar" width="65" height="65" />
+                                    <?php
+                                    }
+                                    ?>
+                                    <div class="w-100">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <div>
+                                                <p class="text-muted mb-0"><?= $payment['username'] ?></p>
+                                                <p class="text-muted mb-0">Rating:</p>
+                                            </div>
+                                            <div class="ms-auto text-warning">
+                                                <input type="radio" name="rating" id="star1" class="star-radio" value="5">
+                                                <label for="star1" title="Excellent"><i class="fa fa-star-o star-icon"></i></label>
+
+                                                <input type="radio" name="rating" id="star2" class="star-radio" value="4">
+                                                <label for="star2" title="Best"><i class="fa fa-star-o star-icon"></i></label>
+
+                                                <input type="radio" name="rating" id="star3" class="star-radio" value="3">
+                                                <label for="star3" title="Good"><i class="fa fa-star-o star-icon"></i></label>
+
+                                                <input type="radio" name="rating" id="star4" class="star-radio" value="2">
+                                                <label for="star4" title="Poor"><i class="fa fa-star-o star-icon"></i></label>
+
+                                                <input type="radio" name="rating" id="star5" class="star-radio" value="1">
+                                                <label for="star5" title="Bad"><i class="fa fa-star-o star-icon"></i></label>
+                                            </div>
                                         </div>
-                                        <div class="ms-auto text-warning">
-                                            <input type="radio" name="rating" id="star1" class="star-radio" value="5">
-                                            <label for="star1" title="Excellent"><i class="fa fa-star-o star-icon"></i></label>
-
-                                            <input type="radio" name="rating" id="star2" class="star-radio" value="4">
-                                            <label for="star2" title="Best"><i class="fa fa-star-o star-icon"></i></label>
-
-                                            <input type="radio" name="rating" id="star3" class="star-radio" value="3">
-                                            <label for="star3" title="Good"><i class="fa fa-star-o star-icon"></i></label>
-
-                                            <input type="radio" name="rating" id="star4" class="star-radio" value="2">
-                                            <label for="star4" title="Poor"><i class="fa fa-star-o star-icon"></i></label>
-
-                                            <input type="radio" name="rating" id="star5" class="star-radio" value="1">
-                                            <label for="star5" title="Bad"><i class="fa fa-star-o star-icon"></i></label>
+                                        <h5>Add a Review</h5>
+                                        <div class="form-outline">
+                                            <textarea class="form-control" name="review" id="textAreaExample" rows="8"></textarea>
                                         </div>
+                                        <div class="d-flex justify-content-between mt-3">
+                                            <button type="submit" class="btn btn-outline-dark">
+                                                Post <i class="fas fa-long-arrow-alt-right ms-2"></i>
+                                            </button>
+                                        </div>
+                                        <input type="hidden" name="payment_id" value="<?= $payment['paymentid']; ?>">
+                                        <input type="hidden" name="item_id" value="<?= $product['produkid']; ?>">
                                     </div>
-                                    <h5>Add a Review</h5>
-                                    <div class="form-outline">
-                                        <textarea class="form-control" name="review" id="textAreaExample" rows="8"></textarea>
-                                    </div>
-                                    <div class="d-flex justify-content-between mt-3">
-                                        <button type="submit" class="btn btn-outline-dark">
-                                            Post <i class="fas fa-long-arrow-alt-right ms-2"></i>
-                                        </button>
-                                    </div>
-                                    <input type="hidden" name="payment_id" value="<?= $payment['paymentid']; ?>">
-                                    <input type="hidden" name="item_id" value="<?= $product['produkid']; ?>">
                                 </div>
-                            </div>
-                        </form>
-                    </div>
-                </div>
-                <!-- Star Icon and Count -->
-                <div class="row">
-                    <div class="col-md-2">
-                        <div class="d-flex align-items-center">
-                            <i class="fa fa-star" style="font-size: 48px; color: gold;"></i>
-                            <?php
-                            // Calculate the total rating based on reviews
-                            $totalRating = 0;
-                            foreach ($reviews as $review) {
-                                if (isset($review['rating'])) {
-                                    $totalRating += $review['rating'];
-                                }
-                            }
-
-                            // Calculate the average rating
-                            $totalReviews = count($reviews);
-                            $averageRating = $totalReviews > 0 ? $totalRating / $totalReviews : 0;
-                            ?>
-                            <span class="ms-2 fs-3"><?= number_format($averageRating, 1); ?>/5</span>
+                            </form>
                         </div>
                     </div>
-                    <div class="col-md-10">
-                        <?php for ($step = 1; $step <= 5; $step++) : ?>
-                            <div class="mb-3">
-                                <div class="d-flex align-items-center">
-                                    <i class="fa fa-star" style="font-size: 24px; color: gold;"></i>
-                                    <div class="flex-grow-1 ms-3">
-                                        <div class="progress">
-                                            <?php
-                                            // Get the rating count for the current step
-                                            $ratingCount = 0;
-                                            foreach ($reviews as $review) {
-                                                if (isset($review['rating']) && $review['rating'] == $step) {
-                                                    $ratingCount = isset($review['rating_count']) ? $review['rating_count'] : 0;
-                                                    break;
+                    <!-- Star Icon and Count -->
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="d-flex align-items-center">
+                                <i class="fa fa-star" style="font-size: 48px; color: gold;"></i>
+                                <?php
+                                // Calculate the total rating based on reviews
+                                $totalRating = 0;
+                                foreach ($reviews as $review) {
+                                    if (isset($review['rating'])) {
+                                        $totalRating += $review['rating'];
+                                    }
+                                }
+
+                                // Calculate the average rating
+                                $totalReviews = count($reviews);
+                                $averageRating = $totalReviews > 0 ? $totalRating / $totalReviews : 0;
+                                ?>
+                                <span class="ms-2 fs-3"><?= number_format($averageRating, 1); ?>/5</span>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <?php for ($step = 1; $step <= 5; $step++) : ?>
+                                <div class="mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fa fa-star" style="font-size: 24px; color: gold;"></i>
+                                        <div class="flex-grow-1 ms-3">
+                                            <div class="progress">
+                                                <?php
+                                                // Get the rating count for the current step
+                                                $ratingCount = 0;
+                                                foreach ($reviews as $review) {
+                                                    if (isset($review['rating']) && $review['rating'] == $step) {
+                                                        $ratingCount = isset($review['rating_count']) ? $review['rating_count'] : 0;
+                                                        break;
+                                                    }
                                                 }
-                                            }
-                                            ?>
-                                            <div class="progress-bar star-progress" role="progressbar" style="width: <?= ($totalReviews > 0) ? ($ratingCount / $totalReviews) * 100 : 0; ?>%; background-color: gold;" aria-valuenow="<?= ($totalReviews > 0) ? ($ratingCount / $totalReviews) * 100 : 0; ?>" aria-valuemin="0" aria-valuemax="100"><?= $step; ?></div>
-                                            <span class="ms-2"><?= $ratingCount; ?></span>
+                                                ?>
+                                                <div class="progress-bar star-progress" role="progressbar" style="width: <?= ($totalReviews > 0) ? ($ratingCount / $totalReviews) * 100 : 0; ?>%; background-color: gold;" aria-valuenow="<?= ($totalReviews > 0) ? ($ratingCount / $totalReviews) * 100 : 0; ?>" aria-valuemin="0" aria-valuemax="100"><?= $step; ?></div>
+                                                <span class="ms-2"><?= $ratingCount; ?></span>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        <?php endfor; ?>
+                            <?php endfor; ?>
+                        </div>
                     </div>
-                </div>
+                <?php else : ?>
+                    <div class="alert alert-info">
+                        You have already reviewed this product.
+                        <span class="badge bg-secondary">Reviewed</span>
+                    </div>
+                    <!-- Star Icon and Count -->
+                    <div class="row">
+                        <div class="col-md-2">
+                            <div class="d-flex align-items-center">
+                                <i class="fa fa-star" style="font-size: 48px; color: gold;"></i>
+                                <?php
+                                // Calculate the total rating based on reviews
+                                $totalRating = 0;
+                                foreach ($reviews as $review) {
+                                    if (isset($review['rating'])) {
+                                        $totalRating += $review['rating'];
+                                    }
+                                }
+
+                                // Calculate the average rating
+                                $totalReviews = count($reviews);
+                                $averageRating = $totalReviews > 0 ? $totalRating / $totalReviews : 0;
+                                ?>
+                                <span class="ms-2 fs-3"><?= number_format($averageRating, 1); ?>/5</span>
+                            </div>
+                        </div>
+                        <div class="col-md-10">
+                            <?php for ($step = 1; $step <= 5; $step++) : ?>
+                                <div class="mb-3">
+                                    <div class="d-flex align-items-center">
+                                        <i class="fa fa-star" style="font-size: 24px; color: gold;"></i>
+                                        <div class="flex-grow-1 ms-3">
+                                            <div class="progress">
+                                                <?php
+                                                // Get the rating count for the current step
+                                                $ratingCount = 0;
+                                                foreach ($reviews as $review) {
+                                                    if (isset($review['rating']) && $review['rating'] == $step) {
+                                                        $ratingCount = isset($review['rating_count']) ? $review['rating_count'] : 0;
+                                                        break;
+                                                    }
+                                                }
+                                                ?>
+                                                <div class="progress-bar star-progress" role="progressbar" style="width: <?= ($totalReviews > 0) ? ($ratingCount / $totalReviews) * 100 : 0; ?>%; background-color: gold;" aria-valuenow="<?= ($totalReviews > 0) ? ($ratingCount / $totalReviews) * 100 : 0; ?>" aria-valuemin="0" aria-valuemax="100"><?= $step; ?></div>
+                                                <span class="ms-2"><?= $ratingCount; ?></span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            <?php endfor; ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
             <?php else : ?>
-            <!-- Display a message indicating that the user cannot review again -->
-            <div class="alert alert-info">
-                You have already reviewed this product.
-                <span class="badge bg-secondary">Reviewed</span>
-            </div>
                 <!-- Display message and progress bars -->
                 <div class="row">
                     <div class="col-md-2">
@@ -369,6 +418,7 @@
             <?php endif; ?>
         </div>
     </section>
+
 
     <!--  <section class="gradient-custom">
         <div class="container my-4 py-4">

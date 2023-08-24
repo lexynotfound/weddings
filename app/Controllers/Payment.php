@@ -458,7 +458,7 @@ class Payment extends BaseController
             $sheet->setCellValue('C' . $row, $payment_item['nama_produk']);
             $sheet->setCellValue('D' . $row, $payment_item['total_payment']);
             $sheet->setCellValue('E' . $row, $payment_item['lokasi']);
-            if ($payment_item['status'] === 'PAID') {
+            /* if ($payment_item['status'] === 'PAID') {
                 if ($payment_item['payment_updated'] !== null) {
                     $sheet->setCellValue('F' . $row, 'PAID');
                     $sheet->setCellValue('H' . $row, $payment_item['payment_updated']);
@@ -468,9 +468,24 @@ class Payment extends BaseController
                 }
             } else {
                 $sheet->setCellValue('F' . $row, $payment_item['status']);
-                $sheet->setCellValue('G' . $row, $payment_item['tgl_acara']);
+                $sheet->setCellValue('H' . $row, $payment_item['payment_date']);
+            } */
+            if ($payment_item['status'] === 'PAID') {
+                if ($payment_item['payment_updated'] !== null) {
+                    $sheet->setCellValue('F' . $row, 'PAID');
+                    $sheet->setCellValue('H' . $row, $payment_item['payment_updated']);
+                } else {
+                    $sheet->setCellValue('F' . $row, 'PAID');
+                    $sheet->setCellValue('H' . $row, $payment_item['payment_date']);
+                }
+            } elseif ($payment_item['status'] === 'DP') {
+                $sheet->setCellValue('F' . $row, 'Pembayaran DP');
+                $sheet->setCellValue('H' . $row, $payment_item['payment_date']);
+            } else {
+                $sheet->setCellValue('F' . $row, $payment_item['status']);
                 $sheet->setCellValue('H' . $row, $payment_item['payment_date']);
             }
+            $sheet->setCellValue('G' . $row, $payment_item['tgl_acara']);
             $no++;
             $row++;
         }
