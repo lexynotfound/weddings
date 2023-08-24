@@ -49,7 +49,7 @@ class Payment extends BaseController
             'title' => 'List Payments',
         ];
         $payments = $this->db->table('payment')
-            ->select('payment.id as paymentsid, payment.id_payment, payment.reservation_id, payment.transaksi_id, payment.payment_receipt, payment.user_id, payment.total_payment, payment.payment_date,payment.status, reservation.tgl_acara,reservation.lokasi, transaksi.id_transaksi, transaksi.total_harga, transaksi.produk_id,product.nama_produk,product.description,product.photos_filenames,product.harga_produk,user_produk.nama,user_produk.foto,user_produk.lokasi,user_produk.jenis_kelamin,user_produk.telepon')
+            ->select('payment.id as paymentsid, payment.id_payment, payment.reservation_id, payment.transaksi_id, payment.payment_receipt,payment_updated, payment.user_id, payment.total_payment, payment.payment_date,payment.status, reservation.tgl_acara,reservation.lokasi, transaksi.id_transaksi, transaksi.total_harga, transaksi.produk_id,product.nama_produk,product.description,product.photos_filenames,product.harga_produk,user_produk.nama,user_produk.foto,user_produk.lokasi,user_produk.jenis_kelamin,user_produk.telepon')
             ->join('reservation', 'reservation.id = payment.reservation_id', 'left')
             ->join('transaksi', 'transaksi.id = payment.transaksi_id', 'left')
             ->join('product', 'product.id = transaksi.produk_id', 'left')
@@ -370,6 +370,176 @@ class Payment extends BaseController
         header('Content-Disposition: attachment; filename="laporan_transaction.pdf"');
         readfile('laporan_transaction.pdf');
         exit();
+    }
+
+    /* public function generateSpreadsheet()
+    {
+        // Create an instance of the ProductModel
+        $productModel = new ProductModel();
+
+        // Query data from the database
+        $produk = $productModel->findAll();
+
+        // Create a new Spreadsheet instance
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Set column headers
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'ID Product');
+        $sheet->setCellValue('C1', 'Nama Product');
+        $sheet->setCellValue('D1', 'Description');
+        $sheet->setCellValue('E1', 'Harga');
+
+        // Fill data rows
+        $no = 1;
+        $row = 2;
+        foreach ($produk as $produk_item) {
+            $sheet->setCellValue('A' . $row, $no);
+            $sheet->setCellValue('B' . $row, $produk_item['id_produk']);
+            $sheet->setCellValue('C' . $row, $produk_item['nama_produk']);
+            $sheet->setCellValue('D' . $row, $produk_item['description']);
+            $sheet->setCellValue('E' . $row, $produk_item['harga_produk']);
+            $no++;
+            $row++;
+        }
+
+        // Create Excel file
+        $writer = new Xlsx($spreadsheet);
+
+        // Generate a temporary file path
+        $tempFilePath = WRITEPATH . 'temp/' . 'laporan_product.xlsx';
+
+        // Save the file to the temporary path
+        $writer->save($tempFilePath);
+
+        // Set the response
+        $response = $this->response->download($tempFilePath, null)->setFileName('laporan_product.xlsx')->setContentType('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+        // Delete the temporary file
+        unlink($tempFilePath);
+
+        return $response;
+    } */
+
+    public function generateSpreadsheet()
+    {
+        // Query data from the database
+        $payments = $this->db->table('payment')
+        ->select('payment.id as paymentsid, payment.id_payment, payment.reservation_id, payment.transaksi_id, payment.payment_receipt, payment.user_id, payment.total_payment, payment.payment_date,payment.status,payment_updated, reservation.tgl_acara,reservation.lokasi, transaksi.id_transaksi, transaksi.total_harga, transaksi.produk_id,product.nama_produk,product.description,product.photos_filenames,product.harga_produk,user_produk.nama,user_produk.foto,user_produk.lokasi,user_produk.jenis_kelamin,user_produk.telepon')
+        ->join('reservation', 'reservation.id = payment.reservation_id', 'left')
+            ->join('transaksi', 'transaksi.id = payment.transaksi_id', 'left')
+            ->join('product', 'product.id = transaksi.produk_id', 'left')
+            ->join('users as user_produk', 'user_produk.id = product.user_id', 'left')
+            ->orderBy('payment.payment_date', 'DESC')
+            ->get()
+            ->getResultArray();
+
+        // Create a new Spreadsheet instance
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Set column headers
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'ID Transaction');
+        $sheet->setCellValue('C1', 'Nama Package');
+        $sheet->setCellValue('D1', 'Harga');
+        $sheet->setCellValue('E1', 'Lokasi');
+        $sheet->setCellValue('F1', 'Status');
+        $sheet->setCellValue('G1', 'Reservation Date');
+        $sheet->setCellValue('H1', 'Payment Date');
+
+        // Fill data rows
+        $no = 1;
+        $row = 2;
+        foreach ($payments as $payment_item) {
+            $sheet->setCellValue('A' . $row, $no);
+            $sheet->setCellValue('B' . $row, $payment_item['id_payment']);
+            $sheet->setCellValue('C' . $row, $payment_item['nama_produk']);
+            $sheet->setCellValue('D' . $row, $payment_item['total_payment']);
+            $sheet->setCellValue('E' . $row, $payment_item['lokasi']);
+            if ($payment_item['status'] === 'PAID') {
+                if ($payment_item['payment_updated'] !== null) {
+                    $sheet->setCellValue('F' . $row, 'PAID');
+                    $sheet->setCellValue('H' . $row, $payment_item['payment_updated']);
+                } else {
+                    $sheet->setCellValue('F' . $row, 'Pembayaran DP');
+                    $sheet->setCellValue('H' . $row, $payment_item['payment_date']);
+                }
+            } else {
+                $sheet->setCellValue('F' . $row, $payment_item['status']);
+                $sheet->setCellValue('G' . $row, $payment_item['tgl_acara']);
+                $sheet->setCellValue('H' . $row, $payment_item['payment_date']);
+            }
+            $no++;
+            $row++;
+        }
+
+        // Create Excel file
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+
+        // Define the file path
+        $filePath = FCPATH . 'public/writable/temp/laporan_transaction.xlsx';
+
+        // Ensure the directory exists, if not, create it
+        if (!is_dir(dirname($filePath))) {
+            mkdir(dirname($filePath), 0777, true);
+        }
+
+        // Save the file to the specified path
+        $writer->save($filePath);
+
+        // Set appropriate headers for download
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="laporan_transaction.xlsx"');
+        header('Content-Length: ' . filesize($filePath));
+        readfile($filePath);
+        exit;
+    }
+
+    public function generateCsv()
+    {
+        // Query data from the database
+        $payments = $this->db->table('payment')
+        ->select('payment.id as paymentsid, payment.id_payment, payment.reservation_id,payment_updated, payment.transaksi_id, payment.payment_receipt, payment.user_id, payment.total_payment, payment.payment_date,payment.status, reservation.tgl_acara,reservation.lokasi, transaksi.id_transaksi, transaksi.total_harga, transaksi.produk_id,product.nama_produk,product.description,product.photos_filenames,product.harga_produk,user_produk.nama,user_produk.foto,user_produk.lokasi,user_produk.jenis_kelamin,user_produk.telepon')
+        ->join('reservation', 'reservation.id = payment.reservation_id', 'left')
+        ->join('transaksi', 'transaksi.id = payment.transaksi_id', 'left')
+        ->join('product', 'product.id = transaksi.produk_id', 'left')
+        ->join('users as user_produk', 'user_produk.id = product.user_id', 'left')
+        ->orderBy('payment.payment_date', 'DESC')
+        ->get()
+            ->getResultArray();
+
+        // Prepare CSV data
+        $csvData = [];
+        $csvData[] = ['No', 'ID Transaction', 'Nama Package', 'Harga', 'Lokasi','Status','Reservation Date','Payment Date','Payment Updated'];
+
+        $no = 1;
+        foreach ($payments as $produk_item) {
+            $csvData[] = [
+                $no,
+                $produk_item['id_payment'],
+                $produk_item['nama_produk'],
+                $produk_item['total_payment'],
+                $produk_item['lokasi'],
+                $produk_item['status'],
+                $produk_item['tgl_acara'],
+                $produk_item['payment_date'],
+                $produk_item['payment_updated'],
+            ];
+            $no++;
+        }
+
+        // Set the response header for CSV download
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="laporan_transaction.csv"');
+
+        // Output CSV data directly
+        $output = fopen('php://output', 'w');
+        foreach ($csvData as $row) {
+            fputcsv($output, $row);
+        }
+        fclose($output);
     }
 
     /* Menampilkan data Payment per user id atau sesuai yang login*/

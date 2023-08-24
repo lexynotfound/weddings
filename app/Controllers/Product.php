@@ -33,7 +33,7 @@ class Product extends BaseController
         $this->userModel = new UserModel();
     }
 
-    public function edit($id = 0)
+    /* public function edit($id = 0)
     {
         $data = [
             'title' => 'Wedding Organizer',
@@ -71,7 +71,57 @@ class Product extends BaseController
         $data['product'] = $product;
 
         return view('produk/edit', $data);
+    } */
+
+    public function edit($id = 0)
+    {
+        $data = [
+            'title' => 'Wedding Organizer',
+        ];
+
+        // Perform the LEFT JOIN with product, kategori, and users tables
+        $this->builder = $this->db->table('product');
+        $this->builder->select('product.id as produkid, product.nama_produk, product.description, product.user_id, product.kategori_id, product.harga_produk, product.photos_filenames, product.created_at, product.updated_at, product.deleted_at, kategori.nama_menu, kategori.deskripsi, kategori.isi, kategori.produk_id,kategori.deleted_at, kategori.updated_at, categories.nama_categories, users.username, users.email, users.nama, users.foto, users.jenis_kelamin, users.telepon, users.lokasi');
+        $this->builder->join('kategori', 'kategori.produk_id = product.id', 'left'); // Use 'left' for LEFT JOIN
+        $this->builder->join('categories', 'categories.id = product.kategori_id', 'left'); // Use 'left' for LEFT JOIN
+        $this->builder->join('users', 'users.id = product.user_id', 'left'); // Use 'left' for LEFT JOIN
+        // Exclude soft-deleted records from kategori table
+        $this->builder->where('product.deleted_at', null);
+
+        // Fetch the product data with user names for the given $id
+        $this->builder->where('product.id', $id);
+        $product = $this->builder->get()->getRowArray();
+
+        // Check if the product exists
+        if (!$product) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Package not found');
+        }
+
+        // Pass the product data to the view
+        $data['product'] = $product;
+
+        // Fetch the menu options from the kategori table based on the produk_id of the main product
+        $menuOptions = $this->getMenuOptions($product['produk_id']);
+
+        // Exclude soft-deleted menu items
+        $menuOptions = array_filter($menuOptions, function ($item) {
+            return empty($item['deleted_at']);
+        });
+
+        // Pass the filtered menu options to the view
+        $data['menuOptions'] = $menuOptions;
+
+        // Pass the category data to the view
+
+        $CategoryModel = new CategoriesModel();
+        $kategori = $CategoryModel->findAll();
+
+        // Pass the category data to the view
+        $data['kategori'] = $kategori;
+
+        return view('produk/edit', $data);
     }
+
 
 
     public function detail($id = 0)
@@ -170,50 +220,143 @@ class Product extends BaseController
         exit();
     }
 
+    /* public function generateSpreadsheet()
+    {
+        // Create an instance of the ProductModel
+        $productModel = new ProductModel();
+
+        // Query data from the database
+        $produk = $productModel->findAll();
+
+        // Create a new Spreadsheet instance
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Set column headers
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'ID Product');
+        $sheet->setCellValue('C1', 'Nama Product');
+        $sheet->setCellValue('D1', 'Description');
+        $sheet->setCellValue('E1', 'Harga');
+
+        // Fill data rows
+        $no = 1;
+        $row = 2;
+        foreach ($produk as $produk_item) {
+            $sheet->setCellValue('A' . $row, $no);
+            $sheet->setCellValue('B' . $row, $produk_item['id_produk']);
+            $sheet->setCellValue('C' . $row, $produk_item['nama_produk']);
+            $sheet->setCellValue('D' . $row, $produk_item['description']);
+            $sheet->setCellValue('E' . $row, $produk_item['harga_produk']);
+            $no++;
+            $row++;
+        }
+
+        // Create Excel file
+        $writer = new Xlsx($spreadsheet);
+
+        // Generate a temporary file path
+        $tempFilePath = WRITEPATH . 'temp/' . 'laporan_product.xlsx';
+
+        // Save the file to the temporary path
+        $writer->save($tempFilePath);
+
+        // Set the response
+        $response = $this->response->download($tempFilePath, null)->setFileName('laporan_product.xlsx')->setContentType('application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+
+        // Delete the temporary file
+        unlink($tempFilePath);
+
+        return $response;
+    } */
+
+    public function generateSpreadsheet()
+    {
+        // Create an instance of the ProductModel
+        $productModel = new ProductModel();
+
+        // Query data from the database
+        $produk = $productModel->findAll();
+
+        // Create a new Spreadsheet instance
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Set column headers
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'ID Product');
+        $sheet->setCellValue('C1', 'Nama Product');
+        $sheet->setCellValue('D1', 'Description');
+        $sheet->setCellValue('E1', 'Harga');
+
+        // Fill data rows
+        $no = 1;
+        $row = 2;
+        foreach ($produk as $produk_item) {
+            $sheet->setCellValue('A' . $row, $no);
+            $sheet->setCellValue('B' . $row, $produk_item['id_produk']);
+            $sheet->setCellValue('C' . $row, $produk_item['nama_produk']);
+            $sheet->setCellValue('D' . $row, $produk_item['description']);
+            $sheet->setCellValue('E' . $row, $produk_item['harga_produk']);
+            $no++;
+            $row++;
+        }
+
+        // Create Excel file
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+
+        // Define the file path
+        $filePath = FCPATH . 'public/writable/temp/laporan_product.xlsx';
+
+        // Ensure the directory exists, if not, create it
+        if (!is_dir(dirname($filePath))) {
+            mkdir(dirname($filePath), 0777, true);
+        }
+
+        // Save the file to the specified path
+        $writer->save($filePath);
+
+        // Set appropriate headers for download
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="laporan_product.xlsx"');
+        header('Content-Length: ' . filesize($filePath));
+        readfile($filePath);
+        exit;
+    }
+
     public function generateCsv()
     {
         // Query data from the database
-        $products = $this->productModel->findAll();
+        $produk = $this->productModel->findAll();
 
-        // Debugging: Display a message to confirm method execution
-        echo "Generating CSV...<br>";
+        // Prepare CSV data
+        $csvData = [];
+        $csvData[] = ['No', 'ID Product', 'Nama Product', 'Description', 'Harga'];
+
+        $no = 1;
+        foreach ($produk as $produk_item) {
+            $csvData[] = [
+                $no,
+                $produk_item['id_produk'],
+                $produk_item['nama_produk'],
+                $produk_item['description'],
+                $produk_item['harga_produk'],
+            ];
+            $no++;
+        }
 
         // Set the response header for CSV download
         header('Content-Type: text/csv');
         header('Content-Disposition: attachment; filename="laporan_product.csv"');
 
-        // Debugging: Display headers
-        echo "Headers Sent: <pre>";
-        var_dump(headers_list());
-        echo "</pre>";
-
-        // Create a file pointer connected to the output stream
+        // Output CSV data directly
         $output = fopen('php://output', 'w');
-
-        // Write the CSV header
-        fputcsv($output, ['No', 'ID Product', 'Nama Product', 'Description']);
-
-        // Loop through the product data and write each row to the CSV
-        $no = 1;
-        foreach ($products as $product) {
-            fputcsv($output, [
-                $no,
-                $product->id_produk,
-                $product->nama_produk,
-                $product->description,
-                $product->harga_produk,
-            ]);
-            $no++;
+        foreach ($csvData as $row) {
+            fputcsv($output, $row);
         }
-
-        // Close the file pointer
         fclose($output);
-
-        // Debugging: Display a message to confirm CSV generation
-        echo "CSV Generated and Downloaded.<br>";
-        exit();
     }
-    
+
     protected function getMenuOptions($produk_id)
     {
         $this->builder = $this->db->table('kategori');
@@ -584,7 +727,7 @@ class Product extends BaseController
 
             return view('produk/create', $data);
         } else {
-            
+
             // Get authenticated user data
             $user = service('authentication')->user();
 
@@ -837,25 +980,40 @@ class Product extends BaseController
             // Get the existing categories for the product
             $existingCategories = $menuModel->where('produk_id', $id)->findAll();
 
-            // Update existing categories or insert new categories
-            foreach ($nama_menu as $index => $menu) {
-                // Check if nama_menu and deskripsi are not null and not empty before updating
-                if (!empty($menu) || !is_null($menu) || !empty($deskripsi[$index]) || !is_null($deskripsi[$index])) {
-                    $categoryData = [
-                        'produk_id' => $id,
-                        'nama_menu' => $menu,
-                        'deskripsi' => $deskripsi[$index],
-                    ];
+            if (!empty($nama_menu)) {
+                // Update existing categories or insert new categories
+                foreach ($nama_menu as $index => $menu) {
+                    // Check if nama_menu and deskripsi are not null and not empty before updating
+                    if (!empty($menu) || !is_null($menu) || !empty($deskripsi[$index]) || !is_null($deskripsi[$index])) {
+                        $id_kategori = 'MNU-' . strtoupper(bin2hex(random_bytes(3))); // Generate a new id_kategori for new menu items
+                        $categoryData = [
+                            'produk_id' => $id,
+                            'id_kategori' => $id_kategori,
+                            'nama_menu' => $menu,
+                            'deskripsi' => $deskripsi[$index],
+                        ];
 
-                    if (isset($existingCategories[$index])) {
-                        // If the category exists, update it
-                        $menuModel->update($existingCategories[$index]['id'], $categoryData);
-                    } else {
-                        // If the category does not exist, insert it
-                        $menuModel->insert($categoryData);
+                        if (isset($existingCategories[$index])) {
+                            // If the category exists, update it
+                            $menuModel->update($existingCategories[$index]['id'], $categoryData);
+                        } else {
+                            // If the category does not exist, insert it
+                            $menuModel->insert($categoryData);
+                        }
                     }
                 }
             }
+
+            // Menangani penghapusan item menu
+            $deleted_menu_ids = $this->request->getPost('id_kategori');
+            if (!empty($deleted_menu_ids)) {
+                foreach ($deleted_menu_ids as $deleted_id) {
+                    // Melakukan penghapusan lunak pada item menu dengan mengatur nilai deleted_at
+                    $categoryData = ['deleted_at' => date('Y-m-d H:i:s')];
+                    $menuModel->update($deleted_id, $categoryData);
+                }
+            }
+
             $db->transCommit(); // Commit transaction
 
             $userModel = new UserModel();
@@ -984,5 +1142,29 @@ class Product extends BaseController
         return redirect()->to('produk/daftar_produk');
     }
 
+    public function dlts($id)
+    {
+        // Load the menu model
+        $menuModel = new MenuModel();
 
+        // Fetch the menu data from the database
+        $menu = $menuModel->find($id);
+
+        // Check if the menu exists in the database
+        if (!$menu) {
+            throw new \CodeIgniter\Exceptions\PageNotFoundException('Menu not found');
+        }
+
+        // Update the deleted_at field to mark it as soft deleted
+        $data = ['deleted_at' => date('Y-m-d H:i:s')];
+        if ($menuModel->update($id, $data)) {
+            // Menu deletion successful
+            session()->setFlashdata('success', 'Menu "' . $menu['nama_menu'] . '" has been soft deleted successfully.');
+        } else {
+            // Menu deletion failed
+            session()->setFlashdata('error', 'Failed to soft delete the menu "' . $menu['nama_menu'] . '".');
+        }
+
+        return redirect()->to('produk/edit/' . $menu['produk_id']); // Ganti dengan URL yang sesuai
+    }
 }

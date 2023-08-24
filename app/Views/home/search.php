@@ -298,14 +298,19 @@ function truncateText($text, $length)
                 <div class="d-flex justify-content-end mt-4">
                     <nav aria-label="Product Pagination">
                         <ul class="pagination pagination-sm">
-                            <li class="page-item disabled">
-                                <a class="page-link" href="#" tabindex="-1" aria-disabled="true">Previous</a>
+                            <!-- Tombol Previous -->
+                            <li class="page-item <?= $currentPage === 1 ? 'disabled' : ''; ?>">
+                                <a class="page-link" href="<?= site_url('produk/index?page=' . ($currentPage - 1)); ?>" tabindex="-1" aria-disabled="true">Previous</a>
                             </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item"><a class="page-link" href="#">2</a></li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item">
-                                <a class="page-link" href="#">Next</a>
+                            <!-- Daftar Nomor Halaman -->
+                            <?php for ($i = 1; $i <= $totalPages; $i++) : ?>
+                                <li class="page-item <?= $currentPage === $i ? 'active' : ''; ?>">
+                                    <a class="page-link" href="<?= site_url('produk/index?page=' . $i); ?>"><?= $i; ?></a>
+                                </li>
+                            <?php endfor; ?>
+                            <!-- Tombol Next -->
+                            <li class="page-item <?= $currentPage === $totalPages ? 'disabled' : ''; ?>">
+                                <a class="page-link" href="<?= site_url('produk/index?page=' . ($currentPage + 1)); ?>">Next</a>
                             </li>
                         </ul>
                     </nav>

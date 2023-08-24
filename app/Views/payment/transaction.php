@@ -263,6 +263,7 @@
                         <div class="row">
                             <div class="col-md-4 col-sm-12">
                                 <select id="reportFormat" class="form-select form-select-sm mb-2" aria-label="Select Report Format">
+                                    <option value="xlsx">Excel</option>
                                     <option value="csv">CSV</option>
                                     <option value="pdf">PDF</option>
                                 </select>
@@ -303,6 +304,7 @@
                                     <th>Status</th>
                                     <th>Reservation Date</th>
                                     <th>Payment Date</th>
+                                    <th>Payment Update</th>
                                     <th>Aksi</th>
                                 </tr>
                             </thead>
@@ -338,6 +340,7 @@
                                         <td><?= $produk_item['status']; ?></td>
                                         <td><?= date('l, d F Y', strtotime($produk_item['tgl_acara'])); ?></td>
                                         <td><?= $produk_item['payment_date']; ?></td>
+                                        <td><?= $produk_item['payment_updated']; ?></td>
                                         <td style="width:20%;">
                                             <div class="btn-group">
                                                 <a href="<?= base_url('payment/invoice/' . $produk_item['id_payment']); ?>" target="_blank" class="btn btn-outline-info"><i class="fas fa-solid fa-file-invoice mr-2"></i>Invoice</a>
@@ -482,7 +485,9 @@
 
                 function generateDownloadUrl(format) {
                     // Logic to generate the download URL based on the selected format
-                    if (format === "csv") {
+                    if (format === "xlsx") {
+                        return "<?= site_url('payment/generateSpreadsheet') ?>";
+                    } else if (format === "csv") {
                         return "<?= site_url('payment/generateCsv') ?>";
                     } else if (format === "pdf") {
                         return "<?= site_url('payment/generatePdf') ?>";

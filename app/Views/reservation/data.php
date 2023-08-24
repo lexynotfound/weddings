@@ -181,7 +181,7 @@
                     </button>
 
                     <!-- Topbar Search -->
-                    <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
+                    <!-- <form class="d-none d-sm-inline-block form-inline mr-auto ml-md-3 my-2 my-md-0 mw-100 navbar-search">
                         <div class="input-group">
                             <input type="text" class="form-control bg-light border-0 small" placeholder="Search for..." aria-label="Search" aria-describedby="basic-addon2">
                             <div class="input-group-append">
@@ -190,7 +190,7 @@
                                 </button>
                             </div>
                         </div>
-                    </form>
+                    </form> -->
 
                     <!-- Topbar Navbar -->
                     <ul class="navbar-nav ml-auto">
@@ -277,6 +277,7 @@
                         <div class="row">
                             <div class="col-md-4 col-sm-12">
                                 <select id="reportFormat" class="form-select form-select-sm mb-2" aria-label="Select Report Format">
+                                    <option value="xlsx">Excel</option>
                                     <option value="csv">CSV</option>
                                     <option value="pdf">PDF</option>
                                 </select>
@@ -458,7 +459,6 @@
             });
         </script>
 
-
         <script>
             const generateReportBtn = document.getElementById("generateReportBtn");
             const reportFormatSelect = document.getElementById("reportFormat");
@@ -474,10 +474,12 @@
 
             function generateDownloadUrl(format) {
                 // Logic to generate the download URL based on the selected format
-                if (format === "csv") {
-                    return "<?= site_url('reservation/generateCsv') ?>";
+                if (format === "xlsx") {
+                    return "<?= site_url('produk/generateSpreadsheet') ?>";
+                } else if (format === "csv") {
+                    return "<?= site_url('produk/generateCsv') ?>";
                 } else if (format === "pdf") {
-                    return "<?= site_url('reservation/generatePdf') ?>";
+                    return "<?= site_url('produk/generatePdf') ?>";
                 } else {
                     return null;
                 }

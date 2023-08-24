@@ -14,6 +14,9 @@ use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\Writer\Xlsx;
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use DateTime;
+use DateInterval;
+
 class Reservation extends BaseController
 {
     protected $db;
@@ -74,14 +77,14 @@ class Reservation extends BaseController
             'title' => 'List Reservation Weddings',
         ];
         $reservation = $this->db->table('reservation')
-        ->select('reservation.id as reservationid, reservation.tgl_acara, reservation.user_id, reservation.transaksi_id, reservation.lokasi, reservation.status, payment.id_payment,payment.total_payment, payment.payment_date,payment.status, reservation.tgl_acara,reservation.lokasi, transaksi.id_transaksi, transaksi.total_harga, transaksi.produk_id,product.nama_produk,product.description,product.photos_filenames,product.harga_produk,user_produk.nama,user_produk.foto,user_produk.lokasi,user_produk.jenis_kelamin,user_produk.telepon,users.nama,users.lokasi,users.jenis_kelamin,users.telepon,users.email')
-        ->join('users', 'users.id = reservation.user_id', 'left')
-        ->join('payment', 'reservation.id = payment.reservation_id', 'left')
-        ->join('transaksi', 'transaksi.id = reservation.transaksi_id', 'left')
-        ->join('product', 'product.id = transaksi.produk_id', 'left')
-        ->join('users as user_produk', 'user_produk.id = product.user_id', 'left')
-        ->orderBy('payment.payment_date', 'DESC')
-        ->get()
+            ->select('reservation.id as reservationid, reservation.tgl_acara, reservation.user_id, reservation.transaksi_id, reservation.lokasi, reservation.status, payment.id_payment,payment.total_payment, payment.payment_date,payment.status, reservation.tgl_acara,reservation.lokasi, transaksi.id_transaksi, transaksi.total_harga, transaksi.produk_id,product.nama_produk,product.description,product.photos_filenames,product.harga_produk,user_produk.nama,user_produk.foto,user_produk.lokasi,user_produk.jenis_kelamin,user_produk.telepon,users.nama,users.lokasi,users.jenis_kelamin,users.telepon,users.email')
+            ->join('users', 'users.id = reservation.user_id', 'left')
+            ->join('payment', 'reservation.id = payment.reservation_id', 'left')
+            ->join('transaksi', 'transaksi.id = reservation.transaksi_id', 'left')
+            ->join('product', 'product.id = transaksi.produk_id', 'left')
+            ->join('users as user_produk', 'user_produk.id = product.user_id', 'left')
+            ->orderBy('payment.payment_date', 'DESC')
+            ->get()
             ->getResultArray();
 
         // Check if the payment exists
@@ -108,7 +111,7 @@ class Reservation extends BaseController
         $this->builder->join('kategori', 'kategori.id = transaksi.menu_id', 'left'); // Use 'left' for LEFT JOIN
         $this->builder->join('product', 'product.id = transaksi.produk_id', 'left'); // Use 'left' for LEFT JOIN
         $this->builder->join('users', 'users.id = transaksi.user_id', 'left'); // Use 'left' for LEFT JOIN
-        $this->builder->orderBy('transaksi.id','DESC');
+        $this->builder->orderBy('transaksi.id', 'DESC');
         // Fetch the reservation data with user names for the given $id
         $this->builder->where('product.id', $id);
         $reservation = $this->builder->get()->getRowArray();
@@ -146,7 +149,6 @@ class Reservation extends BaseController
         if (!$this->validate($rules)) {
             return redirect()->back()->withInput()->with('error', $this->validator->listErrors());
         }
-
         // Validate if the user has completed their profile details
         $userData = user()->toArray();
         if (!$this->isProfileComplete($userData)) {
@@ -192,6 +194,7 @@ class Reservation extends BaseController
             // Handle invalid payment option
             return redirect()->to('reservation/error-page')->with('error', 'Invalid payment option.');
         }
+        
 
         // Save the payment amount and status in the 'reservation' table
         $reservationData = [
@@ -203,6 +206,7 @@ class Reservation extends BaseController
             'payment_amount' => $paymentAmount, // Save the calculated payment amount
             'status' => $status, // Save the status based on the selected payment option
         ];
+        
         $this->reservationModel->insert($reservationData);
 
         // Redirect to the payment page based on the selected payment option and reservation detail ID
@@ -225,6 +229,113 @@ class Reservation extends BaseController
         ];
 
         return view('home/error-page', $data);
+    }
+
+    public function generateSpreadsheet()
+    {
+        // Query data from the database
+        $reservation = $this->db->table('reservation')
+        ->select('reservation.id as reservationid, reservation.tgl_acara, reservation.user_id, reservation.transaksi_id, reservation.lokasi, reservation.status, payment.id_payment,payment.total_payment, payment.payment_date,payment.status, reservation.tgl_acara,reservation.lokasi, transaksi.id_transaksi, transaksi.total_harga, transaksi.produk_id,product.nama_produk,product.description,product.photos_filenames,product.harga_produk,user_produk.nama,user_produk.foto,user_produk.lokasi,user_produk.jenis_kelamin,user_produk.telepon,users.nama,users.lokasi,users.jenis_kelamin,users.telepon,users.email')
+        ->join('users', 'users.id = reservation.user_id', 'left')
+        ->join('payment', 'reservation.id = payment.reservation_id', 'left')
+        ->join('transaksi', 'transaksi.id = reservation.transaksi_id', 'left')
+        ->join('product', 'product.id = transaksi.produk_id', 'left')
+        ->join('users as user_produk', 'user_produk.id = product.user_id', 'left')
+        ->orderBy('payment.payment_date', 'DESC')
+        ->get()
+        ->getResultArray();
+
+
+        // Create a new Spreadsheet instance
+        $spreadsheet = new \PhpOffice\PhpSpreadsheet\Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+
+        // Set column headers
+        $sheet->setCellValue('A1', 'No');
+        $sheet->setCellValue('B1', 'Payment ID');
+        $sheet->setCellValue('C1', 'Nama Package');
+        $sheet->setCellValue('D1', 'Bride Name');
+        $sheet->setCellValue('E1', 'Lokasi');
+        $sheet->setCellValue('F1', 'Weddings Date');
+
+        // Fill data rows
+        $no = 1;
+        $row = 2;
+        foreach ($reservation as $payment_item) {
+            $sheet->setCellValue('A' . $row, $no);
+            $sheet->setCellValue('B' . $row, $payment_item['id_payment']);
+            $sheet->setCellValue('C' . $row, $payment_item['nama_produk']);
+            $sheet->setCellValue('D' . $row, $payment_item['nama']);
+            $sheet->setCellValue('E' . $row, $payment_item['lokasi']);
+            $sheet->setCellValue('F' . $row, $payment_item['tgl_acara']);
+            $no++;
+            $row++;
+        }
+
+        // Create Excel file
+        $writer = new \PhpOffice\PhpSpreadsheet\Writer\Xlsx($spreadsheet);
+
+        // Define the file path
+        $filePath = FCPATH . 'public/writable/temp/laporan_transaction.xlsx';
+
+        // Ensure the directory exists, if not, create it
+        if (!is_dir(dirname($filePath))) {
+            mkdir(dirname($filePath), 0777, true);
+        }
+
+        // Save the file to the specified path
+        $writer->save($filePath);
+
+        // Set appropriate headers for download
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment; filename="laporan_transaction.xlsx"');
+        header('Content-Length: ' . filesize($filePath));
+        readfile($filePath);
+        exit;
+    }
+
+    public function generateCsv()
+    {
+        // Query data from the database
+        $reservation = $this->db->table('reservation')
+        ->select('reservation.id as reservationid, reservation.tgl_acara, reservation.user_id, reservation.transaksi_id, reservation.lokasi, reservation.status, payment.id_payment,payment.total_payment, payment.payment_date,payment.status, reservation.tgl_acara,reservation.lokasi, transaksi.id_transaksi, transaksi.total_harga, transaksi.produk_id,product.nama_produk,product.description,product.photos_filenames,product.harga_produk,user_produk.nama,user_produk.foto,user_produk.lokasi,user_produk.jenis_kelamin,user_produk.telepon,users.nama,users.lokasi,users.jenis_kelamin,users.telepon,users.email')
+        ->join('users', 'users.id = reservation.user_id', 'left')
+        ->join('payment', 'reservation.id = payment.reservation_id', 'left')
+        ->join('transaksi', 'transaksi.id = reservation.transaksi_id', 'left')
+        ->join('product', 'product.id = transaksi.produk_id', 'left')
+        ->join('users as user_produk', 'user_produk.id = product.user_id', 'left')
+        ->orderBy('payment.payment_date', 'DESC')
+            ->get()
+            ->getResultArray();
+
+        // Prepare CSV data
+        $csvData = [];
+        $csvData[] = ['No', 'ID Transaction', 'Nama Package', 'Bride Name', 'Lokasi', 'Status', 'Weddings Date'];
+
+        $no = 1;
+        foreach ($reservation as $produk_item) {
+            $csvData[] = [
+                $no,
+                $produk_item['id_payment'],
+                $produk_item['nama_produk'],
+                $produk_item['nama'],
+                $produk_item['lokasi'],
+                $produk_item['tgl_acara'],
+
+            ];
+            $no++;
+        }
+
+        // Set the response header for CSV download
+        header('Content-Type: text/csv');
+        header('Content-Disposition: attachment; filename="laporan_transaction.csv"');
+
+        // Output CSV data directly
+        $output = fopen('php://output', 'w');
+        foreach ($csvData as $row) {
+            fputcsv($output, $row);
+        }
+        fclose($output);
     }
 
     /* private function isProfileComplete($user)

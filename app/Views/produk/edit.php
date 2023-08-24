@@ -31,9 +31,9 @@
 
                     <div class="container">
                         <div class="row justify-content-center">
-                            <div class="col-md-8"> <!-- Adjust the column width as needed -->
-                                <form action="" class="d-flex align-items-center">
-                                    <input type="text" id="inputPassword5" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;"> <!-- Adjust the width as needed -->
+                            <div class="col-md-8">
+                                <form action="<?= base_url('home/search'); ?>" method="get" class="d-flex align-items-center" id="searchForm">
+                                    <input type="text" id="inputPassword5" name="q" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;">
                                 </form>
                             </div>
                         </div>
@@ -122,6 +122,7 @@
                 <!-- Product Form Card -->
                 <p>Edit Package</p>
                 <div class="card mt-4">
+                    <pre><?= print_r($product, true); ?></pre>
                     <form action="<?= site_url('produk/update/' . $product['produkid']); ?>" method="post" enctype="multipart/form-data">
                         <?= csrf_field() ?>
                         <div class="card-body">
@@ -142,7 +143,25 @@
                             </div>
 
                             <!-- Kategori Data Section -->
-                            <!-- Kategori Data Section -->
+                            <div class="mb-5">
+                                <label for="kategori_id" class="form-label">Kategori: </label>
+                                <div class="container">
+                                    <div class="row">
+                                        <div class="col-12 col-md-6"> <!-- Adjust col-md-6 to your desired width -->
+                                            <select class="form-select" name="kategori_id">
+                                                <option value="">Pilih Kategori:</option>
+                                                <?php foreach ($kategori as $row) : ?>
+                                                    <option value="<?= $row['id']; ?>" <?= ($row['id'] == $product['kategori_id']) ? 'selected' : ''; ?>>
+                                                        <?= $row['nama_categories']; ?>
+                                                    </option>
+                                                <?php endforeach; ?>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Menu Data Section -->
                             <div class="mb-3">
                                 <label for="kategori_id" class="form-label">Menu:</label>
                                 <div class="input-container">
@@ -153,14 +172,15 @@
                                         <div class="menu-entry">
                                             <input type="text" name="nama_menu[]" class="form-control mb-3" value="<?= old('nama_menu', $item['nama_menu']); ?>">
                                             <textarea name="deskripsi[]" class="form-control mb-3"><?= old('deskripsi', $item['deskripsi']); ?></textarea>
-                                            <button type="button" class="delete-icon btn btn-circle btn-outline-danger mb-3" ">Hapus -</button>
+                                            <!-- <button type="button" class="delete-icon btn btn-circle btn-outline-danger mb-3" onclick="deleteMenu(<?= $item['id']; ?>)">Hapus -</button> -->
+                                            <a href="<?= base_url('produk/dlts/' . $item['id']); ?>" onclick="return confirm('Anda yakin ingin menghapus paket ini <?= $item['nama_menu']; ?> ?');" class="delete-icon btn btn-circle btn-outline-danger mb-3"><i class="fa fa-trash"></i></a>
                                         </div>
                                     <?php endforeach; ?>
                                 </div>
                             </div>
 
                             <!-- Photo Upload Sections -->
-                            <div class="row justify-content-center">
+                            <div class=" row justify-content-center">
                                 <div class="col-md-4 d-flex justify-content-center align-items-center">
                                     <div class="photo-upload-section">
                                         <img src="<?= base_url('uploads/' . $product['photos_filenames']); ?>" class="uploaded-image" alt="Uploaded Photo">
@@ -320,6 +340,11 @@
                 const newInputFields = document.createElement("div");
                 newInputFields.classList.add("menu-entry");
 
+                const inputId = document.createElement("input");
+                inputId.type = "hidden";
+                inputId.name = "id_kategori[]"; // Use the correct input name
+                inputId.value = ""; // Set an appropriate value here
+
                 const inputName = document.createElement("input");
                 inputName.type = "text";
                 inputName.name = "nama_menu[]";
@@ -336,6 +361,7 @@
                 deleteIconBtn.classList.add("delete-icon", "btn", "btn-circle", "btn-outline-danger", "mb-3");
                 deleteIconBtn.innerText = "Hapus -";
 
+                newInputFields.appendChild(inputId);
                 newInputFields.appendChild(inputName);
                 newInputFields.appendChild(textareaDesc);
                 newInputFields.appendChild(deleteIconBtn);
@@ -357,6 +383,8 @@
             });
         });
     </script>
+
+
 
     <script>
         function previewImage(event) {

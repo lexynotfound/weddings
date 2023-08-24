@@ -80,6 +80,7 @@ $routes->group('payment', ['namespace' => 'App\Controllers'], function ($routes)
     $routes->get('transaction', 'Payment::transaction', ['filter' => 'role:admin']);
     $routes->get('generateCsv', 'Payment::generateCsv', ['filter' => 'role:admin']);
     $routes->get('generatePdf', 'Payment::generatePdf', ['filter' => 'role:admin']);
+    $routes->get('generateSpreadsheet', 'Payment::generateSpreadsheet', ['filter' => 'role:admin']);
 });
 
 $routes->group('invoice', ['namespace' => 'App\Controllers'], function ($routes) {
@@ -160,9 +161,10 @@ $routes->group('produk', ['namespace' => 'App\Controllers'], function ($routes) 
     $routes->get('edit/(:num)', 'Product::edit/$1', ['filter' => 'role:admin']);
     $routes->post('update/(:num)','Product::update/$1', ['filter' => 'role:admin']);
     $routes->get('delete/(:num)', 'Product::delete/$1', ['filter' => 'role:admin']);
-    $routes->get('deletes/(:num)', 'Product::deletes/$1', ['filter' => 'role:admin']);
+    $routes->get('dlts/(:num)', 'Product::dlts/$1', ['filter' => 'role:admin']);
     $routes->get('generateCsv', 'Product::generateCsv', ['filter' => 'role:admin']);
     $routes->get('generatePdf','Product::generatePdf', ['filter' => 'role:admin']);
+    $routes->get('generateSpreadsheet', 'Product::generateSpreadsheet', ['filter' => 'role:admin']);
 
 });
 

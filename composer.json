@@ -13,6 +13,7 @@
         "nesbot/carbon": "^2.68",
         "paragonie/certainty": "^2.8",
         "phpoffice/phpexcel": "^1.8",
+        "phpoffice/phpspreadsheet": "^1.29",
         "symfony/filesystem": "^6.3"
     },
     "require-dev": {

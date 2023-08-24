@@ -208,7 +208,7 @@
     <section class="bg-white">
         <div class="container my-5 py-5 fw-bolder">
             <h4 class="text-start mb-4 text pb-2">Reviews</h4>
-            <?php if (logged_in() && $payment) : ?>
+            <?php if (logged_in() && $allow_review) : ?>
                 <!-- Display review form here -->
                 <div class="row justify-content-center">
                     <div class="col-md-10 col-lg-16 col-xl-16">
@@ -315,6 +315,11 @@
                     </div>
                 </div>
             <?php else : ?>
+            <!-- Display a message indicating that the user cannot review again -->
+            <div class="alert alert-info">
+                You have already reviewed this product.
+                <span class="badge bg-secondary">Reviewed</span>
+            </div>
                 <!-- Display message and progress bars -->
                 <div class="row">
                     <div class="col-md-2">

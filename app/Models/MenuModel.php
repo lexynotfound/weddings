@@ -10,7 +10,7 @@ class MenuModel extends Model
     protected $primaryKey = 'id';
     protected $returnType = 'array';
     protected $useSoftDeletes = true;
-    protected $allowedFields = ['nama_menu','id_kategori','produk_id','deskripsi','isi','created_at','updated_at'];
+    protected $allowedFields = ['nama_menu','id_kategori','produk_id','deskripsi','isi','created_at','updated_at','deleted_at'];
 
 
     protected $useTimestamps  = true;
