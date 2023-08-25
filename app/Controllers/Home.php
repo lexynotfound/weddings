@@ -348,10 +348,9 @@ class Home extends BaseController
 
         // Pass the review data to the view
         $data['reviews'] = $reviews;
-
         // Check if the user is logged in and if payment data is available
         $user_id = user_id();
-        $allow_review = true;
+        $allow_review = false;
 
         if (logged_in() && $payment) {
             // Check if the user has made a payment for this transaction
@@ -361,19 +360,17 @@ class Home extends BaseController
                 ->get()
                 ->getRowArray();
 
-            if ($userTransaction) {
-                // Check if the user has already reviewed this item
-                $has_reviewed = false;
-                foreach ($reviews as $review) {
-                    if ($review['transaksi_id'] == $payment['transaksi_id']) {
-                        $has_reviewed = true;
-                        break;
-                    }
+            // Check if the user has already reviewed this item
+            $has_reviewed = false;
+            foreach ($reviews as $review) {
+                if ($review['transaksi_id'] == $payment['transaksi_id']) {
+                    $has_reviewed = true;
+                    break;
                 }
-
-                // If the user has not reviewed, allow them to review
-                $allow_review = !$has_reviewed;
             }
+
+            // If the user has made a payment and hasn't reviewed, allow them to review
+            $allow_review = ($userTransaction && !$has_reviewed);
         }
 
         // Pass the allow_review data to the view
