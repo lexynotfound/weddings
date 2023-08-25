@@ -348,6 +348,19 @@ class Home extends BaseController
 
         // Pass the review data to the view
         $data['reviews'] = $reviews;
+
+        // Fetch the payment data for the given $id
+        $payment = $this->getPaymentData($id);
+
+        // Pass the payment data to the view
+        $data['payment'] = $payment;
+
+        // Fetch the reviews data for the given product $id
+        $reviews = $this->getReview($id);
+
+        // Pass the review data to the view
+        $data['reviews'] = $reviews;
+
         // Check if the user is logged in and if payment data is available
         $user_id = user_id();
         $allow_review = false;
@@ -356,9 +369,9 @@ class Home extends BaseController
             // Check if the user has made a payment for this transaction
             $userTransaction = $this->db->table('payment')
             ->where('user_id', $user_id)
-                ->where('id', $payment['transaksi_id']) // Use 'transaksi_id' from payment data
-                ->get()
-                ->getRowArray();
+            ->where('id', $payment['transaksi_id']) // Use 'transaksi_id' from payment data
+            ->get()
+            ->getRowArray();
 
             // Check if the user has already reviewed this item
             $has_reviewed = false;
@@ -371,6 +384,19 @@ class Home extends BaseController
 
             // If the user has made a payment and hasn't reviewed, allow them to review
             $allow_review = ($userTransaction && !$has_reviewed);
+        }
+
+        // If the user hasn't reviewed and has made a payment, allow them to review
+        if ($payment && !$allow_review) {
+            // Check if the user has made a payment for this product based on product_id
+            $userTransactionForProduct = $this->db->table('payment')
+            ->where('user_id', $user_id)
+            ->where('produk_id', $id) // Use 'produk_id' from product data
+            ->get()
+            ->getRowArray();
+
+            // If the user has made a payment for this product and hasn't reviewed, allow them to review
+            $allow_review = ($userTransactionForProduct && !$has_reviewed);
         }
 
         // Pass the allow_review data to the view
