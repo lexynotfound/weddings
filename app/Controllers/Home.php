@@ -351,7 +351,7 @@ class Home extends BaseController
 
         // Check if the user is logged in and if payment data is available
         $user_id = user_id();
-        $allow_review = false;
+        $allow_review = true;
 
         if (logged_in() && $payment) {
             // Check if the user has made a payment for this transaction
@@ -774,6 +774,7 @@ class Home extends BaseController
     {
         $this->builder = $this->db->table('kategori');
         $this->builder->where('produk_id', $produk_id);
+        $this->builder->where('deleted_at');
         return $this->builder->get()->getResultArray();
     }
 

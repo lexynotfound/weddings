@@ -483,32 +483,32 @@
                         <div class=" p-4">
                             <h4 class="text-start mb-4 pb-2"></h4>
                             <div class="row">
-                                <?php if (logged_in()) : ?>
-                                    <div class="col">
-                                        <?php foreach ($reviews as $review) : ?>
-                                            <div class="review-item">
-                                                <div class="d-flex flex-start">
-                                                    <?php if ($review['foto'] === 'default.png') : ?>
-                                                        <img class="rounded-circle shadow-1-strong me-3" src="<?= base_url() ?>/images/<?= $review['foto']; ?>" alt="avatar" width="65" height="65" />
-                                                    <?php else : ?>
-                                                        <img class="rounded-circle shadow-1-strong me-3" src="<?= base_url('uploads/' . $review['foto']); ?>" alt="avatar" width="65" height="65" />
-                                                    <?php endif; ?>
-                                                    <div class="flex-grow-1 flex-shrink-1">
-                                                        <div class="mb-3 mt-3">
-                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                <p class="mb-1">
-                                                                    <?= $review['nama'] ?> <span class="small">- <?= date('l, d F Y', strtotime($review['created_at'])); ?></span>
-                                                                </p>
-                                                                <a href="javascript:void(0);" class="reply-button" data-review-id="<?= $review['reviewsid'] ?>">
-                                                                    <i class="fas fa-solid fa-comments fa-lg"></i><span class="small"></span>
-                                                                </a>
-                                                            </div>
-                                                            <p class="small mb-0">
-                                                                <?= $review['review'] ?>
+                                <div class="col">
+                                    <?php foreach ($reviews as $review) : ?>
+                                        <div class="review-item">
+                                            <div class="d-flex flex-start">
+                                                <?php if ($review['foto'] === 'default.png') : ?>
+                                                    <img class="rounded-circle shadow-1-strong me-3" src="<?= base_url() ?>/images/<?= $review['foto']; ?>" alt="avatar" width="65" height="65" />
+                                                <?php else : ?>
+                                                    <img class="rounded-circle shadow-1-strong me-3" src="<?= base_url('uploads/' . $review['foto']); ?>" alt="avatar" width="65" height="65" />
+                                                <?php endif; ?>
+                                                <div class="flex-grow-1 flex-shrink-1">
+                                                    <div class="mb-3 mt-3">
+                                                        <div class="d-flex justify-content-between align-items-center">
+                                                            <p class="mb-1">
+                                                                <?= $review['nama'] ?> <span class="small">- <?= date('l, d F Y', strtotime($review['created_at'])); ?></span>
                                                             </p>
+                                                            <!-- <a href="javascript:void(0);" class="reply-button" data-review-id="<?= $review['reviewsid'] ?>">
+                                                                <i class="fas fa-solid fa-comments fa-lg"></i><span class="small"></span>
+                                                            </a> -->
                                                         </div>
-                                                        <div class="replies-container">
-                                                            <!-- Loop through replies using PHP -->
+                                                        <p class="small mb-0">
+                                                            <?= $review['review'] ?>
+                                                        </p>
+                                                    </div>
+                                                    <div class="replies-container">
+                                                        <!-- Loop through replies using PHP -->
+                                                        <?php if (logged_in() && isset($review['replies'])) : ?>
                                                             <?php foreach ($review['replies'] as $reply) : ?>
                                                                 <div class="d-flex flex-start mt-3">
                                                                     <a class="me-3" href="#">
@@ -522,7 +522,6 @@
                                                                         <div>
                                                                             <div class="d-flex justify-content-between align-items-center">
                                                                                 <p class="mb-1">
-                                                                                    <!--  <?= $reply['nama']; ?> <span class="small">- <?= date('l, d F Y', strtotime($reply['created_at'])); ?></span> -->
                                                                                     <?= $reply['nama']; ?> <span class="small time-ago" data-timestamp="<?= strtotime($reply['created_at']); ?>"></span>
                                                                                 </p>
                                                                             </div>
@@ -533,91 +532,23 @@
                                                                     </div>
                                                                 </div>
                                                             <?php endforeach; ?>
-                                                            <!-- Newly added replies through AJAX will be inserted here -->
-                                                            <div class="new-replies-container">
+                                                        <?php endif; ?>
+                                                        <!-- Newly added replies through AJAX will be inserted here -->
+                                                        <div class="new-replies-container">
 
-                                                            </div>
                                                         </div>
-                                                        <!-- Reply Form -->
+                                                    </div>
+                                                    <!-- Reply Form -->
+                                                    <?php if (logged_in()) : ?>
                                                         <form class="reply-form d-none" action="<?= base_url('home/save/' . $review['reviewsid']) ?>" method="">
-                                                            <?= csrf_field(); ?>
-                                                            <div class="d-flex align-items-center mt-3 ms-2">
-                                                                <?php if (user()->foto === 'default.png') : ?>
-                                                                    <img class="rounded-circle shadow-1-strong ms-4" src="<?= base_url() ?>/images/<?= user()->foto; ?>" alt="avatar" width="65" height="65" />
-                                                                <?php else : ?>
-                                                                    <img class="rounded-circle shadow-1-strong ms-4" src="<?= base_url('uploads/' . user()->foto); ?>" alt="avatar" width="65" height="65" />
-                                                                <?php endif; ?>
-                                                                <input type="hidden" name="review_id" value="<?= $review['reviewsid'] ?>">
-                                                                <input type="text" class="form-control" name="reply" placeholder="Reply to @<?= $review['nama'] ?>" />
-                                                                <button type="submit" class="btn btn-primary btn-sm ms-3">Submit</button>
-                                                            </div>
+                                                            <!-- ... (form code) ... -->
                                                         </form>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                        <?php endforeach; ?>
-                                    <?php else : ?>
-                                        <?php foreach ($reviews as $review) : ?>
-                                            <div class="review-item">
-                                                <div class="d-flex flex-start">
-                                                    <?php if ($review['foto'] === 'default.png') : ?>
-                                                        <img class="rounded-circle shadow-1-strong me-3" src="<?= base_url() ?>/images/<?= $review['foto']; ?>" alt="avatar" width="65" height="65" />
-                                                    <?php else : ?>
-                                                        <img class="rounded-circle shadow-1-strong me-3" src="<?= base_url('uploads/' . $review['foto']); ?>" alt="avatar" width="65" height="65" />
                                                     <?php endif; ?>
-                                                    <div class="flex-grow-1 flex-shrink-1">
-                                                        <div class="mb-3 mt-3">
-                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                <p class="mb-1">
-                                                                    <!-- <?= $review['nama'] ?> <span class="small">- <?= date('l, d F Y', strtotime($review['created_at'])); ?></span> -->
-                                                                    <?= $reply['nama']; ?> <span class="small time-ago" data-timestamp="<?= strtotime($reply['created_at']); ?>"></span>
-                                                                </p>
-                                                                <a href="javascript:void(0);" class="reply-button" data-review-id="<?= $review['reviewsid'] ?>">
-                                                                    <!-- <i class="fas fa-solid fa-comments fa-lg"></i><span class="small"></span> -->
-                                                                </a>
-                                                            </div>
-                                                            <p class="small mb-0">
-                                                                <?= $review['review'] ?>
-                                                            </p>
-                                                        </div>
-                                                        <div class="replies-container">
-                                                            <!-- Loop through replies using PHP -->
-                                                            <?php foreach ($review['replies'] as $reply) : ?>
-                                                                <div class="d-flex flex-start mt-3">
-                                                                    <a class="me-3" href="#">
-                                                                        <?php if ($reply['foto'] === 'default.png') : ?>
-                                                                            <img class="rounded-circle shadow-1-strong me-3" src="<?= base_url() ?>/images/<?= $reply['foto']; ?>" alt="avatar" width="65" height="65" />
-                                                                        <?php else : ?>
-                                                                            <img class="rounded-circle shadow-1-strong me-3" src="<?= base_url('uploads/' . $reply['foto']); ?>" alt="avatar" width="65" height="65" />
-                                                                        <?php endif; ?>
-                                                                    </a>
-                                                                    <div class="flex-grow-1 flex-shrink-1">
-                                                                        <div>
-                                                                            <div class="d-flex justify-content-between align-items-center">
-                                                                                <p class="mb-1">
-                                                                                    <!-- <?= $reply['nama']; ?> <span class="small">- <?= date('l, d F Y', strtotime($reply['created_at'])); ?></span> -->
-                                                                                    <?= $reply['nama']; ?> <span class="small time-ago" data-timestamp="<?= strtotime($reply['created_at']); ?>"></span>
-                                                                                </p>
-                                                                            </div>
-                                                                            <p class="small mb-1">
-                                                                                <?= $reply['reply']; ?>
-                                                                            </p>
-                                                                        </div>
-                                                                    </div>
-                                                                </div>
-                                                            <?php endforeach; ?>
-                                                            <!-- Newly added replies through AJAX will be inserted here -->
-                                                            <div class="new-replies-container">
-
-                                                            </div>
-                                                        </div>
-                                                        <!-- Reply Form -->
-                                                    </div>
                                                 </div>
                                             </div>
-                                        <?php endforeach; ?>
-                                    </div>
-                                <?php endif; ?>
+                                        </div>
+                                    <?php endforeach; ?>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -625,6 +556,7 @@
             </div>
         </div>
     </section>
+
 
 
     <!-- End Reviews -->

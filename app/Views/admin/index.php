@@ -316,12 +316,12 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="col-md-6">
+                            <!-- <div class="col-md-6">
                                 <div class="card mb-4 mb-md-0">
                                     <div class="card-body">
                                         <p class="mb-4"><span class="text-primary font-italic me-1">Calendar</span>
                                         </p>
-                                        <!--  -->
+                                        
                                         <div class="card mt-4 mb-1" style="height: 200px;">
                                             <div class="card-body d-flex">
                                                 <div id="calendar"></div>
@@ -329,7 +329,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div> -->
                         </div>
                         <!-- Akhir dari Perhitungan -->
                         <div class="row">

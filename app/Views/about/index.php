@@ -118,7 +118,28 @@
                         </div><!-- End Gallery Item -->
                     <?php endforeach; ?>
                 </div>
-            </div>
+                <div class="row gy-4 justify-content-center">
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="gallery-item h-100">
+                            <img src="<?= base_url() ?>/video/vd.mp4" class="img-fluid" alt="" type="video/mp4" />>
+                            <div class="gallery-links d-flex align-items-center justify-content-center">
+                                <a href="<?= base_url() ?>/video/vd.mp4" title="Video Weddings" class="glightbox preview-link"><i class="bi bi-arrows-angle-expand"></i></a>
+                                <!-- <a href="gallery-single.html" class="details-link"><i class="bi bi-link-45deg"></i></a> -->
+                            </div>
+                        </div>
+                    </div><!-- End Gallery Item -->
+                </div>
+                <div class="row gy-4 justify-content-center">
+                    <div class="col-xl-3 col-lg-4 col-md-6">
+                        <div class="gallery-item h-100">
+                            <img src="<?= base_url() ?>/video/vdd.mp4" class="img-fluid" alt="" type="video/mp4" />>
+                            <div class="gallery-links d-flex align-items-center justify-content-center">
+                                <a href="<?= base_url() ?>/video/vdd.mp4" title="Video Weddings" class="glightbox preview-link"><i class="bi bi-arrows-angle-expand"></i></a>
+                                <!-- <a href="gallery-single.html" class="details-link"><i class="bi bi-link-45deg"></i></a> -->
+                            </div>
+                        </div>
+                    </div><!-- End Gallery Item -->
+                </div>
         </section><!-- End Gallery Section -->
 
     </main><!-- End #main -->
