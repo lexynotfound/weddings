@@ -123,13 +123,13 @@ function truncateText($text, $length)
 <body>
 
 
-    <header>
-        <div class="container mt-4">
+    <header class="sticky-top">
+        <div class="container mt-3">
             <nav class="navbar navbar-expand-lg bg-white ms-auto">
                 <!-- ... (rest of the header code) ... -->
                 <div class="container">
                     <a class="navbar-brand" href="<?= base_url('home'); ?>">
-                        <img src="<?= base_url(); ?>/images/logo.jpg" alt="logo" srcset="" width="100" height="100" class="d-inline-block align-text-top">
+                        <img src="<?= base_url(); ?>/images/logo.jpg" alt="logo" srcset="" width="140" height="140" class="d-inline-block align-text-top">
                     </a>
 
                     <div class="container">
@@ -149,7 +149,7 @@ function truncateText($text, $length)
                         <ul class="navbar-nav ms-auto">
                             <div class="topbar-divider d-none d-sm-block"></div>
 
-                            <a class="nav-link" href="https://wa.me/+621295304698" id="chatDropdown" target="_blank"  aria-haspopup="true" aria-expanded="false">
+                            <a class="nav-link" href="https://wa.me/+621295304698" id="chatDropdown" target="_blank" aria-haspopup="true" aria-expanded="false">
                                 <img src="<?= base_url(); ?>/images/WhatsApp.png" style="width: 40px; height: 40px;" alt="">
                                 <!-- <i class=" fas fa-brands fa-square-whatsapp"></i>
                                 Notification Badge (optional)
@@ -235,9 +235,40 @@ function truncateText($text, $length)
                 </div>
             </nav>
         </div>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #ffff;">
+            <!-- Container wrapper -->
+            <div class="container justify-content-center justify-content-md-between">
+                <!-- Toggle button -->
+                <button class="navbar-toggler border text-dark py-2" type="button" data-mdb-toggle="collapse" data-mdb-target="#navbarLeftAlignExample" aria-controls="navbarLeftAlignExample" aria-expanded="false" aria-label="Toggle navigation">
+                    <i class="fas fa-bars"></i>
+                </button>
+
+                <!-- Collapsible wrapper -->
+                <div class="collapse navbar-collapse" id="navbarLeftAlignExample">
+                    <!-- Left links -->
+                    <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" aria-current="page" href="<?=base_url('home')?>">Home</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="<?=base_url('category')?>">Categories</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="<?=base_url('best')?>">Best</a>
+                        </li>
+                        </li>
+                    </ul>
+                    <!-- Left links -->
+                </div>
+            </div>
+            <!-- Container wrapper -->
+            <hr style="border-top: 1px solid black; margin-top: 5px;">
+        </nav>
+        <!-- Navbar -->
     </header>
 
-    <div class="container">
+    <div class=" container">
 
         <div class="container my-5">
             <div id="carouselExample" class="carousel slide" data-bs-ride="carousel">
@@ -380,16 +411,16 @@ function truncateText($text, $length)
                 <div class="col mb-3">
                     <h5>Tenda Hj. Yus</h5>
                     <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a href="<?=base_url('home')?>" class="nav-link p-0 text-muted">Home</a></li>
-                        <li class="nav-item mb-2"><a href="<?=base_url('user/transaksi')?>" class="nav-link p-0 text-muted">Orders History</a></li>
+                        <li class="nav-item mb-2"><a href="<?= base_url('home') ?>" class="nav-link p-0 text-muted">Home</a></li>
+                        <li class="nav-item mb-2"><a href="<?= base_url('user/transaksi') ?>" class="nav-link p-0 text-muted">Orders History</a></li>
                     </ul>
                 </div>
 
                 <div class="col mb-3">
                     <h5>TENTANG KAMI</h5>
                     <ul class="nav flex-column">
-                        <li class="nav-item mb-2"><a href="<?=base_url('about')?>" class="nav-link p-0 text-muted">About</a></li>
-                        <li class="nav-item mb-2"><a href="<?=base_url('about')?>" class="nav-link p-0 text-muted">Contact</a></li>
+                        <li class="nav-item mb-2"><a href="<?= base_url('about') ?>" class="nav-link p-0 text-muted">About</a></li>
+                        <li class="nav-item mb-2"><a href="<?= base_url('about') ?>" class="nav-link p-0 text-muted">Contact</a></li>
                         <li class="nav-item mb-2"><a href="#" class="nav-link p-0 text-muted">FAQs</a></li>
                     </ul>
                 </div>
