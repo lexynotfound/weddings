@@ -24,111 +24,186 @@
 <body>
     <!-- Navigation-->
     <header>
-        <div class="container mt-4">
-            <nav class="navbar navbar-expand-lg bg-white ms-auto">
-                <!-- ... (rest of the header code) ... -->
-                <div class="container">
-                    <a class="navbar-brand" href="<?= base_url('home'); ?>">
-                        <img src="<?= base_url(); ?>/images/logo.jpg" alt="logo" srcset="" width="100" height="100" class="d-inline-block align-text-top">
-                    </a>
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #F4F5F4;">
+            <!-- Container wrapper -->
+            <div class="container justify-content-end justify-content-md-between">
+                <!-- Toggle button -->
 
-                    <div class="container">
-                        <div class="row justify-content-center">
-                            <div class="col-md-8"> <!-- Adjust the column width as needed -->
-                                <form action="" class="d-flex align-items-center">
-                                    <input type="text" id="inputPassword5" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;"> <!-- Adjust the width as needed -->
+                <!-- Collapsible wrapper -->
+                <div class="collapse navbar-collapse" id="navbarLeftAlignExample">
+                    <!-- Right-aligned links -->
+                    <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" aria-current="page" href="<?= base_url('about') ?>">About</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="<?= base_url('about') ?>">Contact</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link text-dark" href="#">FAQs</a>
+                        </li>
+                    </ul>
+                    <!-- Right-aligned links -->
+                </div>
+            </div>
+            <!-- Container wrapper -->
+        </nav>
+        <!-- Navbar -->
+    </header>
+
+
+    <header class="sticky-top">
+        <!-- Jumbotron -->
+        <div class="p-3 text-center bg-white border-bottom mt-2">
+            <div class="container">
+                <div class="row gy-4">
+                    <!-- Left elements -->
+                    <div class="col-lg-2 col-sm-4 col-4 row justify-content-center">
+                        <a href="<?= base_url('home') ?>" class="float-start">
+                            <img src="<?= base_url() ?>/images/logo.jpg" height="120" width="120" />
+                        </a>
+                    </div>
+                    <!-- Left elements -->
+
+                    <!-- Center elements -->
+                    <div class="order-lg-last col-lg-5 col-sm-8 col-8">
+                        <div class="d-flex float-end">
+                            <nav class="navbar navbar-expand-lg bg-white ms-auto">
+                                <!-- ... (rest of the header code) ... -->
+                                <div class="container">
+
+                                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+                                        <span class="navbar-toggler-icon"></span>
+                                    </button>
+                                    <div class="collapse navbar-collapse custom-dropdown" id="navbarNav">
+                                        <ul class="navbar-nav ms-auto">
+                                            <div class="topbar-divider d-none d-sm-block"></div>
+
+                                            <!-- Bell Notification Dropdown -->
+
+                                            <!-- Chat Notification Dropdown -->
+
+                                            <!-- WhatsApp Icon -->
+                                            <div class="me-3">
+                                                <a class="nav-link" href="https://wa.me/+6288975562380" id="chatDropdown" target="_blank" role="button" aria-haspopup="true" aria-expanded="false">
+                                                    <img src="<?= base_url(); ?>/images/WhatsApp.png" style="width: 40px; height: 40px;" alt="">
+                                                </a>
+                                            </div>
+
+
+                                            <!-- Nav Item - User Information -->
+                                            <li class="nav-item dropdown no-arrow">
+                                                <!-- ... (rest of the user information dropdown code) ... -->
+                                                <?php if (logged_in()) : ?>
+
+                                                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                                        <span class="mr-4 d-none d-lg-inline text-gray-600 small me-1"><?= user()->username; ?></span>
+                                                        <?php
+                                                        $foto = user()->foto;
+                                                        if ($foto === 'default.png') {
+                                                        ?>
+                                                            <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                                        <?php
+                                                        } else {
+                                                        ?>
+                                                            <img src="<?= base_url('uploads/' . $foto); ?>" class="img-profile rounded-circle ms-auto" alt="Foto Profile" style="width: 40px; height: 40px;">
+                                                        <?php
+                                                        }
+                                                        ?>
+                                                    </a>
+                                                    <!-- Dropdown - User Information -->
+                                                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
+                                                        <?php if (in_groups('admin')) : ?>
+                                                            <a class="dropdown-item" href="<?= base_url('admin'); ?>">
+                                                                <i class="fas fa-fw fa-tachometer-alt mr-2 text-gray-400"></i>
+                                                                Dashboard
+                                                            </a>
+                                                            <div class="dropdown-divider"></div>
+                                                        <?php endif; ?>
+                                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
+                                                            <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
+                                                            Reservation
+                                                        </a>
+                                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
+                                                            <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
+                                                            Transaction
+                                                        </a>
+                                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
+                                                            <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
+                                                            Settings
+                                                        </a>
+                                                        <div class="dropdown-divider"></div>
+                                                        <a class="dropdown-item" href="<?= base_url('logout'); ?>" data-toggle="modal" data-target="#logoutModal">
+                                                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
+                                                            Logout
+                                                        </a>
+                                                    </div>
+                                                <?php else : ?>
+                                                    <div class="d-flex btn-container gap-3 ml-5">
+                                                        <a href="<?= base_url('login'); ?>" class="text-decoration-none">
+                                                            <button class="btn btn-info text-white " type="submit">
+                                                                Login
+                                                            </button>
+                                                        </a>
+                                                        <a href="<?= base_url('register'); ?> " class="text-decoration-none">
+                                                            <button class="btn btn-info text-white" type="submit">
+                                                                Register
+                                                            </button>
+                                                        </a>
+                                                    </div>
+                                                <?php endif ?>
+                                            </li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </nav>
+                        </div>
+                    </div>
+                    <!-- Center elements -->
+
+                    <!-- Right elements -->
+                    <div class="col-lg-5 col-md-12 col-12">
+                        <div class="input-group float-center row justify-content-center">
+                            <div class="form-outline">
+                                <!-- Search form -->
+                                <form action="<?= base_url('home/search'); ?>" method="get" class="d-flex align-items-center" id="searchForm">
+                                    <input type="text" id="inputPassword5" name="q" class="form-control form-control-md" aria-labelledby="passwordHelpBlock" placeholder="Search" style="width: 100%;">
                                 </form>
                             </div>
                         </div>
                     </div>
-
-                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-                        <span class="navbar-toggler-icon"></span>
-                    </button>
-                    <div class="collapse navbar-collapse custom-dropdown" id="navbarNav">
-                        <ul class="navbar-nav ms-auto">
-                            <div class="topbar-divider d-none d-sm-block"></div>
-
-                            <!-- Bell Notification Dropdown -->
-
-                            <!-- Chat Notification Dropdown -->
-                            <li class="nav-item dropdown no-arrow me-1">
-                                <a class="nav-link dropdown-toggle" href="https://wa.me/+621295304698" id="chatDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                    <img src="<?= base_url(); ?>/images/WhatsApp.png" style="width: 40px; height: 40px;" alt="">
-                                    <!-- <i class=" fas fa-brands fa-square-whatsapp"></i> -->
-                                    <!-- Notification Badge (optional) -->
-                                    <!-- <span class="badge bg-danger">5</span> -->
-                                </a>
-                            </li>
-
-                            <!-- Nav Item - User Information -->
-                            <li class="nav-item dropdown no-arrow">
-                                <!-- ... (rest of the user information dropdown code) ... -->
-                                <?php if (logged_in()) : ?>
-
-                                    <a class="nav-link dropdown-toggle" href="#" id="userDropdown" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                        <span class="mr-4 d-none d-lg-inline text-gray-600 small me-1"><?= user()->username; ?></span>
-                                        <?php
-                                        if (user()->foto === 'default.png') {
-                                            // Jika foto adalah foto default, tampilkan dari folder 'images'
-                                        ?>
-                                            <img class="img-profile rounded-circle ms-auto" src="<?= base_url(); ?>/images/<?= user()->foto; ?>" alt="Foto Profile" style="width: 40px; height: 40px;">
-                                        <?php
-                                        } else {
-                                            // Jika foto telah diubah, tampilkan dari folder 'uploads'
-                                        ?>
-                                            <img src="<?= base_url('uploads/' . user()->foto); ?>" alt="avatar" class="rounded-circle img-fluid" style="width: 40px; height: 40px;">
-                                        <?php
-                                        }
-                                        ?>
-                                    </a>
-                                    <!-- Dropdown - User Information -->
-                                    <div class="dropdown-menu dropdown-menu-right shadow animated--grow-in" aria-labelledby="userDropdown">
-                                        <?php if (in_groups('admin')) : ?>
-                                            <a class="dropdown-item" href="<?= base_url('admin'); ?>">
-                                                <i class="fas fa-fw fa-tachometer-alt mr-2 text-gray-400"></i>
-                                                Dashboard
-                                            </a>
-                                            <div class="dropdown-divider"></div>
-                                        <?php endif; ?>
-                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
-                                            <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
-                                            Reservation
-                                        </a>
-                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
-                                            <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
-                                            Transaction
-                                        </a>
-                                        <a class="dropdown-item" href="<?= base_url('user/setting'); ?>">
-                                            <i class="fas fa-solid fa-sliders-alt mr-2 text-gray-400"></i>
-                                            Settings
-                                        </a>
-                                        <div class="dropdown-divider"></div>
-                                        <a class="dropdown-item" href="<?= base_url('logout'); ?>" data-toggle="modal" data-target="#logoutModal">
-                                            <i class="fas fa-sign-out-alt fa-sm fa-fw mr-2 text-gray-400"></i>
-                                            Logout
-                                        </a>
-                                    </div>
-                                <?php else : ?>
-                                    <div class="d-flex btn-container gap-3 ml-5">
-                                        <a href="<?= base_url('login'); ?>" class="text-decoration-none">
-                                            <button class="btn btn-info text-white " type="submit">
-                                                Login
-                                            </button>
-                                        </a>
-                                        <a href="<?= base_url('register'); ?> " class="text-decoration-none">
-                                            <button class="btn btn-info text-white" type="submit">
-                                                Register
-                                            </button>
-                                        </a>
-                                    </div>
-                                <?php endif ?>
-                            </li>
-                        </ul>
-                    </div>
+                    <!-- Right elements -->
                 </div>
-            </nav>
+                <!-- Navbar -->
+                <nav class="navbar navbar-expand-lg navbar-light ms-xl-5 justify-content-center" style="background-color: #ffffff;">
+                    <!-- Container wrapper -->
+                    <div class="container ms-xl-5 justify-content-center justify-content-md-center">
+                        <!-- Toggle button -->
+
+                        <!-- Collapsible wrapper -->
+                        <div class="collapse navbar-collapse" id="navbarLeftAlignExample">
+                            <!-- Center-aligned links -->
+                            <ul class="navbar-nav ms-xl-5 mb-2 mb-lg-0 justify-content-center">
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" aria-current="page" href="<?= base_url('home') ?>">Home</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" href="<?= base_url('category') ?>">Categories</a>
+                                </li>
+                                <li class="nav-item">
+                                    <a class="nav-link text-dark" href="<?= base_url('best') ?>">Best</a>
+                                </li>
+                            </ul>
+                            <!-- Center-aligned links -->
+                        </div>
+                    </div>
+                    <!-- Container wrapper -->
+                </nav>
+                <!-- Navbar -->
+            </div>
         </div>
+        <!-- Jumbotron -->
     </header>
 
 
@@ -191,7 +266,15 @@
         </div>
     </div>
     <!-- Reservation section-->
-
+    <div class="container">
+        <p class="mt-5">
+            1. Untuk melakukan sebuah reservasi tidak boleh di tanggal yang sama
+            2. Untuk melakukan reservasi tidak boleh di lakukan dengan secara mendadak
+            3. Untuk melakukan reservasi harus ada minimal h-2 setelah ada yang melakukan reservasi di tanggal tersebut
+            4. Contoh Jika yang melakukan reservasi itu di tanggal 8/31/2023 maka tidak boleh melakukan di tanggal yang sama
+            5. Dan juga harus melakukan reservasi di tanggal berikutnya atau h-2 setelah tanggal 8/31/2023
+        </p>
+    </div>
     <!-- Footer -->
     <div class="container">
         <footer class="row row-cols-1 row-cols-sm-2 row-cols-md-5 py-5 my-5 border-top">

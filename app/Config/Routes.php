@@ -77,6 +77,8 @@ $routes->group('payment', ['namespace' => 'App\Controllers'], function ($routes)
     $routes->post('paid/(:num)', 'Payment::paid/$1');
     $routes->get('error-page', 'Reservation::errorpage');
     $routes->get('invoice/(:segment)', 'Payment::invoice/$1');
+    $routes->get('updatePaymentStatus/(:segment)','Payment::updatePaymentStatus/$1');
+    $routes->get('updatePaymentReject/(:segment)','Payment::updatePaymentReject/$1');
     $routes->get('transaction', 'Payment::transaction', ['filter' => 'role:admin']);
     $routes->get('generateCsv', 'Payment::generateCsv', ['filter' => 'role:admin']);
     $routes->get('generatePdf', 'Payment::generatePdf', ['filter' => 'role:admin']);

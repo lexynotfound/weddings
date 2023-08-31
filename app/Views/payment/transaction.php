@@ -292,35 +292,40 @@
                                 </div>
                             <?php endif; ?>
                         </section>
-                        <table id="example" class="table table-striped" style="width:100%">
-                            <thead>
-                                <tr>
-                                    <th>No</th>
-                                    <th>Transaction ID</th>
-                                    <th>Nama Packagep</th>
-                                    <th>Foto Package</th>
-                                    <th>Harga</th>
-                                    <th>Lokasi</th>
-                                    <th>Status</th>
-                                    <th>Reservation Date</th>
-                                    <th>Payment Date</th>
-                                    <th>Payment Update</th>
-                                    <th>Aksi</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <?php $no = 1;
-                                foreach ($payments as $produk_item) {
-                                    $description = $produk_item['description'];
-                                    // Limit the description text to a certain number of characters
-                                    $max_length = 100;
-                                    $display_description = (strlen($description) > $max_length) ? substr($description, 0, $max_length) . "..." : $description;
-                                ?>
+                        <div class="table-responsive">
+                            <table id="example" class="table table-striped" style="width:100%">
+                                <thead>
                                     <tr>
-                                        <td><?= $no; ?></td>
-                                        <td><?= $produk_item['id_payment']; ?></td>
-                                        <td><?= $produk_item['nama_produk']; ?></td>
-                                        <!--  <td>
+                                        <th>No</th>
+                                        <th>Transaction ID</th>
+                                        <th>Uniqe Code</th>
+                                        <th>Nama Packagep</th>
+                                        <th>Payment Receipt</th>
+                                        <th>Harga</th>
+                                        <th>Lokasi</th>
+                                        <th>Status</th>
+                                        <th>Reservation Date</th>
+                                        <th>Payment Date</th>
+                                        <th>Payment Update</th>
+                                        <th>Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <?php $no = 1;
+                                    foreach ($payments as $produk_item) {
+                                        $description = $produk_item['description'];
+                                        // Limit the description text to a certain number of characters
+                                        $max_length = 100;
+
+                                        $payment_action = "";
+                                        $display_description = (strlen($description) > $max_length) ? substr($description, 0, $max_length) . "..." : $description;
+                                    ?>
+                                        <tr>
+                                            <td><?= $no; ?></td>
+                                            <td><?= $produk_item['id_payment']; ?></td>
+                                            <td><?= $produk_item['id_transaksi']; ?></td>
+                                            <td><?= $produk_item['nama_produk']; ?></td>
+                                            <!--  <td>
                                             <div class="description-container">
                                                 <span class="short-description"><?= $display_description; ?></span>
                                                 <?php if (strlen($description) > $max_length) : ?>
@@ -330,27 +335,65 @@
                                                 <?php endif; ?>
                                             </div>
                                         </td> -->
-                                        <td>
-                                            <center>
-                                                <img src="<?= base_url('uploads/' . $produk_item['photos_filenames']) ?>" class="card-img-top img-fluid rounded w-50 rounded" alt="Gambar">
-                                            </center>
-                                        </td>
-                                        <td>Rp.<?= number_format($produk_item['total_payment'], 0, ',', '.'); ?></td>
-                                        <td><?= $produk_item['lokasi']; ?></td>
-                                        <td><?= $produk_item['status']; ?></td>
-                                        <td><?= date('l, d F Y', strtotime($produk_item['tgl_acara'])); ?></td>
-                                        <td><?= $produk_item['payment_date']; ?></td>
-                                        <td><?= $produk_item['payment_updated']; ?></td>
-                                        <td style="width:20%;">
-                                            <div class="btn-group">
-                                                <a href="<?= base_url('payment/invoice/' . $produk_item['id_payment']); ?>" target="_blank" class="btn btn-outline-info"><i class="fas fa-solid fa-file-invoice mr-2"></i>Invoice</a>
-                                            </div>
-                                        </td>
-                                    </tr>
-                                <?php $no++;
-                                } ?>
-                            </tbody>
-                        </table>
+                                           <!--  <td>
+                                                <center>
+                                                    <img src="<?= base_url('uploads/' . $produk_item['photos_filenames']) ?>" class="thumbnail-image card-img-top img-fluid rounded w-50 rounded" alt="Gambar">
+                                                </center>
+                                            </td> -->
+                                            <td>
+                                                <center>
+                                                    <img src="<?= base_url('uploads/' . $produk_item['payment_receipt']) ?>" class="thumbnail-image card-img-top img-fluid rounded w-50 rounded" alt="Gambar">
+                                                </center>
+                                            </td>
+                                            <td>Rp.<?= number_format($produk_item['total_payment'], 0, ',', '.'); ?></td>
+                                            <td><?= $produk_item['lokasi']; ?></td>
+                                            <td>
+                                                <?php
+                                                $status = $produk_item['status'];
+
+                                                if ($status === 'Menunggu Verifikasi') {
+                                                    echo '<span class="badge badge-warning">' . $status . '</span>';
+                                                } elseif ($status === 'Pembayaran DP') {
+                                                    echo '<span class="badge badge-info">' . $status . '</span>';
+                                                } elseif ($status === 'PAID') {
+                                                    echo '<span class="badge badge-success">' . $status . '</span>';
+                                                } elseif ($status === 'Ditolak') {
+                                                    echo '<span class="badge badge-danger">' . $status . '</span>';
+                                                } else {
+                                                    echo $status;
+                                                }
+                                                ?>
+                                            </td>
+
+                                            <td><?= date('l, d F Y', strtotime($produk_item['tgl_acara'])); ?></td>
+                                            <td><?= $produk_item['payment_date']; ?></td>
+                                            <td><?= $produk_item['payment_updated']; ?></td>
+                                            <td style="width:30%;">
+                                                <div class="btn-group">
+                                                    <?php
+                                                    $status = $produk_item['status'];
+                                                    $id_payment = $produk_item['id_payment'];
+
+                                                    if ($status === 'Menunggu Verifikasi') {
+                                                        echo '<a href="' . base_url('payment/updatePaymentStatus/' . $produk_item['id_payment']) . '" onclick="return confirm(\'Anda yakin ingin memverifikasi pesanan ini ' . $produk_item['id_payment'] . ' ?\');" class="btn btn-outline-success btn-sm mr-2"><i class="fa fa-solid fa-check-double"></i><span class="ml-1">Verify</span></a>';
+                                                        echo '<a href="' . base_url('payment/updatePaymentReject/' . $produk_item['id_payment']) . '" onclick="return confirm(\'Anda yakin ingin menolak pesanan ini ' . $produk_item['id_payment'] . ' ?\');" class="btn btn-outline-danger btn-sm mr-2"><i class="fa fa-solid fa-ban"></i><span class="ml-1">Reject</span></a>';
+                                                    } elseif (strpos($id_payment, 'PAY-') === 0 || strpos($id_payment, 'PAYDP-') === 0) {
+                                                        if ($status !== 'Ditolak') {
+                                                            echo '<a href="' . base_url('payment/invoice/' . $produk_item['id_payment']) . '" target="_blank" class="btn btn-outline-info mr-2"><i class="fas fa-solid fa-file-invoice mr-2"></i><span class="ml-1">Invoice</span></a>';
+                                                        }
+                                                    } elseif ($status === 'Ditolak') {
+                                                        // Biarkan kosong untuk status Ditolak
+                                                    }
+                                                    ?>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    <?php $no++;
+                                    } ?>
+                                </tbody>
+                            </table>
+                        </div>
+
                     </div>
                 </div>
                 <!-- End of Main Content -->
@@ -385,6 +428,17 @@
                         <div class="modal-footer">
                             <button class="btn btn-secondary" type="button" data-dismiss="modal">Cancel</button>
                             <a class="btn btn-primary" href="login.html">Logout</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Modal for Image -->
+            <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
+                <div class="modal-dialog modal-dialog-centered">
+                    <div class="modal-content">
+                        <div class="modal-body text-center">
+                            <img id="modalImage" src="" class="img-fluid" alt="Gambar">
                         </div>
                     </div>
                 </div>
@@ -471,6 +525,21 @@
             </script>
 
             <script>
+                function updatePaymentStatus(id_payment, payment_type) {
+                    $.post(`/payment/updatePaymentStatus/${id_payment}/${payment_type}`, function(data) {
+                        console.log(data); // You can display a success message or refresh the page
+                    });
+                }
+
+                function updatePaymentReject(id_payment) {
+                    $.post(`/payment/updatePaymentReject/${id_payment}`, function(data) {
+                        console.log(data); // You can display a success message or refresh the page
+                    });
+                }
+            </script>
+
+
+            <script>
                 const generateReportBtn = document.getElementById("generateReportBtn");
                 const reportFormatSelect = document.getElementById("reportFormat");
 
@@ -495,6 +564,17 @@
                         return null;
                     }
                 }
+            </script>
+
+            <script>
+                $(document).ready(function() {
+                    // When a thumbnail image is clicked
+                    $(".thumbnail-image").click(function() {
+                        var imageSource = $(this).attr("src");
+                        $("#modalImage").attr("src", imageSource);
+                        $("#imageModal").modal("show");
+                    });
+                });
             </script>
 
             <!-- Font Awesome -->

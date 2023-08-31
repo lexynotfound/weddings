@@ -156,7 +156,7 @@ class Payment extends BaseController
             'id_payment' => 'PAYDP-' . uniqid(), // Generate the payment ID for DP
             'total_payment' => $dpAmount, // Save the DP amount as total_payment
             'user_id' => $user_id,
-            'status' => 'Pembayaran DP', // Set the status to 'Pembayaran DP'
+            'status' => 'Menunggu Verifikasi', // Set the status to 'Pembayaran DP'
             'payment_receipt' => $filename,
             'transaksi_id' => $transaksi['id'], // Use the correct primary key for transaksi
             'reservation_id' => $reservation['id'], // Use the correct primary key for reservation
@@ -169,7 +169,8 @@ class Payment extends BaseController
             $paymentData['id_payment']
         );
         // Redirect to the reservation page or any other success page
-        return redirect()->to('payment/invoice/' . $paymentData['id_payment'])->with('success', 'Your reservation has been created successfully.');
+        /* return redirect()->to('payment/invoice/' . $paymentData['id_payment'])->with('success', 'Your reservation has been created successfully.'); */
+        return redirect()->to('user/transaksi')->with('success', 'Your reservation has been created successfully.');
     }
 
     /* public function paid($id = 0)
@@ -273,7 +274,7 @@ class Payment extends BaseController
             'id_payment' => 'PAY-' . uniqid(),
             'total_payment' =>  $totalHarga,
             'user_id' => $user_id,
-            'status' => 'PAID',
+            'status' => 'Menunggu Verifikasi',
             'payment_receipt' => $filename,
             'transaksi_id' => $transaksi['id'],
             'reservation_id' => $reservation['id'],
@@ -291,8 +292,65 @@ class Payment extends BaseController
         session()->set('id_payment', $paymentData['id_payment']);
 
         // Redirect to the reservation page or any other success page
-        return redirect()->to('payment/invoice/' . $paymentData['id_payment'])->with('success', 'Your reservation has been created successfully.');
+        /* return redirect()->to('payment/invoice/' . $paymentData['id_payment'])->with('success', 'Your reservation has been created successfully.'); */
+        return redirect()->to('user/transaksi')->with('success', 'Your reservation has been created successfully.');
     }
+
+    public function updatePaymentStatus($id_payment)
+    {
+        $paymentModel = new PaymentModel();
+
+        // Ambil data pembayaran berdasarkan nilai unik ($id_payment)
+        $payment = $paymentModel->where('id_payment', $id_payment)->first();
+
+        if (!$payment) {
+            return redirect()->to('payment/transaction')->with('error', 'Pembayaran tidak ditemukan.');
+        }
+
+        // Cek prefix id_payment untuk menentukan status baru
+        $newStatus = '';
+        if (strpos($id_payment, 'PAY-') === 0) {
+            $newStatus = 'PAID';
+        } elseif (strpos($id_payment, 'PAYDP-') === 0) {
+            $newStatus = 'Pembayaran DP';
+        }
+
+        // Perbarui status pembayaran jika ada prefix yang cocok
+        if ($newStatus) {
+            $updatedData = [
+                'status' => $newStatus,
+            ];
+            $paymentModel->update($payment['id'], $updatedData);
+        }
+
+        // Alihkan dengan pesan keberhasilan
+        return redirect()->to('payment/transaction')->with('success', 'Status pembayaran berhasil diperbarui.');
+    }
+
+
+    public function updatePaymentReject($id_payment)
+    {
+        $paymentModel = new PaymentModel();
+
+        // Fetch the payment data based on the unique identifier ($id_payment)
+        $payment = $paymentModel->where('id_payment', $id_payment)->first();
+
+        if (!$payment) {
+            return redirect()->to('payment/transaction')->with('error', 'Payment not found.');
+        }
+
+        // Update the payment status to 'Ditolak'
+        $updatedData = [
+            'status' => 'Ditolak',
+        ];
+
+        $paymentModel->update($payment['id'], $updatedData);
+
+        // Redirect with success message
+        return redirect()->to('payment/transaction')->with('success', "Payment status updated to 'Ditolak' successfully.");
+    }
+
+
 
     public function generatePdf()
     {

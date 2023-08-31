@@ -53,7 +53,7 @@
             <!-- Nav Item - Dashboard -->
 
             <li class="nav-item active">
-                <a class="nav-link" href="<?=base_url('user/setting')?>">
+                <a class="nav-link" href="<?= base_url('user/setting') ?>">
                     <?php
                     $foto = user()->foto;
                     if ($foto === 'default.png') {
@@ -352,10 +352,22 @@
                                                     <div class="ms-5">
                                                         <p class="mb-1" style="font-size: .77rem;"><?= $payment['payment_date']; ?></p>
                                                     </div>
+                                                    <div class="ms-5">
+                                                        <?php
+                                                        $status = $payment['status'];
+                                                        $id_payment = $payment['id_payment'];
+
+                                                        if (($status === 'Pembayaran DP' && strpos($id_payment, 'PAYDP-') === 0) ||
+                                                            ($status === 'PAID' && strpos($id_payment, 'PAY-') === 0)
+                                                        ) {
+                                                            echo '<a href="' . base_url('payment/invoice/' . $id_payment) . '" target="_blank" class="btn btn-sm btn-outline-info ms-3 mr-2"><i class="fas fa-solid fa-file-invoice mr-2"></i> Invoice</a>';
+                                                        }
+                                                        ?>
+                                                    </div>
                                                 </div>
                                                 <div class="card-body d-flex">
                                                     <!-- Tautan atau tombol untuk memicu modal -->
-                                                    <a href="#" class="image-link" data-toggle="modal" data-target="#imageModal" data-image="<?= base_url('uploads/' . $payment['payment_receipt']) ?>">
+                                                    <a href="#" data-toggle="modal" data-target="#imageModal">
                                                         <img src="<?= base_url('uploads/' . $payment['payment_receipt']) ?>" alt="Image" class="me-3" style="width: 50px; height: 50px;">
                                                     </a>
                                                     <div>
@@ -364,7 +376,23 @@
                                                     </div>
                                                     <div class="ms-auto">
                                                         <p class="mb-1" style="font-size: .77rem;">Payment Status:</p>
-                                                        <p class="mb-0"><?= $payment['status']; ?></p>
+                                                        <p class="mb-0">
+                                                            <?php
+                                                            $status = $payment['status'];
+
+                                                            if ($status === 'Menunggu Verifikasi') {
+                                                                echo '<span class="badge badge-ylw">' . $status . '</span>';
+                                                            } elseif ($status === 'Pembayaran DP') {
+                                                                echo '<span class="badge badge-orng">' . $status . '</span>';
+                                                            } elseif ($status === 'PAID') {
+                                                                echo '<span class="badge badge-grn">' . $status . '</span>';
+                                                            } elseif ($status === 'Ditolak') {
+                                                                echo '<span class="badge badge-rd">' . $status . '</span>';
+                                                            } else {
+                                                                echo $status;
+                                                            }
+                                                            ?>
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>
@@ -555,23 +583,19 @@
                 </div>
             </div>
 
-            <!-- Modal Photos -->
+            <!-- Modal -->
             <div class="modal fade" id="imageModal" tabindex="-1" role="dialog" aria-labelledby="imageModalLabel" aria-hidden="true">
-                <div class="modal-dialog">
+                <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
-                        <div class="modal-header">
-                            <h5 class="modal-title" id="imageModalLabel">Payment Receipt</h5>
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
+                        <div class="modal-body text-center">
+                            <img src="<?= base_url('uploads/' . $payment['payment_receipt']) ?>" alt="Image" style="max-width: 100%; max-height: 70vh;">
                         </div>
-                        <div class="modal-body">
-                            <img id="modalImage" src="" alt="Image" class="img-fluid">
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                         </div>
                     </div>
                 </div>
             </div>
-
 
             <!-- Memuat pustaka JavaScript Bootstrap -->
             <!-- Memuat pustaka JavaScript Bootstrap dan jQuery -->
