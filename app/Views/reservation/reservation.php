@@ -210,9 +210,9 @@
     <div class="container">
         <div class="row justify-content-center mt-5">
             <div class="col-md-10">
-                <div class="row">
+                <!-- <div class="row">
                     <section class="content-header">
-                        <!-- Menampilkan Pesan -->
+                        
                         <?php if (session()->has('success')) : ?>
                             <div class="alert alert-success" id="successMessage">
                                 <?= session('success') ?>
@@ -225,7 +225,7 @@
                             </div>
                         <?php endif; ?>
                     </section>
-                </div>
+                </div> -->
                 <!-- Product Form Card -->
                 <p>Reservation</p>
                 <div class="card mt-4">
