@@ -678,12 +678,12 @@
                                         if ($relatedProduct['foto'] === 'default.png') {
                                             // Jika foto adalah foto default, tampilkan dari folder 'images'
                                         ?>
-                                            <img src="<?= base_url() ?>/images/' <?= $relatedProduct['foto'] ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
+                                            <img src="<?= base_url(); ?>/images/<?= $relatedProduct['foto']; ?>" alt="" class="icon-img"><span class=" me-1"></span> <?= $relatedProduct['nama']; ?>
                                         <?php
                                         } else {
                                             // Jika foto telah diubah, tampilkan dari folder 'uploads'
                                         ?>
-                                            <img src="<?= base_url('uploads/' . $relatedProduct['foto']) ?>" alt="User Photo" class="rounded-circle me-3" style="width: 30px; height: 30px;">
+                                            <img src="<?= base_url('./uploads/' . $relatedProduct['foto']) ?>" class="icon-img" alt=""><span class=" me-1"></span> <?= $relatedProduct['nama']; ?>
                                         <?php
                                         }
                                         ?>
